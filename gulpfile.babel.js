@@ -19,17 +19,12 @@ import build 			from './build/build'
 
 
 
-
-
-
-
-
 // clean shopify theme dirs from dist
 gulp.task(
 			'clean:theme', 
 			del.bind(
 					null,
-					paths.theme.map(
+					paths.theme.dirs.map(
 						(dir) => path.join(
 										paths.dist.root,
 										dir
@@ -45,7 +40,7 @@ gulp.task(
 gulp.task(
 			'copy:theme',
 			['clean:theme'],
-			//build.copyTheme
+			build.copyTheme
 );
 
 
@@ -56,14 +51,17 @@ gulp.task(
 //			- it should just deploy assets once then let watch task handle CD
 gulp.task(
 			'deploy:dev', 
-			build.deployDev
+			[
+				'copy:theme'
+			],
+			//build.deployDev
 );
 
 
 
 // init build
 gulp.task(
-			'build', 
+			'build',
 			[ 
 				'deploy:dev',
 			]
