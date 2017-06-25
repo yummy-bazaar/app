@@ -12,7 +12,7 @@ const $ 				= gulpLoadPlugins();
 import paths 			from '../paths';
 
 
-// import API creds
+// import Shopify API creds
 import credentials		from '../_secrets/api.creds.dev'
 
 
@@ -49,6 +49,15 @@ export default function watchDirs () {
 	);
 
 
+
+	/*
+	// config Shopify plugin opts
+	let opts = {
+		"basePath": "./dist"
+	};
+
+
+
 	// watch Theme changes in dist
 	// TODO: refactor the Dir sourcing for this task
 	//			- use paths object
@@ -64,7 +73,14 @@ export default function watchDirs () {
 					credentials.themeId
 		)
 	);
+	*/
 }
+
+
+
+
+
+
 
 
 

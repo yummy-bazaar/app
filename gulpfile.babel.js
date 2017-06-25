@@ -54,7 +54,7 @@ gulp.task(
 			[
 				'copy:theme'
 			],
-			//build.deployDev
+			build.deployDev
 );
 
 
