@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "./node_modules/.bin/gulp",
+		"serve": "./node_modules/.bin/lite-server -c=bs-config.json",
 		"deploy:dev": "./node_modules/.bin/gulp deploy:dev",
 		"deploy:prod": "./node_modules/.bin/gulp deploy:prod"
 	},
