@@ -25,27 +25,27 @@ export default function watchDirs () {
 	//			- next I need to find a way to call each of the commands from newMap
 	$.watch(
 			'src/theme/assets/**/*',
-			() => gulp.start('copy:theme')
+			() => gulp.start('build')
 	);
 	$.watch(
 			'src/theme/layout/**/*',
-			() => gulp.start('copy:theme')
+			() => gulp.start('build')
 	);
 	$.watch(
 			'src/theme/config/**/*',
-			() => gulp.start('copy:theme')
+			() => gulp.start('build')
 	);
 	$.watch(
 			'src/theme/snippets/**/*',
-			() => gulp.start('copy:theme')
+			() => gulp.start('build')
 	);
 	$.watch(
 			'src/theme/templates/**/*',
-			() => gulp.start('copy:theme')
+			() => gulp.start('build')
 	);
 	$.watch(
 			'src/theme/locales/**/*',
-			() => gulp.start('copy:theme')
+			() => gulp.start('build')
 	);
 
 
