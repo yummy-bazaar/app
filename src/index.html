@@ -13,10 +13,11 @@
 		>
 
 		<!-- Master styles -->
-			<!--link 
+			<link 
 				rel="stylesheet" 
-				href="styles.css"
-			-->
+				type="text/css"
+				href="dist/assets/styles.css.liquid"
+			>
 
 
 
@@ -49,7 +50,7 @@
 			<!-- use SystemJS to fire up Angular -->
 			<script>
 				System
-					.import('main.ts')
+					.import('dist/assets/angular.app.js')
 					.catch(
 						function(err){ 
 							console.error(err); 
@@ -63,9 +64,9 @@
 
 	<body>
 
-		<my-app>
+		<angular-test>
 			Loading AppComponent content here ...
-		</my-app>
+		</angular-test>
 
 	</body>
 </html>
