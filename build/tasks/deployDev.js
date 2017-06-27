@@ -26,14 +26,15 @@ let opts = {
 export default function deployDev () {
 
 	// Debug
-	console.log('dev creds are: ', credentials)
+	//console.log('dev creds are: ', credentials)
 
 	return gulp
 			.src(
-				path.join(
-					paths.dist.root,
-					'**','*'
-				)
+				'./dist/+(assets|layout|config|snippets|templates|locales)/**'
+				//path.join(
+				//	paths.dist.root,
+				//	'**','*'
+				//)
 			)
 			.pipe(
 				// TODO: use es6 imports with $ to handle this more elegantly
