@@ -51,6 +51,28 @@ gulp.task(
 
 
 
+// lint scripts
+// TODO: impl lint task
+gulp.task(
+			'lint:scripts', 
+			['clean:dist'],
+			build.lint
+);
+
+
+
+// build scripts
+// TODO: impl build script task
+gulp.task(
+			'build:scripts', 
+			[
+				'clean:dist',
+				//'lint:scripts',
+			], 
+			build.scripts
+);
+
+
 
 // deploy assets to Dev store
 // TODO: impl this task
@@ -71,6 +93,7 @@ gulp.task(
 			[
 				'copy:theme',
 				'copy:libs', 
+				'build:scripts',
 				//'deploy:dev',
 			]
 );

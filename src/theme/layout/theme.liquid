@@ -208,31 +208,32 @@
 		<!-- end of Hits Analytics code -->
 
 
-		<!-- Angular dependencies -->
+		<!-- begin Angular dependencies -->
 			<!-- polyfill(s) for older browsers -->
 			<script 
 				src='{{ "shim.min.js" | asset_url }}'
 			>
 			</script>
 
+			<!-- thread-local storage for JavaScript VMs. -->
 			<script 
 				src='{{ "zone.js" | asset_url }}'
 			>
 			</script>
 
+			<!-- SystemJS src -->
 			<script 
 				src='{{ "system.src.js" | asset_url }}'
 			>
 			</script>
 
+			<!-- SystemJS config -->
 			<script 
 				src='{{ "systemjs.config.js" | asset_url }}'
 			>
 			</script>
 
-
-
-			<!-- fire up SystemJS -->
+			<!-- use fire up Angular -->
 			<script>
 				System
 					.import('{{ "main.js" | asset_url }}')

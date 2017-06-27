@@ -50,15 +50,22 @@ export default function watchDirs () {
 
 
 
+	// watch for Script changes
+	$.watch(
+			paths.src.scripts, 
+			() => gulp.start('build')
+	);
+
+
+
 	/*
+	// watch Theme changes in dist then init CD
+
 	// config Shopify plugin opts
 	let opts = {
 		"basePath": "./dist"
 	};
 
-
-
-	// watch Theme changes in dist
 	// TODO: refactor the Dir sourcing for this task
 	//			- use paths object
 	$.watch(

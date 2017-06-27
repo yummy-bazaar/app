@@ -10,6 +10,10 @@ let paths =
 			'node_modules/systemjs/dist/system.src.js',
 			'src/**/systemjs*.js',
 		],
+		scripts: 
+		[
+			'src/**/*.ts',
+		],
 	},
 	dist:
 	{
