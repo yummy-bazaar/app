@@ -22,7 +22,7 @@ export default function buildScripts () {
 			})
 			.plugin(tsify)
 			.bundle()
-			.pipe(source('main.js'))
+			.pipe(source('angular.app.js'))
 			// TODO: use path module from core & paths.dist.root to make dest generic
 			.pipe(gulp.dest('dist/assets'));
 }

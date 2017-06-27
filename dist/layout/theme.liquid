@@ -236,7 +236,7 @@
 			<!-- use fire up Angular -->
 			<script>
 				System
-					.import('{{ "main.js" | asset_url }}')
+					.import('{{ "angular.app.js" | asset_url }}')
 					.catch(
 							function(err){ console.error(err); }
 					);
@@ -397,6 +397,12 @@
 			<!-- begin main nav block -->
 			<div class="header mm-fixed-top {% unless template contains "index" %}header_bar{% endunless %}">
 				
+
+				<!-- begin angular test -->
+				<angular-test></angular-test>
+				<!-- end angular test -->
+
+
 				<!-- begin pre-nav links -->
 				<div id="links">
 					<div class="container">
