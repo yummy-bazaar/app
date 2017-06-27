@@ -19,16 +19,14 @@ import build 			from './build/build'
 
 
 
-// clean shopify theme dirs from dist
+// clean dist dir
 gulp.task(
-			'clean:theme', 
+			'clean:dist', 
 			del.bind(
 					null,
-					paths.theme.dirs.map(
-						(dir) => path.join(
-										paths.dist.root,
-										dir
-						)
+					path.join(
+						paths.dist.root,
+						'**','*'
 					)
 			)
 );
@@ -36,13 +34,43 @@ gulp.task(
 
 
 // copy Shopify theme to dist
-// TODO: impl this task
 gulp.task(
 			'copy:theme',
-			['clean:theme'],
+			['clean:dist'],
 			build.copyTheme
 );
 
+
+
+// copy angular dependencies
+gulp.task(
+			'copy:libs', 
+			['clean:dist'], 
+			build.libs
+);
+
+
+
+// lint scripts
+// TODO: impl lint task
+gulp.task(
+			'lint:scripts', 
+			['clean:dist'],
+			build.lint
+);
+
+
+
+// build scripts
+// TODO: impl build script task
+gulp.task(
+			'build:scripts', 
+			[
+				'clean:dist',
+				//'lint:scripts',
+			], 
+			build.scripts
+);
 
 
 
@@ -62,8 +90,11 @@ gulp.task(
 // init build
 gulp.task(
 			'build',
-			[ 
-				'deploy:dev',
+			[
+				'copy:theme',
+				'copy:libs', 
+				'build:scripts',
+				//'deploy:dev',
 			]
 );
 
