@@ -21,14 +21,12 @@ import build 			from './build/build'
 
 // clean shopify theme dirs from dist
 gulp.task(
-			'clean:theme', 
+			'clean:dist', 
 			del.bind(
 					null,
-					paths.theme.dirs.map(
-						(dir) => path.join(
-										paths.dist.root,
-										dir
-						)
+					path.join(
+						paths.dist.root,
+						'**','*'
 					)
 			)
 );
@@ -36,10 +34,9 @@ gulp.task(
 
 
 // copy Shopify theme to dist
-// TODO: impl this task
 gulp.task(
 			'copy:theme',
-			['clean:theme'],
+			['clean:dist'],
 			build.copyTheme
 );
 
@@ -62,8 +59,9 @@ gulp.task(
 // init build
 gulp.task(
 			'build',
-			[ 
-				'deploy:dev',
+			[
+				'copy:theme',
+				//'deploy:dev',
 			]
 );
 
