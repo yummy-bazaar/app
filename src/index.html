@@ -50,12 +50,28 @@
 			<!-- use SystemJS to fire up Angular -->
 			<script>
 				System
-					.import('dist/assets/angular.app.js')
+					.import('./dist/assets/angular.app.js')
 					.catch(
 						function(err){ 
 							console.error(err); 
 						}
 					);
+
+				/*
+				// TODO: fix SystemJS client side error
+				//		- (index):56 Error: (SystemJS) AMD module http://localhost:3000/dist/assets/angular.app.js did not define
+				//		- see: https://github.com/systemjs/systemjs/issues/588
+				//		- see: https://github.com/systemjs/systemjs/blob/master/docs/module-formats.md
+
+				System
+					.config({
+						meta: {
+							'./dist/assets/angular.app.js': {
+								format: 'cjs'
+							}
+						}
+					});
+				*/
 			</script>
 
 		<!-- begin Angular dependencies -->
