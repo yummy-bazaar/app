@@ -1,0 +1,85 @@
+shop is:  {
+    "attrs": {
+        "currencyCode": {
+            "key": "USD",
+            "type": {
+                "name": "CurrencyCode",
+                "kind": "ENUM"
+            }
+        },
+        "description": {
+            "value": "",
+            "type": {
+                "name": "String",
+                "kind": "SCALAR"
+            }
+        },
+        "moneyFormat": {
+            "value": "${{amount}}",
+            "type": {
+                "name": "String",
+                "kind": "SCALAR"
+            }
+        },
+        "name": {
+            "value": "Yummy Bazaar - Dev",
+            "type": {
+                "name": "String",
+                "kind": "SCALAR"
+            }
+        },
+        "primaryDomain": {
+            "attrs": {
+                "host": {
+                    "value": "yummy-bazaar-dev.myshopify.com",
+                    "type": {
+                        "name": "String",
+                        "kind": "SCALAR"
+                    }
+                },
+                "sslEnabled": {
+                    "value": true,
+                    "type": {
+                        "name": "Boolean",
+                        "kind": "SCALAR"
+                    }
+                },
+                "url": {
+                    "value": "https://yummy-bazaar-dev.myshopify.com",
+                    "type": {
+                        "name": "URL",
+                        "kind": "SCALAR"
+                    }
+                },
+                "type": {
+                    "name": "Domain",
+                    "kind": "OBJECT",
+                    "fieldBaseTypes": {
+                        "host": "String",
+                        "sslEnabled": "Boolean",
+                        "url": "URL"
+                    },
+                    "implementsNode": false
+                }
+            }
+        },
+        "type": {
+            "name": "Shop",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+                "collections": "CollectionConnection",
+                "currencyCode": "CurrencyCode",
+                "description": "String",
+                "moneyFormat": "String",
+                "name": "String",
+                "primaryDomain": "Domain",
+                "privacyPolicy": "ShopPolicy",
+                "products": "ProductConnection",
+                "refundPolicy": "ShopPolicy",
+                "termsOfService": "ShopPolicy"
+            },
+            "implementsNode": false
+        }
+    }
+}
+products are:  []
