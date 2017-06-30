@@ -1,21 +1,15 @@
-import client from './shopify-buy-sdk';
+// import client
+import client 	from './shopify-buy-client';
 
 
-/*
-let products = client
-	.fetchAllProducts()
-	.then(console.log, console.error)
-	//.catch((err) => console.error(err));
 
-
-//console.log(products);
-*/
-
-
+// fetch shop metadata
 const shopPromise 		= client.fetchShopInfo();
+// fetch data for entire product catalog
 const productsPromise 	= client.fetchAllProducts();
 
 
+// consume promises
 Promise
 	.all(
 		[
@@ -41,6 +35,7 @@ Promise
     	}
     )
     .catch((err) => console.error(err));
+
 
 
 
