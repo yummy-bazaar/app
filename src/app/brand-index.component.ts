@@ -3,7 +3,7 @@ import { Component, OnInit }   from '@angular/core';
 
 // Project modules
 import { Logger }				from './logger.service';
-import { Hero }                from './brand';				// TODO: change this to brand model then impl
+import { Brand }                from './brand';				// TODO: change this to brand model then impl
 import { BrandService }         from './brand.service';		// TODO: change this to brand service then impl
 
 @Component({
@@ -17,8 +17,8 @@ import { BrandService }         from './brand.service';		// TODO: change this to
 export class BrandIndex implements OnInit {
 	
 	// properties
-	heroes: Hero[];
-	selectedHero: Hero;
+	brands: Brand[];
+	selectedBrand: Brand;
 
 
 
@@ -29,14 +29,14 @@ export class BrandIndex implements OnInit {
 
 	// event handlers
 	ngOnInit() {
-		this.heroes = this.service.getBrands();
+		this.brands = this.service.getBrands();
 	}
 
 
 
 	// actions
-	selectHero(hero: Hero) { 
-		this.selectedHero = hero; 
+	selectBrand(brand: Brand) { 
+		this.selectedBrand = brand; 
 	}
 }
 

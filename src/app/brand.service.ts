@@ -1,7 +1,7 @@
 import { Injectable } 		from '@angular/core';
 
-import { Brand } 			from './brand';
-import { Product }			from './product';
+//import { Brand } 			from './brand';
+//import { Product }			from './product';
 import client 				from './backend-client';	// TODO: replace this service with the shopify buy client
 import { Logger } 			from './logger.service';
 
@@ -9,24 +9,57 @@ import { Logger } 			from './logger.service';
 export class BrandService {                              // TODO: change this to brand service then impl
 	
 	// properties
-	private Brands: Brand[] = [];						// TODO: use this to cache Brands collection
+	private Brands: any;								// TODO: use this to cache Brands collection
+	//private Products: Product[] = [];
 
 	constructor(
 		private logger: Logger
-	) { }
+	) { };
 
+
+
+	// actions
 	getBrands() {
+
 		client
 			// TODO: can I use GraphQL to compose Brand collection from the server?
 			.fetchAllProducts()
-			.then( (products: Product[]) => {
-				this.logger.log(`Fetched ${products.length} Products.`);
+			// consume payload
+			.then(
+				(catalog) => {
 
-				// TODO: fill cache
-				//			- transform products collection into brand collection
-				//			- push new array into cache
-				//this.Brands.push(...Brands); 					
-			});
+
+					// populate brands collection cache
+					this.Brands = catalog
+									.reduce(
+										(brands,product) => {
+											let brand = product.attrs.vendor.value;
+
+											!!brands[brand]
+											? brands[brand].push(product)
+											: brands[brand] = [product];
+
+											return brands;
+										},
+										{}
+									)
+					;
+				}
+			)
+			// Debug
+			.then(
+				()=>{
+
+					// print brands count
+					this.logger.log(`There are ${Object.keys(this.Brands).length} brands in the catalog`);
+
+					// print brands
+					//this.logger.log(JSON.stringify(this.Brands,null,4));
+				}
+			)
+			.catch(this.logger.error)
+		;
+
 
 		return this.Brands;
 	}
