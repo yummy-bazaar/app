@@ -9,7 +9,8 @@ import client 	from './shopify-buy-client';
 *	Experiment 1
 *
 *	Fetch all products & transform into brand map then print to stdout
-* 
+*
+*	issue: why is it only fetching 20 products at a time? 
 */
 
 
