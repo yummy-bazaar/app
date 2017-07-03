@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
 	template: `<h1>Hello {{backend}} from {{frontend}}</h1>`,
 })
 export class AppComponent  { 
-	backend = 'Shopify'; 
-	frontend = 'Angular';
+	backend 	= 'Shopify'; 
+	frontend 	= 'Angular';
 }
