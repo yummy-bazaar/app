@@ -1,4 +1,7 @@
-import { Injectable } 		from '@angular/core';
+import { 
+	Injectable,
+	OnInit
+}					 		from '@angular/core';
 import * as _				from 'lodash';
 
 //import { Brand } 			from './brand';
@@ -8,7 +11,7 @@ import Logger 				from '../logger.service';
 
 
 @Injectable()
-export class ProductService {							// TODO: change this to brand service then impl
+export class ProductService implements OnInit {
 	
 
 	// constructor
@@ -20,8 +23,7 @@ export class ProductService {							// TODO: change this to brand service then i
 
 
 
-	// actions
-	init() {
+	ngOnInit() {
 
 		client
 			.fetchAllProducts()
@@ -35,8 +37,8 @@ export class ProductService {							// TODO: change this to brand service then i
 					// populate brands cache
 					this.brands = _.groupBy(
 										catalog, 
-										(product:any) => product.attrs.vendor.value
-														// TODO: add vendor property to Product class
+										(product:any) => product.vendor
+														// TODO: update type
 					);
 				}
 			)
@@ -60,12 +62,14 @@ export class ProductService {							// TODO: change this to brand service then i
 
 
 
+
 	getProduct(id: string) {
 		return 	_.find(
 					this.products,
-					(product: any) => product.id
+					(product: any) => product.id		// TODO: update type
 				);
 	}
+
 
 
 
