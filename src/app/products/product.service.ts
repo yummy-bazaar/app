@@ -29,7 +29,7 @@ export class ProductService implements OnInit {
 
 
 
-	init() {
+	private init() {
 
 		client
 			.fetchAllProducts()
@@ -60,14 +60,14 @@ export class ProductService implements OnInit {
 
 
 
-	getProduct(id: string) {
+	public getProduct(id: string) {
 		return 	_.find(this.products,(p)=>p.id);
 	}
 
 
 
 
-	getBrand(vendor: string){
+	public getBrand(vendor: string){
 		return this.brands[vendor];
 	}
 

@@ -2,42 +2,39 @@
 import { Component, OnInit }   from '@angular/core';
 
 // Project modules
-import { Logger }				from './logger.service';
-import { Brand }                from './brand';				// TODO: change this to brand model then impl
-import { BrandService }         from './brand.service';		// TODO: change this to brand service then impl
+import Logger					from '../logger.service';
+import {Product}				from '../models';
+import {ProductService}			from './product.service';
 
 @Component({
-	selector:    'brand-index',
-	templateUrl: './brand-index.component.html',
-	providers:   [ 
-					BrandService,							// TODO: change this to brand service then impl
+	selector:	'brand-index',
+	template: 	require('./brand-index.component.html'),	// TODO: can I use es6 imports instad?
+	providers:	[ 
+					ProductService,
 					Logger,
 	]
 })
 export class BrandIndex implements OnInit {
-	
-	// properties
-	brands: Brand[];
-	selectedBrand: Brand;
+
 
 
 
 	// constructor
-	constructor(private service: BrandService) { }
+	constructor(
+		private service: ProductService
+	) { }
 
 
 
 	// event handlers
 	ngOnInit() {
-		this.brands = this.service.getBrands();
+		
 	}
 
 
 
 	// actions
-	selectBrand(brand: Brand) { 
-		this.selectedBrand = brand; 
-	}
+	
 }
 
 
