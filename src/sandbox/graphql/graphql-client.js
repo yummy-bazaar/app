@@ -142,8 +142,25 @@ process.exit();
 const query 	= `
 query ProductsQuery
 {
-	shop
-	
+  shop{
+    products(
+		first: 20
+    ){
+      edges{
+        node{
+          id
+          title
+          vendor
+          handle
+        }
+        cursor
+      }
+      pageInfo{
+        hasPreviousPage
+        hasNextPage
+      }
+    }
+  }
 }
 `;
 
