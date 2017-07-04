@@ -7,6 +7,8 @@ import Client, {Config} from 'shopify-buy';
 
 //global.fetch = fetch;
 
+
+
 const config = new Config({
 	// YB Dev
 	storefrontAccessToken: 	'1003e582efbf560fb66ffb28ded011f8',
@@ -15,5 +17,22 @@ const config = new Config({
 
 
 
+// TODO: encapsulate this in a constructor
+const client = new Client(config);
 
-export default new Client(config);
+
+
+// TODO: make repeated calls to backend client until pages.hasnext is false
+fetchAllProducts() => 
+{
+	return null;
+};
+
+
+
+// TODO: attach actions to client
+client.fetchAllProducts = fetchAllProducts;
+
+
+export default client;
+
