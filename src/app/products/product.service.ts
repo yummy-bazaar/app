@@ -3,9 +3,9 @@ import {
 	OnInit
 }					 		from '@angular/core';
 import * as _				from 'lodash';
-
-//import { Brand } 			from './brand';
-//import { Product }			from './product';
+import { 
+	Product
+}				 			from '../models';
 import client 				from './graphql-client';
 import Logger 				from '../logger.service';
 
@@ -17,42 +17,39 @@ export class ProductService implements OnInit {
 	// constructor
 	constructor(
 		private logger: 	Logger,
-		private products: 	any,						// TODO: update type to Product[]
-		private brands: 	any							// TODO: update type to Brand[]
+		private products: 	Product[],
+		private brands: 	_.Dictionary<Product[]>
 	) { };
 
 
 
 	ngOnInit() {
+		this.init();
+	}
+
+
+
+	init() {
 
 		client
 			.fetchAllProducts()
 			.then(
-				(catalog: any) => {						// TODO: update type
+				(catalog: Product[]) => {
 
 					// populate products cache
 					this.products = catalog;
 
-
 					// populate brands cache
-					this.brands = _.groupBy(
-										catalog, 
-										(product:any) => product.vendor
-														// TODO: update type
-					);
-				}
-			)
-			// Debug
-			.then(
-				()=>{
+					this.brands = _.groupBy(catalog,(p)=>p.vendor);
 
-					// inspect products cache
-					this.logger.log(`There are ${Object.keys(this.products).length} products in the catalog`);
+
+
+					// Debug: inspect products cache
+					this.logger.log(`Received ${this.products.length} products from Shopify backend`);
 					//this.logger.log(JSON.stringify(this.products,null,4));
 
-
-					// inspect brands cache
-					this.logger.log(`There are ${Object.keys(this.brands).length} brands in the catalog`);
+					// Debug: inspect brands cache
+					this.logger.log(`Received ${Object.keys(this.brands).length} brands from Shopify backend`);
 					//this.logger.log(JSON.stringify(this.brands,null,4));
 				}
 			)
@@ -64,10 +61,7 @@ export class ProductService implements OnInit {
 
 
 	getProduct(id: string) {
-		return 	_.find(
-					this.products,
-					(product: any) => product.id		// TODO: update type
-				);
+		return 	_.find(this.products,(p)=>p.id);
 	}
 
 

@@ -4,6 +4,9 @@
 import Client, {Config} from 'shopify-buy';
 
 
+// Mock data for dev & unit tests
+import data from '../_data/product-payload.json';
+
 
 //global.fetch = fetch;
 
@@ -22,10 +25,12 @@ const client = new Client(config);
 
 
 
-// TODO: make repeated calls to backend client until pages.hasnext is false
+// TODO: 
+//	- make repeated calls to backend client until pages.hasnext is false
+//	- use Bacon.js stream to make app progressive
 fetchAllProducts() => 
 {
-	return null;
+	return data;
 };
 
 
