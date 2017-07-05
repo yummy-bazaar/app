@@ -1,31 +1,21 @@
+import getAuthorType 	from './types/Author';
+import getPostType 		from './types/Post';
+import getQueryType 	from './types/Query';
+
+
+const author 	= getAuthorType();
+const post 		= getPostType();
+const query 	= getQueryType();
+
+
 export const Types = `
-  type Author {
-    id: Int!
-    firstName: String
-    lastName: String
-    posts: [Post] # the list of Posts by this author
-  }
-
-  type Post {
-    id: Int!
-    title: String
-    author: Author
-    votes: Int
-  }
-
-  # the schema allows the following query:
-  type Query {
-    posts: [Post]
-    author(id: Int!): Author
-  }
-
-  # this schema allows the following mutation:
-  type Mutation {
-    upvotePost (
-      postId: Int!
-    ): Post
-  }
+	${author}
+	${post}
+	${query}
 `;
+
+
+
 
 
 

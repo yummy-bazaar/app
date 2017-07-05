@@ -16,6 +16,10 @@ const typeDefs 	= Types;
 const resolvers = Resolvers;
 
 
+// Debug
+//console.log(`Types are: \n${typeDefs}`);
+
+
 export const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
