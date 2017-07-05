@@ -4,7 +4,7 @@ import { Component, OnInit }   from '@angular/core';
 // Project modules
 import Logger					from '../logger.service';
 import {Product}				from '../models';
-import {ProductService}			from './product.service';
+import {ProductService}			from '../product';
 
 @Component({
 	selector:	'brand-index',

@@ -6,7 +6,7 @@ import * as _				from 'lodash';
 import { 
 	Product
 }				 			from '../models';
-import client 				from './graphql-client';
+import {APIClient} 			from '../api';
 import Logger 				from '../logger.service';
 
 
@@ -18,7 +18,8 @@ export class ProductService implements OnInit {
 	constructor(
 		private logger: 	Logger,
 		private products: 	Product[],
-		private brands: 	_.Dictionary<Product[]>
+		private brands: 	_.Dictionary<Product[]>,
+		private client: 	any
 	) { };
 
 
@@ -31,7 +32,9 @@ export class ProductService implements OnInit {
 
 	private init() {
 
-		client
+		this.client = new APIClient;
+
+		this.client
 			.fetchAllProducts()
 			.then(
 				(catalog: Product[]) => {
