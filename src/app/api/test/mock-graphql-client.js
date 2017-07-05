@@ -32,9 +32,7 @@ import { graphql }		from 'graphql';
 
 
 // define Schema
-import {schema} 		from './schema/shopify'
-//console.log(schema)
-//process.exit();
+import {schema} 		from './schema/tutorial'
 
 
 
