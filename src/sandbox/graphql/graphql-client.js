@@ -15,7 +15,7 @@
 
 
 // Debug
-console.log('\n\nBEGIN PROCESS\n\n');
+//console.log('\n\nBEGIN PROCESS\n\n');
 process.on('exit',()=>console.log('\n\nEND PROCESS\n\n'));
 
 
@@ -32,8 +32,8 @@ import { graphql }		from 'graphql';
 
 
 // define Schema
-import {schema} 		from './schema/shopify'
-//console.log(schema)
+import schema 		from './schema/shopify/mock-graphql-server'
+console.log('\nSchema is:\n',JSON.stringify(schema,null,4),'\n');
 //process.exit();
 
 

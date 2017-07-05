@@ -1,22 +1,5 @@
 import { find, filter }     from 'lodash';
 
-export const Resolvers = {
-	RootQuery: {
-		posts: () => posts,
-		author: (_, { id }) => find(authors, { id: id }),
-	},
-	Author: {
-		posts: (author) => filter(posts, { authorId: author.id }),
-		//getAuthorType: () => Author,
-	},
-	Post: {
-		author: (post) => find(authors, { id: post.authorId }),
-		//getPostType: () => Post,
-	},
-};
-
-
-
 const authors = [
 	{ id: 1, firstName: 'Tom', lastName: 'Coleman' },
 	{ id: 2, firstName: 'Sashko', lastName: 'Stubailo' },
@@ -32,3 +15,22 @@ const posts = [
 
 
 
+const Resolvers = {
+	Query: {
+		posts() {
+			return posts;
+		},
+	},
+	Author: {
+		posts(author) {
+			return filter(posts, { authorId: author.id });
+		},
+	},
+	Post: {
+		author(post) {
+			return find(authors, { id: post.authorId });
+		},
+	},
+};
+
+export default Resolvers;
