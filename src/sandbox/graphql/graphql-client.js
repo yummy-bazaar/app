@@ -15,21 +15,14 @@
 
 
 // Debug
-console.log('\n\nBEGIN PROCESS\n');
+console.log('\n\nBEGIN PROCESS\n\n');
+process.on('exit',()=>console.log('\n\nEND PROCESS\n\n'));
+
+
 
 
 // import modules
-import { 
-	graphql,
-	GraphQLSchema,
-	GraphQLObjectType,
-	GraphQLString,
-	GraphQLList,
-	GraphQLNonNull
-}		 				from 'graphql';
-import _				from 'lodash';
-import fs 				from 'fs';
-import Path				from 'path';
+import { graphql }		from 'graphql';
 
 
 
@@ -38,10 +31,9 @@ import Path				from 'path';
 
 
 
-// Define Schema
-import {schema} from './schema/schema'
-//console.log(schema);
-//process.exit();
+// define Schema
+import {schema} 		from './schema/schema'
+
 
 
 
@@ -61,13 +53,6 @@ query PostsForAuthor {
 
 
 
-
-/*
-//	client interface
-let fetchData = async (schema, query) => {
-	return await graphql(schema, query);
-}
-*/
 
 
 
