@@ -1,10 +1,16 @@
-import { find, filter }     from 'lodash';
+import { 
+	find, 
+	filter 
+} from 'lodash';
+
+
 
 const authors = [
 	{ id: 1, firstName: 'Tom', lastName: 'Coleman' },
 	{ id: 2, firstName: 'Sashko', lastName: 'Stubailo' },
 	{ id: 3, firstName: 'Mikhail', lastName: 'Novikov' },
 ];
+
 
 const posts = [
 	{ id: 1, authorId: 1, title: 'Introduction to GraphQL', votes: 2 },
@@ -14,9 +20,11 @@ const posts = [
 ];
 
 
-
 const Resolvers = {
-	Query: {
+	RootQuery: {
+		author(_, { id }) {
+			return find(authors, { id: id })
+		},
 		posts() {
 			return posts;
 		},
@@ -33,4 +41,11 @@ const Resolvers = {
 	},
 };
 
+
 export default Resolvers;
+
+
+
+
+
+
