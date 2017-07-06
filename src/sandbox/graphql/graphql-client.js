@@ -14,155 +14,95 @@
 'use strict';
 
 
-// Debug
-console.log('\n\nBEGIN PROCESS\n');
-
-
 // import modules
 import { 
 	graphql,
-	GraphQLSchema,
-	GraphQLObjectType,
-	GraphQLString,
-	GraphQLList,
-	GraphQLNonNull
-}		 				from 'graphql';
-import _				from 'lodash';
-import fs 				from 'fs';
-import Path				from 'path';
+	buildClientSchema 
+}								from 'graphql';
+import * as introspectionResult from './schema.json';
 
 
 
 
 
-
-/*
-// Read file
-//const schema = JSON.parse(fs.readFileSync(Path.join(__dirname,'schema.json'), 'utf8'));
-const data 	 = fs.readFileSync(Path.join(__dirname,'schema.json'), 'utf8');
 // Debug
-console.log('read data from file');
-*/
+console.log('\n\nBEGIN PROCESS\n\n');
+process.on('exit',()=>console.log('\n\nEND PROCESS\n\n'));
 
 
 
-// import types
-import typesBundle		from './types';
-// debug
-//console.log(JSON.stringify(typesBundle.types,null,4));
+
+
+// build mock server Schema
+import schema 					from './schema/tutorial/mock-graphql-server'
+
+
+// build Shopify Schema from introspection data
+//import schema 					from './schema/shopify/definitions/schema-builder'
+
+
+
+// Debug
+//console.log('\nSchema is:\n',JSON.stringify(schema,null,4),'\n');
 //process.exit();
 
 
 
 
-// Define producst types
-let NodeType = new GraphQLObjectType(
-	{
-	name: 'node',
-	fields: () => (
-		{
-			id: 	GraphQLString,
-			title: 	GraphQLString,
-			vendor: GraphQLString,
-			handle: GraphQLString
+
+
+// Mock server query
+const mockServerQuery = `
+query PostsForAuthor {
+	author(id: 2) {
+		firstName
+		posts {
+			title
+			votes
 		}
-	)
 	}
-);
+}
+`;
 
 
 
-
-// Define producst types
-let EdgesType = new GraphQLObjectType(
-	{
-	name: 'edges',
-	fields: () => (
-		{
-			node: 
-			{ 
-				type: new GraphQLList(NodeType) 
-			}
-		}
-	)
-	}
-);
-
-
-
-
-// Define producst types
-let ProductsType = new GraphQLObjectType(
-	{
-	name: 'products',
-	fields: () => (
-		{
-			edges: 
-			{ 
-				type: new GraphQLList(EdgesType) 
-			}
-		}
-	)
-	}
-);
-
-
-
-
-// Define Schema
-const schema = new GraphQLSchema(
-	{
-		query: new GraphQLObjectType(
-			{
-				name: 'data',
-				fields: {
-					shop: {
-						type: new GraphQLList(ProductsType),
-						args: {
-							//id: { type: GraphQLString }
-						},
-						resolve: (source, args, context, info) => {
-							console.log(source, args, context, info)
-							return Promise.resolve({"name": 'meow'})
-						}
-					}
+// YB product query
+const shopifyServerQuery = `
+query{
+	shop{
+		products(
+			first: 250
+			after: "eyJsYXN0X2lkIjoxMTIxNjI5NDc4OCwibGFzdF92YWx1ZSI6IjExMjE2Mjk0Nzg4In0"
+		){
+			edges{
+				node{
+					id
+					title
+					vendor
+					handle
 				}
+				cursor
 			}
-		)
+			pageInfo{
+				hasPreviousPage
+				hasNextPage
+			}
+		}
 	}
-);
-// Debug
-console.log(schema);
-process.exit();
-
-
-
-
-// define query
-const query 	= `
-query ProductsQuery
-{
-	shop
-	
 }
 `;
 
 
 
 
-/*
-//	client interface
-let fetchData = async (schema, query) => {
-	return await graphql(schema, query);
-}
-*/
 
 
 
-// Debug
+
+// send request to Backend
 graphql(
 		schema, 
-		query
+		mockServerQuery
 	)
 	.then(
 		res => console.log(JSON.stringify(res,null,4))
