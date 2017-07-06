@@ -8,11 +8,11 @@ import { ApolloModule } 	from 'apollo-angular';
 
 // Project modules
 import { AppComponent } 	from './app.component';
-import { ProfileComponent }	from './sandbox/profile.component';
+import { ProfileComponent }	from './sandbox';
 
 
 // Utilities
-import Logger 				from './utils/logger.service';
+import { Logger }			from './utils/logger.service';
 
 
 

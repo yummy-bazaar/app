@@ -2,7 +2,10 @@ import {
 	Component, 
 	OnInit 
 } 					from '@angular/core';
-import { Apollo } 	from 'apollo-angular';
+import { 
+	Apollo,
+	ApolloQueryObservable
+} 	from 'apollo-angular';
 
 
 import gql 			from 'graphql-tag';
@@ -40,7 +43,7 @@ export class ProfileComponent implements OnInit {
 
 	constructor(
 		private apollo: Apollo,
-		private data: any
+		private data: ApolloQueryObservable<any>
 	) {}
 
 
