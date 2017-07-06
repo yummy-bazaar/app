@@ -8,15 +8,18 @@ import paths 			from '../paths';
 
 
 // TODO: use $ to load plugins more elegantly
-let browserify 	= require("browserify");
-let source 		= require('vinyl-source-stream');
-let tsify 		= require("tsify");
+let browserify 		= require("browserify");
+let source 			= require('vinyl-source-stream');
+let tsify 			= require("tsify");
+const tscConfig 	= require('../../tsconfig.json');
 export default function buildScripts () {
 	return  browserify({
 				basedir: '.',
 				debug: true,
 				// TODO: use path module from core & paths.src.root to make src generic
 				entries: ['src/main.ts'],
+				exclude: tscConfig.exclude,
+				sourceMaps: true,
 				cache: {},
 				packageCache: {}
 			})
