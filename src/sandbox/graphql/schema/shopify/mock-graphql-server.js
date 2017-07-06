@@ -1,3 +1,4 @@
+// TODO: modify this mock server data to serve data specific to YB
 import { makeExecutableSchema } from 'graphql-tools';
 import RootQuery 				from './schema/RootQuery';
 import SchemaDefinition 		from './schema/SchemaDefinition';

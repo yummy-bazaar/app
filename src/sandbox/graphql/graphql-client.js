@@ -34,17 +34,17 @@ process.on('exit',()=>console.log('\n\nEND PROCESS\n\n'));
 
 
 // build mock server Schema
-import schema 					from './schema/shopify/mock-graphql-server'
+import schema 					from './schema/tutorial/mock-graphql-server'
 
 
 // build Shopify Schema from introspection data
-//const schema = buildClientSchema(introspectionResult.data);
+//import schema 					from './schema/shopify/definitions/schema-builder'
 
 
 
 // Debug
-//console.log('\nSchema is:\n',JSON.stringify(schema,null,4),'\n');
-//process.exit();
+console.log('\nSchema is:\n',JSON.stringify(schema,null,4),'\n');
+process.exit();
 
 
 
