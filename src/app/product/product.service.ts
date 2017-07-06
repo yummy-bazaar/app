@@ -25,11 +25,11 @@ export class ProductService implements OnInit {
 
 
 	ngOnInit() {
-//		this.init();
+		this.init();
 	}
 
 
-/*
+
 	private init() {
 
 		this.client = new APIClient;
@@ -59,7 +59,7 @@ export class ProductService implements OnInit {
 			.catch(this.logger.error)
 		;
 	}
-*/
+
 
 
 
