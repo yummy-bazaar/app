@@ -18,8 +18,10 @@ console.log('Resolvers are:\n',JSON.stringify(Resolvers,null,4),'\n');
 */
 
 
-
+// options
 const resolvers = Resolvers;
+const logger = { log: (e) => console.log(e) }
+
 export default makeExecutableSchema({
 	typeDefs: [
 		RootQuery, 
@@ -27,7 +29,8 @@ export default makeExecutableSchema({
 		Author, 
 		Post
 	],
-	resolvers: resolvers,
+	logger: 	logger,
+	resolvers: 	resolvers,
 });
 
 
