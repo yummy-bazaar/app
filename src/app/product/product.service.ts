@@ -6,8 +6,8 @@ import * as _				from 'lodash';
 import { 
 	Product
 }				 			from '../models';
-import {APIClient} 			from '../api';
-import Logger 				from '../logger.service';
+//import {APIClient} 			from '../api';
+import { Logger	}				from '../utils';
 
 
 @Injectable()
@@ -25,11 +25,11 @@ export class ProductService implements OnInit {
 
 
 	ngOnInit() {
-		this.init();
+//		this.init();
 	}
 
 
-
+/*
 	private init() {
 
 		this.client = new APIClient;
@@ -59,7 +59,7 @@ export class ProductService implements OnInit {
 			.catch(this.logger.error)
 		;
 	}
-
+*/
 
 
 

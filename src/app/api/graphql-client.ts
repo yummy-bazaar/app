@@ -1,3 +1,4 @@
+/*
 // TODO: switch to GraphQL client
 // See: https://github.com/Shopify/storefront-api-examples/tree/master/node-graphql-client
 //import fetch 			from 'node-fetch';
@@ -43,3 +44,4 @@ export default class APIClient {
 
 }
 
+*/

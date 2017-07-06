@@ -7,16 +7,24 @@ const $ 				= gulpLoadPlugins();
 import paths 			from '../paths';
 
 
-// TODO: use $ to load plugins more elegantly
-let browserify 	= require("browserify");
-let source 		= require('vinyl-source-stream');
-let tsify 		= require("tsify");
+// TODO: 
+// - use $ to load plugins more elegantly
+// - use watchify or browserify-incremental module to speed up build time
+// 		see: http://gulpjs.org/recipes/fast-browserify-builds-with-watchify.html
+//			 https://github.com/jsdf/browserify-incremental
+const browserify 	= require("browserify");
+const browserifyInc = require('browserify-incremental');
+const source 		= require('vinyl-source-stream');
+const tsify 		= require("tsify");
+const tscConfig 	= require('../../tsconfig.json');
 export default function buildScripts () {
 	return  browserify({
 				basedir: '.',
 				debug: true,
 				// TODO: use path module from core & paths.src.root to make src generic
 				entries: ['src/main.ts'],
+				exclude: tscConfig.exclude,
+				sourceMaps: true,
 				cache: {},
 				packageCache: {}
 			})
