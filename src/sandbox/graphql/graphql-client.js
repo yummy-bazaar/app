@@ -43,8 +43,8 @@ import schema 					from './schema/tutorial/mock-graphql-server'
 
 
 // Debug
-console.log('\nSchema is:\n',JSON.stringify(schema,null,4),'\n');
-process.exit();
+//console.log('\nSchema is:\n',JSON.stringify(schema,null,4),'\n');
+//process.exit();
 
 
 
@@ -52,7 +52,7 @@ process.exit();
 
 
 // Mock server query
-const queryMockServer = `
+const mockServerQuery = `
 query PostsForAuthor {
 	author(id: 2) {
 		firstName
@@ -67,7 +67,7 @@ query PostsForAuthor {
 
 
 // YB product query
-const queryShopifyServer = `
+const shopifyServerQuery = `
 query{
 	shop{
 		products(
@@ -102,7 +102,7 @@ query{
 // send request to Backend
 graphql(
 		schema, 
-		queryMockServer
+		mockServerQuery
 	)
 	.then(
 		res => console.log(JSON.stringify(res,null,4))
