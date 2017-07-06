@@ -14,10 +14,10 @@ import { Subject } 	from 'rxjs/Subject';
 
 // We use the gql tag to parse our query string into a query document
 const CurrentUserForProfile = gql`
-	query CurrentUserForProfile($avatarSize: Int!) {
+	query CurrentUserForProfile {
 		currentUser {
 			login
-			avatar_url(avatarSize: $avatarSize)
+			avatar_url
 		}
 	}
 `;
@@ -30,12 +30,12 @@ interface QueryResponse{
 
 
 @Component({ 
-	selector: 'profile-component',
+	selector: 'profile',
 	template: ``,
 })
 export class ProfileComponent implements OnInit {
 	
-
+	data: ApolloQueryObservable<any>
 	loading: boolean;
 	currentUser: any;
 	avatarSize: Subject<number> = new Subject<number>();
@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit {
 
 	constructor(
 		private apollo: Apollo,
-		private data: ApolloQueryObservable<any>
+		//private data: ApolloQueryObservable<any>
 	) {}
 
 

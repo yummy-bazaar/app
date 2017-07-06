@@ -17,7 +17,7 @@ const FeedQuery = gql`
 		currentUser {
 			login
 		}
-		feed {
+		feed(type: HOT) {
 			createdAt
 			score
 		}
@@ -27,7 +27,7 @@ const FeedQuery = gql`
 
 
 @Component({
-	selector: 'feed-component',
+	selector: 'feed',
 	template: `
 		<ul *ngFor="let entry of data | async | select: 'feed'">
 			Score: {{entry.score}}
@@ -38,7 +38,8 @@ export class FeedComponent implements OnInit {
 	data: ApolloQueryObservable<any>;
 
 	constructor(
-		private apollo: Apollo
+		private apollo: Apollo,
+		//private data: ApolloQueryObservable<any>
 	) {}
 
 	ngOnInit() {
