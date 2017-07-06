@@ -14,9 +14,11 @@
 		"suppressImplicitAnyIndexErrors": true
 	},
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+		"!src/app/api/**/*"
     ],
 	"exclude": [
-		"node_modules/**/*"
+		"node_modules/**/*",
+		"src/app/api/**/*"
 	]
 }
