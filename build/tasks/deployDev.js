@@ -13,7 +13,7 @@ import paths 			from '../paths';
 
 
 // import Shopify API creds
-import credentials		from '../_secrets/api.creds.dev'
+//import credentials		from '../_secrets/api.creds.dev'
 
 
 // config Shopify plugin opts
@@ -28,23 +28,23 @@ export default function deployDev () {
 	// Debug
 	//console.log('dev creds are: ', credentials)
 
-	return gulp
-			.src(
-				'./dist/+(assets|layout|config|snippets|templates|locales)/**'
-				//path.join(
-				//	paths.dist.root,
-				//	'**','*'
-				//)
-			)
-			.pipe(
-				// TODO: use es6 imports with $ to handle this more elegantly
-				require('gulp-shopify-upload')(
-					credentials.apiKey, 
-					credentials.password,
-					credentials.endpoint,
-					credentials.themeId
-				)
-			);
+//	return gulp
+//			.src(
+//				'./dist/+(assets|layout|config|snippets|templates|locales)/**'
+//				//path.join(
+//				//	paths.dist.root,
+//				//	'**','*'
+//				//)
+//			)
+//			.pipe(
+//				// TODO: use es6 imports with $ to handle this more elegantly
+//				require('gulp-shopify-upload')(
+//					credentials.apiKey, 
+//					credentials.password,
+//					credentials.endpoint,
+//					credentials.themeId
+//				)
+//			);
 }
 
 
