@@ -12,6 +12,10 @@ import paths 			from '../paths';
 // - use watchify or browserify-incremental module to speed up build time
 // 		see: http://gulpjs.org/recipes/fast-browserify-builds-with-watchify.html
 //			 https://github.com/jsdf/browserify-incremental
+// - output source maps for scripts
+//		see: https://sethlakowske.com/articles/gulp-browserify-source-maps/
+//			 http://gulpjs.org/recipes/browserify-uglify-sourcemap.html
+//			 https://gist.github.com/michalochman/d64360541a484e16817c
 const browserify 	= require("browserify");
 const browserifyInc = require('browserify-incremental');
 const source 		= require('vinyl-source-stream');

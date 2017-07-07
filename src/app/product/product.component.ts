@@ -13,8 +13,7 @@ import {
 import gql 					from 'graphql-tag';
 import { Subject } 			from 'rxjs/Subject';
 import { Logger	}			from '../utils';
-
-
+let slugify 				= require('slugify')
 
 
 // We use the gql tag to parse our query string into a query document
@@ -65,7 +64,9 @@ export class ProductComponent implements OnInit {
 	data: 		ApolloQueryObservable<any>;
 	loading: 	boolean;
 	products: 	any[];
-	brands: 	_.Dictionary<Product[]>;
+	brands: 	any;
+
+
 
 	// constructor
 	constructor(
@@ -94,47 +95,41 @@ export class ProductComponent implements OnInit {
 			.watchQuery<any>({
 				query: ProductCatalog
 			})
-			.subscribe(({data}) => {
-				this.loading = data.loading;
-				this.products = data.shop.products.edges;
-				//this.brands = _.groupBy(this.products,(p)=>p.node.vendor);
-			})
-		;
+			.subscribe(
+				({data}) => {
+					this.loading 	= data.loading;
+					this.products 	= data.shop.products.edges;
+					this.brands 	= data.shop.products.edges.reduce(
+						(b:any,p:any) => {
+							let v = slugify(p.node.vendor,'-');
+							!!b[v]
+							? b[v].push(p)
+							: b[v] = [p]
 
-		
-/*
-		this.client = new APIClient;
-
-		this.client
-			.fetchAllProducts()
-			.then(
-				(catalog: Product[]) => {
-
-					// populate products cache
-					this.products = catalog;
-
-					// populate brands cache
-					this.brands = _.groupBy(catalog,(p)=>p.vendor);
-
-
-
-					// Debug: inspect products cache
-					this.logger.log(`Received ${this.products.length} products from Shopify backend`);
-					//this.logger.log(JSON.stringify(this.products,null,4));
-
-					// Debug: inspect brands cache
-					this.logger.log(`Received ${Object.keys(this.brands).length} brands from Shopify backend`);
-					//this.logger.log(JSON.stringify(this.brands,null,4));
+							return b;
+						},
+						{}
+					);
+				},
+				(err) => { 
+					console.log('Fetch error: ' + err.message); 
+				},
+				() => { 
+					this.brands = _.groupBy(
+						this.products,
+						(p) => {
+							slugify(p.node.vendor,'-');
+						}
+					);
+					console.log('Fetch completed!'); 
 				}
 			)
-			.catch(this.logger.error)
-		;
-*/		
+		;	
 	}
 
 
 
-/*
+
 	public getProduct(id: string) {
 		return 	_.find(this.products,(p)=>p.id);
 	}
@@ -145,7 +140,7 @@ export class ProductComponent implements OnInit {
 	public getBrand(vendor: string){
 		return this.brands[vendor];
 	}
-*/
+
 }
 
 
