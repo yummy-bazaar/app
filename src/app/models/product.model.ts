@@ -1,4 +1,6 @@
 export interface Product {
-    //id: string;
-    //vendor: string;
+    node: {
+    	//id: string;
+        vendor: string
+    }
 }

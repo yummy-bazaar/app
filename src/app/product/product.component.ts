@@ -47,8 +47,15 @@ query ProductCatalog {
 
 @Component({
 	selector: 'product',
+/*	
 	template: `
 		<ul *ngFor="let product of products">
+			Product: {{product.node.title}}
+		</ul>
+	`
+*/	
+	template: `
+		<ul *ngFor="let product of data | async | select: 'shop' | select: 'products' | select: 'edges'">
 			Product: {{product.node.title}}
 		</ul>
 	`
@@ -57,7 +64,8 @@ export class ProductComponent implements OnInit {
 	
 	data: 		ApolloQueryObservable<any>;
 	loading: 	boolean;
-	products: 	Product[];
+	products: 	any[];
+	brands: 	_.Dictionary<Product[]>;
 
 	// constructor
 	constructor(
@@ -89,6 +97,7 @@ export class ProductComponent implements OnInit {
 			.subscribe(({data}) => {
 				this.loading = data.loading;
 				this.products = data.shop.products.edges;
+				//this.brands = _.groupBy(this.products,(p)=>p.node.vendor);
 			})
 		;
 
