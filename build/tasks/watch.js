@@ -13,7 +13,7 @@ import paths 			from '../paths';
 
 
 // import Shopify API creds
-import credentials		from '../_secrets/api.creds.dev'
+//import credentials		from '../_secrets/api.creds.dev'
 
 
 // export task
