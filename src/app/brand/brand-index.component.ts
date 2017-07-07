@@ -4,13 +4,13 @@ import { Component, OnInit }   from '@angular/core';
 // Project modules
 import { Logger	}				from '../utils';
 import { Product }				from '../models';
-import { ProductService }		from '../product';
+//import { ProductService }		from '../product';
 
 @Component({
 	selector:	'brand-index',
 	template: 	require('./brand-index.component.html'),	// TODO: can I use es6 imports instad?
 	providers:	[ 
-					ProductService,
+					//ProductService,
 					Logger,
 	]
 })
@@ -21,7 +21,7 @@ export class BrandIndex implements OnInit {
 
 	// constructor
 	constructor(
-		private service: ProductService
+		//private service: ProductService
 	) { }
 
 

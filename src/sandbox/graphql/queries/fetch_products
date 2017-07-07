@@ -4,24 +4,24 @@
 #
 ##
 query{
-  shop{
-    products(
-      				first: 20
-      				after: "eyJsYXN0X2lkIjo5ODk1MzIxMjgzLCJsYXN0X3ZhbHVlIjoiOTg5NTMyMTI4MyJ9"
-    ){
-      edges{
-        node{
-          id
-          title
-          vendor
-          handle
-        }
-        cursor
-      }
-      pageInfo{
-        hasPreviousPage
-        hasNextPage
-      }
-    }
-  }
+	shop{
+		products(
+			first: 20
+			after: "eyJsYXN0X2lkIjo5ODk1MzIxMjgzLCJsYXN0X3ZhbHVlIjoiOTg5NTMyMTI4MyJ9"
+		){
+			edges{
+				node{
+					id
+					title
+					vendor
+					handle
+				}
+				cursor
+			}
+			pageInfo{
+				hasPreviousPage
+				hasNextPage
+			}
+		}
+	}
 }
