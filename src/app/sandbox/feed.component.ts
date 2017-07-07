@@ -43,7 +43,7 @@ export class FeedComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.data = this.apollo.watchQuery({ query: FeedQuery });
+//		this.data = this.apollo.watchQuery({ query: FeedQuery });
 	}
 }
 

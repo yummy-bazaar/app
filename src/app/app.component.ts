@@ -1,8 +1,4 @@
 import { Component } 	from '@angular/core';
-import { 
-	ProfileComponent,
-	FeedComponent 
-}						from './sandbox';
 
 @Component({
 	selector: 'angular-test',
@@ -14,6 +10,7 @@ import {
 		<feed>
 			Loading Feed from GraphQL backend ...
 		</feed>
+		<product></product>
 	`,
 })
 export class AppComponent  { 

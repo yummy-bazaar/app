@@ -1,15 +1,15 @@
 import { 
 	Component, 
 	OnInit 
-} 					from '@angular/core';
+} 							from '@angular/core';
 import { 
 	Apollo,
 	ApolloQueryObservable
-} 	from 'apollo-angular';
+} 							from 'apollo-angular';
 
 
-import gql 			from 'graphql-tag';
-import { Subject } 	from 'rxjs/Subject';
+import gql 					from 'graphql-tag';
+import { Subject } 			from 'rxjs/Subject';
 
 
 // We use the gql tag to parse our query string into a query document
@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
 
 
 	ngOnInit() {
-
+/*
 		this.apollo
 			.watchQuery<QueryResponse>({
 				query: CurrentUserForProfile
@@ -77,7 +77,7 @@ export class ProfileComponent implements OnInit {
 			}, 
 			1000
 		);
-
+*/
 	}
 
 
