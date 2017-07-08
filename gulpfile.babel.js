@@ -1,52 +1,52 @@
 'use strict';
 
 // node core modules
-import * as path	from 'path';
+import * as path		from 'path';
 
-// load modules/plugins
+// load plugins
 import gulp 			from 'gulp';
 import del 				from 'del';
-import watch 			from 'gulp-watch';
 import gulpLoadPlugins 	from 'gulp-load-plugins';
 const $ 				= gulpLoadPlugins();
 
-
-// load file paths
+// load build modules
+import copyTheme 		from './build/copyTheme';
+import copyLibs 		from './build/copyLibs';
+import lintScripts 		from './build/lintScripts';
+import buildScripts 	from './build/buildScripts';
+import watchDirs 		from './build/watchDirs';
 import paths 			from './build/paths';
-
-// load tasks
-import build 			from './build/build'
 
 
 
 // clean dist dir
 gulp.task(
-			'clean:dist', 
-			del.bind(
-					null,
-					path.join(
-						paths.dist.root,
-						'**','*'
-					)
+	'clean:dist', 
+	del.bind(
+			null,
+			path.join(
+				paths.dist.root,
+				'**','*'
 			)
+	)
 );
 
 
 
 // copy Shopify theme to dist
 gulp.task(
-			'copy:theme',
-			['clean:dist'],
-			build.copyTheme
+	'copy:theme',
+	['clean:dist'],
+	copyTheme
 );
 
 
 
 // copy angular dependencies
 gulp.task(
-			'copy:libs', 
-			['clean:dist'], 
-			build.libs
+	'copy:libs', 
+	['clean:dist'], 
+	copyLibs
 );
 
 
@@ -54,9 +54,9 @@ gulp.task(
 // lint scripts
 // TODO: impl lint task
 gulp.task(
-			'lint:scripts', 
-			['clean:dist'],
-			build.lint
+	'lint:scripts', 
+	['clean:dist'],
+	lintScripts
 );
 
 
@@ -64,47 +64,38 @@ gulp.task(
 // build scripts
 // TODO: impl build script task
 gulp.task(
-			'build:scripts', 
-			[
-				'clean:dist',
-				//'lint:scripts',
-			], 
-			build.scripts
-);
-
-
-
-// deploy assets to Dev store
-// TODO: impl this task
-//			- it should just deploy assets once then let watch task handle CD
-gulp.task(
-			'deploy:dev', 
-			[
-				'copy:theme'
-			],
-			//build.deployDev
+	'build:scripts', 
+	[
+		'clean:dist',
+		//'lint:scripts',
+	], 
+	buildScripts
 );
 
 
 
 // init build
+// TODO:
+// - change build process flow
+// - on script change), only delete angular.app & run build:script
+// - on theme change, only delete | copy changed file
+// - on 3rd party lib change, only delete | copy changed file
 gulp.task(
-			'build',
-			[
-				'copy:theme',
-				'copy:libs', 
-				'build:scripts',
-				//'deploy:dev',
-			]
+	'build',
+	[
+		'copy:theme',
+		'copy:libs', 
+		'build:scripts',
+	]
 );
 
 
 
 // default 
 gulp.task(
-			'default', 
-			['build'], 
-			build.watch
+	'default', 
+	['build'], 
+	watchDirs
 );
 
 

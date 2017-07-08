@@ -4,7 +4,7 @@ import gulpLoadPlugins 	from 'gulp-load-plugins';
 const $ 				= gulpLoadPlugins();
 
 // load file paths
-import paths 			from '../paths';
+import paths 			from './paths';
 
 
 // TODO: 
@@ -20,7 +20,7 @@ const browserify 	= require("browserify");
 const browserifyInc = require('browserify-incremental');
 const source 		= require('vinyl-source-stream');
 const tsify 		= require("tsify");
-const tscConfig 	= require('../../tsconfig.json');
+const tscConfig 	= require('../tsconfig.json');
 export default function buildScripts () {
 	return  browserify({
 				basedir: '.',
