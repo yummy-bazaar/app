@@ -10,7 +10,7 @@ import { Component } 	from '@angular/core';
 		<feed>
 			Loading Feed from GraphQL backend ...
 		</feed>
-		<product></product>
+		<products></products>
 	`,
 })
 export class AppComponent  { 
