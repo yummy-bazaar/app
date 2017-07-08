@@ -9,12 +9,13 @@ import {
 } 							from 'apollo-client';
 import { ApolloModule } 	from 'apollo-angular';
 
-// Project modules
-import { AppComponent } 	from './app.component';
+// Components
 import { 
-	ProfileComponent,
-	FeedComponent 
-}							from './sandbox';
+	AppComponent 
+} 							from './app.component';
+import {
+	BrandIndexComponent
+}							from './brand'
 import {
 	ProductComponent
 } 							from './product';
@@ -29,23 +30,9 @@ import { Logger }			from './utils/logger.service';
 
 
 
-/*
-
-export interface NetworkInterfaceOptions {
-    uri?: string;
-    opts?: RequestInit;
-}
-
-https://yummy-bazaar-dev.myshopify.com/api/graphql
-X-Shopify-Storefront-Access-Token	1003e582efbf560fb66ffb28ded011f8
-*/
-
-
-
-
-
-
 // init & exportGraphQL client
+// TODO: import GraphQL client from a Service class 
+// - 
 const client = new ApolloClient({
 	networkInterface: createNetworkInterface({
 		uri: 'https://yummy-bazaar-dev.myshopify.com/api/graphql',
@@ -69,8 +56,7 @@ export function provideClient(): ApolloClient {
 	providers:    [ Logger ],
 	declarations: [ 
 		AppComponent,
-		ProfileComponent, 
-		FeedComponent,
+		BrandIndexComponent,
 		ProductComponent,
 	],
 	exports:      [ AppComponent ],
