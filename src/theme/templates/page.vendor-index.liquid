@@ -1,21 +1,30 @@
-{% comment %}
-  Be sure to remove this layout none tag for prod
-{% endcomment %}
-{% layout none %}
-
-
-
 <div class="sixteen columns clearfix collection_nav">
 	<h1 class="collection_title">
 		{{ page.title }}
 	</h1>
 </div>
 
-<div class="sixteen columns page">
-	{{ page.content }}
 
 
-	{% comment %}
+{% if page.content != blank %}
+	<div class="sixteen columns page">
+		<div class="section clearfix">    
+			{{ page.content }}
+		</div>
+	</div>
+{% endif %}
+
+
+
+{% if settings.collection_sidebar %}
+	{% include 'sidebar' %}
+	<div class="twelve columns">
+{% else %}
+	<div class="sixteen columns">
+{% endif %}
+		
+      
+{% comment %}
 
 		{{ vendor | url_for_vendor }}
 		that's the basic patter for fetching vendor data
@@ -28,30 +37,41 @@
 	{% endcomment %}
 
 
-
-	{% assign alphabet = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z' | split: ',' %}
-	{% for letter in alphabet %}
-		<h2>{{ letter | upcase }}</h2>
-		{% for vendor in shop.vendors %}
-			{%- assign prefix = vendor | slice: 0 | downcase %}
-			{% if prefix contains letter%}
-				<ul>
-					<li>
-						<a
-						alt="{{ vendor }}"
-						href="{{ vendor | url_for_vendor }}"
-						>
-						{{ vendor }}
-						</a>
-					</li>
-				</ul>
-			{% endif %}
+	<div
+		id="yb-accordion"     
+	>
+		{% assign alphabet = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z' | split: ',' %}
+		{% for letter in alphabet %}
+			<h2>
+				{{ letter | upcase }}
+			</h2>
+			{% for vendor in shop.vendors %}
+				{%- assign prefix = vendor | slice: 0 | downcase %}
+				{% if prefix contains letter%}
+					<div>
+						<p>
+							<a
+							alt="{{ vendor }}"
+							href="{{ vendor | url_for_vendor }}"
+							>
+							{{ vendor }}
+							</a>
+						</p>
+					</div>
+				{% endif %}
+			{% endfor %}
 		{% endfor %}
-	{% endfor %}
+	</div>
 
-  
+		<br class="clear" />
 </div>
 
+
+
+
+
+
+	
 
 
 
