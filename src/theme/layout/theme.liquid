@@ -208,6 +208,9 @@
 		<!-- end of Hits Analytics code -->
 
 
+{% comment %}
+	ToDo:
+	- enable Angular
 		<!-- begin Angular dependencies -->
 			<!-- polyfill(s) for older browsers -->
 			<script 
@@ -242,6 +245,14 @@
 					);
 			</script>
 		<!-- end Angular dependencies -->
+{% endcomment %}
+
+
+{% comment %}
+		<!-- begin jQuery UI dependencies -->
+			
+		<!-- end jQuery UI dependencies -->
+{% endcomment %}
 
 
 	</head>
@@ -398,7 +409,7 @@
 			<div class="header mm-fixed-top {% unless template contains "index" %}header_bar{% endunless %}">
 				
 
-				<!-- begin angular test -->
+				<!-- begin angular test ->
 				<angular-test></angular-test>
 				<!-- end angular test -->
 
@@ -599,7 +610,7 @@
 			{% endif %}
 
 			</div>
-			<!-- begin Shopify page content -->
+			<!-- end Shopify page content -->
 
 
 
