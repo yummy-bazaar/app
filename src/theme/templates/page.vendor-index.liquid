@@ -1,0 +1,52 @@
+{% comment %}
+  Be sure to remove this layout none tag for prod
+{% endcomment %}
+{% layout none %}
+
+
+
+<div class="sixteen columns clearfix collection_nav">
+  <h1 class="collection_title">
+    {{ page.title }}
+  </h1>
+</div>
+
+<div class="sixteen columns page">
+  {{ page.content }}
+  
+  
+  
+    {% comment %}
+  
+      {{ product_vendor | url_for_vendor }}
+      that's the basic patter for fetching vendor data
+  
+      TODO
+      - add logic to only display vendors for which there is a collection
+    {% endcomment %}
+  
+  
+  
+  {% assign alphabet = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z' | split: ',' %}
+    {% for letter in alphabet %}
+    <h2>{{ letter | upcase }}</h2>
+      {% for product_vendor in shop.vendors %}
+        {%- assign prefix = product_vendor | slice: 0 | downcase %}
+        {% if prefix contains letter%}
+          
+          <ul>
+              <li>
+                <a
+                   alt="{{ product_vendor }}"
+                   href="{{ product_vendor | url_for_vendor }}"
+                   >
+                  {{ product_vendor }}
+                </a>
+              </li>
+          </ul>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+
+  
+</div>
