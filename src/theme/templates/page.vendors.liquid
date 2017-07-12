@@ -1,30 +1,16 @@
-<div class="sixteen columns clearfix collection_nav">
-	<h1 class="collection_title">
-		{{ page.title }}
-	</h1>
+{% include 'sidebar' %}
+<div class="sidebar twelve columns">
+	<h1>{{ page.title }}</h1>
 </div>
 
+	<div class="twelve columns ">
+		<div class="section">
 
-
-{% if page.content != blank %}
-	<div class="sixteen columns page">
-		<div class="section clearfix">    
+          {% if page.content != blank %}
 			{{ page.content }}
-		</div>
-	</div>
-{% endif %}
-
-
-
-{% if settings.collection_sidebar %}
-	{% include 'sidebar' %}
-	<div class="twelve columns">
-{% else %}
-	<div class="sixteen columns">
-{% endif %}
+          {% endif %}
 		
-      
-{% comment %}
+	{% comment %}
 
 		{{ vendor | url_for_vendor }}
 		that's the basic patter for fetching vendor data
@@ -37,31 +23,33 @@
 	{% endcomment %}
 
 
-	<div
-		id="yb-accordion"     
+	<dl
+		class="accordion"     
 	>
 		{% assign alphabet = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z' | split: ',' %}
 		{% for letter in alphabet %}
-			<h2>
-				{{ letter | upcase }}
-			</h2>
+			<dt>
+				<a href="#">
+					<small class="right">&#9660;</small>
+					{{ letter | upcase }}
+				</a>
+			</dt>
 			{% for vendor in shop.vendors %}
 				{%- assign prefix = vendor | slice: 0 | downcase %}
 				{% if prefix contains letter%}
-					<div>
-						<p>
-							<a
-							alt="{{ vendor }}"
-							href="{{ vendor | url_for_vendor }}"
-							>
-							{{ vendor }}
-							</a>
-						</p>
-					</div>
+					<dd>
+						<a
+						alt="{{ vendor }}"
+						href="{{ vendor | url_for_vendor }}"
+						>
+						{{ vendor }}
+						</a>
+					</dd>
 				{% endif %}
 			{% endfor %}
 		{% endfor %}
-	</div>
+	</dl>
+      </div>
 
 		<br class="clear" />
 </div>
