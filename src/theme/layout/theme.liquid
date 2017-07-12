@@ -31,7 +31,14 @@
 		<script 
 			type="text/javascript"
 		>
-			(function e(){var e=document.createElement("script");e.type="text/javascript",e.async=true,e.src="//staticw2.yotpo.com/YzyIn0AEOSmZklSOOeQ5gHfXeQPmjC4Yova7ESEK/widget.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
+			(function e(){
+				var e=document.createElement("script");
+				e.type="text/javascript",
+				e.async=true,
+				e.src="//staticw2.yotpo.com/YzyIn0AEOSmZklSOOeQ5gHfXeQPmjC4Yova7ESEK/widget.js";
+				var t=document.getElementsByTagName("script")[0];
+				t.parentNode.insertBefore(e,t)}
+			)();
 		</script>
 	    
 
@@ -208,6 +215,9 @@
 		<!-- end of Hits Analytics code -->
 
 
+{% comment %}
+	ToDo:
+	- enable Angular
 		<!-- begin Angular dependencies -->
 			<!-- polyfill(s) for older browsers -->
 			<script 
@@ -242,6 +252,8 @@
 					);
 			</script>
 		<!-- end Angular dependencies -->
+{% endcomment %}
+
 
 
 	</head>
@@ -398,9 +410,9 @@
 			<div class="header mm-fixed-top {% unless template contains "index" %}header_bar{% endunless %}">
 				
 
-				<!-- begin angular test -->
+				<!-- begin angular test ->
 				<angular-test></angular-test>
-				<!-- end angular test -->
+				 end angular test -->
 
 
 				<!-- begin pre-nav links -->
@@ -599,7 +611,7 @@
 			{% endif %}
 
 			</div>
-			<!-- begin Shopify page content -->
+			<!-- end Shopify page content -->
 
 
 
