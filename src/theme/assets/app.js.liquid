@@ -3,7 +3,8 @@ $(function() {
   // begin logic for accordion widgets
   // see: https://help.outofthesandbox.com/hc/en-us/articles/115006909687-Accordion-Content-Widget
   var allPanels = $('.accordion > dd').hide();  
-  $('.accordion > dt > a').click(function() {
+  $('.accordion > dt > a').click(function(e) {
+    e.stopPropagation();
     if(!$(this).parent().next().is(":visible")) {
     allPanels.slideUp();
     $('.accordion small.right').html('&#43;');
