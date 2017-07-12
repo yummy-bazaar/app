@@ -1,4 +1,21 @@
 $(function() {
+  
+  // begin logic for accordion widgets
+  // see: https://help.outofthesandbox.com/hc/en-us/articles/115006909687-Accordion-Content-Widget
+  var allPanels = $('.accordion > dd').hide();  
+  $('.accordion > dt > a').click(function() {
+    if(!$(this).parent().next().is(":visible")) {
+    allPanels.slideUp();
+    $('.accordion small.right').html('&#43;');
+     $(this).find('small.right').html('&#45;');
+    $(this).parent().next().slideDown();
+    }
+        return false;
+  });
+
+  // end logic for accordion widgets
+
+
   $(".thumbnail img, .product_slider img, .cart_page_image img").unveil(200);
 
   $('#homepage_slider').flexslider({
@@ -174,19 +191,19 @@ $(function() {
     }
   }
 
-	var tabs = $('ul.tabs');
-	tabs.each(function(i) {
-		var tab = $(this).find('> li > a');
-		tab.click(function(e) {
-			var contentLocation = $(this).attr('href');
-			if(contentLocation.charAt(0)=="#") {
-				e.preventDefault();
-				tab.removeClass('active');
-				$(this).addClass('active');
-				$(contentLocation).show().css({'display': 'block'}).addClass('active').siblings().hide().removeClass('active');
-			}
-		});
-	});
+  var tabs = $('ul.tabs');
+  tabs.each(function(i) {
+    var tab = $(this).find('> li > a');
+    tab.click(function(e) {
+      var contentLocation = $(this).attr('href');
+      if(contentLocation.charAt(0)=="#") {
+        e.preventDefault();
+        tab.removeClass('active');
+        $(this).addClass('active');
+        $(contentLocation).show().css({'display': 'block'}).addClass('active').siblings().hide().removeClass('active');
+      }
+    });
+  });
 
   $('.toggle').click(function() {
     if ($(window).width() <= 767) { 
