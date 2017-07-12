@@ -3,17 +3,24 @@ $(function() {
   // begin logic for accordion widgets
   // see: https://help.outofthesandbox.com/hc/en-us/articles/115006909687-Accordion-Content-Widget
   var allPanels = $('.accordion > dd').hide();  
-  $('.accordion > dt > a').click(function(e) {
+  $('.accordion > a').click(function(e) {
+    
+    // Debug
+    //console.log('clicked ', e.target);
+    
+    // prevent default behavior
     e.stopPropagation();
-    if(!$(this).parent().next().is(":visible")) {
-    allPanels.slideUp();
-    $('.accordion small.right').html('&#43;');
-     $(this).find('small.right').html('&#45;');
-    $(this).parent().next().slideDown();
+    
+    // accordion logic
+  if(!$(this).next().is(":visible")) {
+      allPanels.slideUp();
+      $('.accordion small.right').html('&#43;');
+      $(this).find('small.right').html('&#45;');
+      $(this).next().slideDown();
     }
-        return false;
-  });
 
+    return false;
+  });
   // end logic for accordion widgets
 
 
