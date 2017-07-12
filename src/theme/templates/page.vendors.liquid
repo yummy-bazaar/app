@@ -3,55 +3,70 @@
 	<h1>{{ page.title }}</h1>
 </div>
 
+
+
+{% if page.content != blank %}
 	<div class="twelve columns ">
 		<div class="section">
-
-          {% if page.content != blank %}
 			{{ page.content }}
-          {% endif %}
-		
-	{% comment %}
-
-		{{ vendor | url_for_vendor }}
-		that's the basic patter for fetching vendor data
-
-		TODO
-		- add logic to only display vendors for which there is a collection
-		- add logic to create category for vendors that start with a numeric char
-		- add conditional styling that will split the vendors in 2 columns?
-
-	{% endcomment %}
+		</div>
+	</div>
+{% endif %}
 
 
-	<dl
-		class="accordion"     
-	>
-		{% assign alphabet = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z' | split: ',' %}
-		{% for letter in alphabet %}
-			<dt>
-				<a href="#">
-					<small class="right">&#9660;</small>
-					{{ letter | upcase }}
-				</a>
-			</dt>
-			{% for vendor in shop.vendors %}
-				{%- assign prefix = vendor | slice: 0 | downcase %}
-				{% if prefix contains letter%}
-					<dd>
-						<a
-						alt="{{ vendor }}"
-						href="{{ vendor | url_for_vendor }}"
-						>
-						{{ vendor }}
-						</a>
-					</dd>
-				{% endif %}
+
+<div class="eight columns">
+	<div class="section">
+      <h2>Shop by Brands</h2>
+	</div>
+</div>
+
+
+
+<div class="eight columns offset-by-four">
+	<div class="section">
+		{% comment %}
+
+			{{ vendor | url_for_vendor }}
+			that's the basic patter for fetching vendor data
+
+			TODO
+			- add logic to only display vendors for which there is a collection
+			- add logic to create category for vendors that start with a numeric char
+			- add conditional styling that will split the vendors in 2 columns?
+
+		{% endcomment %}
+
+
+		<dl
+			class="accordion"     
+		>
+			{% assign alphabet = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z' | split: ',' %}
+			{% for letter in alphabet %}
+				<dt>
+					<a href="#">
+						<small class="right">&#43;</small>
+						{{ letter | upcase }}
+					</a>
+				</dt>
+				<dd>
+					{% for vendor in shop.vendors %}
+						{%- assign prefix = vendor | slice: 0 | downcase %}
+						{% if prefix contains letter%}
+							<a
+								alt="{{ vendor }}"
+								href="{{ vendor | url_for_vendor }}"
+							>
+								<p>{{ vendor }}</p>
+							</a>
+						{% endif %}
+					{% endfor %}
+				</dd>
 			{% endfor %}
-		{% endfor %}
-	</dl>
-      </div>
+		</dl>
+	</div>
 
-		<br class="clear" />
+	<br class="clear" />
 </div>
 
 
