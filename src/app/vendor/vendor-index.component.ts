@@ -25,9 +25,9 @@ let slugify 				= require('slugify')
 
 @Component({
 	selector: 'brands',
-	template: require('./brand-index.component.html')
+	template: require('./vendor-index.component.html')
 })
-export class BrandIndexComponent implements OnInit {
+export class VendorIndexComponent implements OnInit {
 	
 
 	// TODO: work out the visibility for these properties
