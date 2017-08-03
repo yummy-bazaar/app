@@ -215,9 +215,7 @@
 		<!-- end of Hits Analytics code -->
 
 
-{% comment %}
-	ToDo:
-	- enable Angular
+
 		<!-- begin Angular dependencies -->
 			<!-- polyfill(s) for older browsers -->
 			<script 
@@ -252,7 +250,6 @@
 					);
 			</script>
 		<!-- end Angular dependencies -->
-{% endcomment %}
 
 
 
@@ -410,9 +407,9 @@
 			<div class="header mm-fixed-top {% unless template contains "index" %}header_bar{% endunless %}">
 				
 
-				<!-- begin angular test ->
-				<angular-test></angular-test>
-				 end angular test -->
+				<!-- begin angular test -->
+				<app-root></app-root>
+				<!-- end angular test -->
 
 
 				<!-- begin pre-nav links -->
