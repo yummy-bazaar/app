@@ -3,20 +3,25 @@ import {
 	OnInit
 }					 		from '@angular/core';
 import { 
-	Product
-}				 			from '../models';
-import { 
 	Apollo,
 	ApolloQueryObservable
 } 							from 'apollo-angular';
 import {
 	CollectionsQuery
 }  							from '../api/queries';
-import { Subject } 			from 'rxjs/Subject';
+import { 
+	Subject 
+} 							from 'rxjs/Subject';
 import { 
 	Logger,
 	startsWithAlpha	
 }							from '../utils';
+import { 
+	Product 
+}							from '../product';
+import { 
+	Vendor 
+}							from '.';
 
 
 
