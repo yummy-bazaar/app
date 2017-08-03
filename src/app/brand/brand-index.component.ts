@@ -25,18 +25,7 @@ let slugify 				= require('slugify')
 
 @Component({
 	selector: 'brands',
-	template: `
-		<ul 
-			*ngFor="let product of data 
-				| async 
-				| select: 'shop' 
-				| select: 'products' 
-				| select: 'edges'
-			"
-		>
-			Product: {{product.node.title}}
-		</ul>
-	`
+	template: require('./brand-index.component.html')
 })
 export class BrandIndexComponent implements OnInit {
 	
