@@ -10,37 +10,16 @@ import {
 	Apollo,
 	ApolloQueryObservable
 } 							from 'apollo-angular';
-import gql 					from 'graphql-tag';
+import {
+	ProductsQuery
+}  							from '../api';
 import { Subject } 			from 'rxjs/Subject';
 import { Logger	}			from '../utils';
 let slugify 				= require('slugify')
 
 
 // We use the gql tag to parse our query string into a query document
-const ProductCatalog = gql`
-query ProductCatalog {
-	shop{
-		products(
-			first: 250
-			#after: "eyJsYXN0X2lkIjo5ODk1MzIxMjgzLCJsYXN0X3ZhbHVlIjoiOTg5NTMyMTI4MyJ9"
-		){
-			edges{
-				node{
-					id
-					title
-					vendor
-					handle
-				}
-				cursor
-			}
-			pageInfo{
-				hasPreviousPage
-				hasNextPage
-			}
-		}
-	}
-}
-`;
+
 
 
 
@@ -108,7 +87,7 @@ export class BrandIndexComponent implements OnInit {
 		this.data = this.client
 			.watchQuery(
 				{ 
-					query: ProductCatalog 
+					query: ProductsQuery 
 				}
 			)
 		;
@@ -117,7 +96,7 @@ export class BrandIndexComponent implements OnInit {
 		this.client
 			.watchQuery<any>(
 				{
-					query: ProductCatalog
+					query: ProductsQuery
 				}
 			)
 			.subscribe(
