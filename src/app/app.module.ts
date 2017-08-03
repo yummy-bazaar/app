@@ -17,7 +17,7 @@ import {
 	VendorIndexComponent
 }							from './vendor'
 import {
-	ProductComponent
+	ProductIndexComponent
 } 							from './product';
 
 // Utilities
@@ -57,7 +57,7 @@ export function provideClient(): ApolloClient {
 	declarations: [ 
 		AppComponent,
 		VendorIndexComponent,
-		ProductComponent,
+		ProductIndexComponent,
 	],
 	exports:      [ AppComponent ],
 	bootstrap:    [ AppComponent ]

@@ -12,19 +12,18 @@ import {
 } 							from 'apollo-angular';
 import {
 	ProductsQuery
-}  							from '../api';
+}  							from '../api/queries';
 import { Subject } 			from 'rxjs/Subject';
 import { Logger	}			from '../utils';
 let slugify 				= require('slugify')
 
 
-// We use the gql tag to parse our query string into a query document
 
 
 
 
 @Component({
-	selector: 'brands',
+	selector: 'vendor-index',
 	template: require('./vendor-index.component.html')
 })
 export class VendorIndexComponent implements OnInit {

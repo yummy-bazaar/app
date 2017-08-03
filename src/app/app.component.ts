@@ -4,7 +4,4 @@ import { Component } 	from '@angular/core';
 	selector: 'app-root',
 	template: require('./app.component.html')
 })
-export class AppComponent  { 
-	backend 	= 'Shopify'; 
-	frontend 	= 'Angular';
-}
+export class AppComponent  {}
