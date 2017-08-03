@@ -5,7 +5,7 @@ import {
 import * as _				from 'lodash';
 import { 
 	Product
-}				 			from '../models';
+}				 			from './';
 import { 
 	Apollo,
 	ApolloQueryObservable
