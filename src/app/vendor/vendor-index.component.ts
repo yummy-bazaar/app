@@ -11,7 +11,7 @@ import {
 	ApolloQueryObservable
 } 							from 'apollo-angular';
 import {
-	ProductsQuery
+	CollectionsQuery
 }  							from '../api/queries';
 import { Subject } 			from 'rxjs/Subject';
 import { Logger	}			from '../utils';
@@ -33,9 +33,10 @@ export class VendorIndexComponent implements OnInit {
 	// - they should all be private , right?
 	// - component should provide public accessors
 	data: 		ApolloQueryObservable<any>;
+	vendors: 	any;
+	numVendors: number;
 	loading: 	boolean;
-	products: 	any[];							// TODO: define product model & update type
-	brands: 	any;							// TODO: define Brand model & update type
+	
 
 
 
@@ -75,7 +76,7 @@ export class VendorIndexComponent implements OnInit {
 		this.data = this.client
 			.watchQuery(
 				{ 
-					query: ProductsQuery 
+					query: CollectionsQuery
 				}
 			)
 		;
@@ -84,45 +85,48 @@ export class VendorIndexComponent implements OnInit {
 		this.client
 			.watchQuery<any>(
 				{
-					query: ProductsQuery
+					query: CollectionsQuery
 				}
 			)
 			.subscribe(
 				({data}) => {
 					this.loading 	= data.loading;
-					this.products 	= data.shop.products.edges;
-					this.brands 	= data.shop.products.edges.reduce(
+					this.vendors 	= data.shop.collections.edges.reduce(
 						// TODO: solve issue with bringing lodash functions to browser
-						(b:any,p:any) => {
-							let v = slugify(p.node.vendor,'-');
-							!!b[v]
-							? b[v].push(p)
-							: b[v] = [p]
+						(C:any,v:any) => {
+							let key = slugify(v.node.handle,'-');
+							!!C[key]
+							? C[key].push(v)
+							: C[key] = [v]
 
-							return b;
+							return C;
 						},
 						{}
 					);
+					this.numVendors = Object.keys(this.vendors).length;
 				},
 				(err) => { 
 					console.log('Fetch error: ' + err.message); 
 				},
+/*				
 				() => { 
-					this.brands = _.groupBy(
-						this.products,
+					this.vendors = _.groupBy(
+						this.vendors,
 						(p) => {
 							slugify(p.node.vendor,'-');
 						}
 					);
 					console.log('Fetch completed!'); 
 				}
+*/
 			)
 		;	
+
 	}
 
 
 
-
+/*
 	public getProducts(){
 		return this.products;
 	}
@@ -149,6 +153,7 @@ export class VendorIndexComponent implements OnInit {
 		return this.brands[vendor];
 	}
 
+*/
 }
 
 

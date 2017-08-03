@@ -1,10 +1,11 @@
+<h1 *ngIf="vendors">Vendor count: {{ numVendors }}</h1>
 <ul 
-	*ngFor="let product of data 
+	*ngFor="let vendor of data 
 		| async 
 		| select: 'shop' 
-		| select: 'products' 
+		| select: 'collections' 
 		| select: 'edges'
 	"
 >
-	Product: {{product.node.title}}
+	Vendor: {{ vendor.node.handle }}
 </ul>
