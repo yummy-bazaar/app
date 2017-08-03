@@ -2,7 +2,6 @@ import {
 	Component,
 	OnInit
 }					 		from '@angular/core';
-import * as _				from 'lodash';
 import { 
 	Product
 }				 			from '../models';
@@ -14,8 +13,12 @@ import {
 	CollectionsQuery
 }  							from '../api/queries';
 import { Subject } 			from 'rxjs/Subject';
-import { Logger	}			from '../utils';
-let slugify 				= require('slugify')
+import { 
+	Logger,
+	startsWithAlpha	
+}							from '../utils';
+
+
 
 
 
@@ -81,10 +84,21 @@ export class VendorIndexComponent implements OnInit {
 					this.vendors = data.shop.collections.edges
 									.reduce(
 										(C:any,v:any) => {
-											let key = v.node.handle[0];
+											
+											let handle = v.node.handle[0];
+
+											// test if vendor key is alphabetic
+											let key;
+											startsWithAlpha(handle)
+											? key = handle[0]
+											: key = 123
+											
+											// add vendor to cache
 											!!C[key]
 											? C[key].push(v)
-											: C[key] = [v]
+											: C[key] = [v]	
+											
+											
 											return C;
 										},
 										{}
@@ -99,10 +113,9 @@ export class VendorIndexComponent implements OnInit {
 					;
 
 
-					// select & render vendors with first key
-					this.numVendors = this.vendorKeys.length;
-					if (this.numVendors > 0) {
-						this.selectedVendors = this.vendorsByKey(this.vendorKeys[0]);
+					// select vendors with first key
+					if (this.vendorKeys.length > 0) {
+						this.selectedVendors = this.getVendorsByKey(this.vendorKeys[0]);
 					}
 				},
 				(err) => { 
@@ -114,38 +127,11 @@ export class VendorIndexComponent implements OnInit {
 	}
 
 
-	public vendorsByKey(key: string): any[] {
+	public getVendorsByKey(key: string): any[] {
 		return this.vendors[key];
 	}
 
-/*
-	public getProducts(){
-		return this.products;
-	}
 
-
-
-
-	// TODO: solve issue with bringing lodash functions to browser
-	public getProduct(id: string) {
-		return 	_.find(this.products,(p)=>p.id);
-	}
-
-
-
-
-	public getBrands(){
-		return this.brands;
-	}
-
-
-
-
-	public getBrand(vendor: string){
-		return this.brands[vendor];
-	}
-
-*/
 }
 
 
