@@ -29,25 +29,15 @@ let slugify 				= require('slugify')
 export class VendorIndexComponent implements OnInit {
 	
 
-	// TODO: work out the visibility for these properties
-	// - they should all be private , right?
-	// - component should provide public accessors
-	data: 		ApolloQueryObservable<any>;
-	vendors: 	any;
-	numVendors: number;
-	loading: 	boolean;
+	loading: 	  	 boolean;
+	vendors: 	  	 any;
+	numVendors:   	 number;
+	vendorKeys:	  	 string[];
+	selectedVendors: any[];
 	
 
-
-
-	// constructor
+	
 	constructor(
-		/*
-		private data: 		ApolloQueryObservable<any>,
-		private logger: 	Logger,
-		private products: 	Array<any>,//Product[],
-		private brands: 	_.Dictionary<Product[]>,
-		*/
 		private client: 	Apollo
 	) { };
 
@@ -73,15 +63,6 @@ export class VendorIndexComponent implements OnInit {
 	// - see: http://dev.apollodata.com/angular2/receiving-updates.html
 	private init() {
 
-		this.data = this.client
-			.watchQuery(
-				{ 
-					query: CollectionsQuery
-				}
-			)
-		;
-
-
 		this.client
 			.watchQuery<any>(
 				{
@@ -90,41 +71,52 @@ export class VendorIndexComponent implements OnInit {
 			)
 			.subscribe(
 				({data}) => {
-					this.loading 	= data.loading;
-					this.vendors 	= data.shop.collections.edges.reduce(
-						// TODO: solve issue with bringing lodash functions to browser
-						(C:any,v:any) => {
-							let key = slugify(v.node.handle,'-');
-							!!C[key]
-							? C[key].push(v)
-							: C[key] = [v]
 
-							return C;
-						},
-						{}
-					);
-					this.numVendors = Object.keys(this.vendors).length;
+					// TODO:
+					// - how should I use this loading property?
+					this.loading = data.loading;
+
+
+					// populate vendor cache
+					this.vendors = data.shop.collections.edges
+									.reduce(
+										(C:any,v:any) => {
+											let key = v.node.handle[0];
+											!!C[key]
+											? C[key].push(v)
+											: C[key] = [v]
+											return C;
+										},
+										{}
+									)
+					;
+
+
+					// generate vendor keys array
+					this.vendorKeys = Object
+										.keys(this.vendors)
+										.sort()
+					;
+
+
+					// select & render vendors with first key
+					this.numVendors = this.vendorKeys.length;
+					if (this.numVendors > 0) {
+						this.selectedVendors = this.vendorsByKey(this.vendorKeys[0]);
+					}
 				},
 				(err) => { 
 					console.log('Fetch error: ' + err.message); 
-				},
-/*				
-				() => { 
-					this.vendors = _.groupBy(
-						this.vendors,
-						(p) => {
-							slugify(p.node.vendor,'-');
-						}
-					);
-					console.log('Fetch completed!'); 
 				}
-*/
 			)
 		;	
 
 	}
 
 
+	public vendorsByKey(key: string): any[] {
+		return this.vendors[key];
+	}
 
 /*
 	public getProducts(){
