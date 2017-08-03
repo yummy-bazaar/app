@@ -21,6 +21,7 @@ const browserifyInc = require('browserify-incremental');
 const source 		= require('vinyl-source-stream');
 const tsify 		= require("tsify");
 const tscConfig 	= require('../tsconfig.json');
+const stringify 	= require('stringify');
 export default function buildScripts () {
 	return  browserify({
 				basedir: '.',
@@ -33,6 +34,14 @@ export default function buildScripts () {
 				packageCache: {}
 			})
 			.plugin(tsify)
+
+			.transform(
+				stringify, {
+					appliesTo: { includeExtensions: ['.html'] },
+					minify: false
+				}
+			)
+
 			.bundle()
 			.pipe(source('angular.app.js'))
 			// TODO: use path module from core & paths.dist.root to make dest generic
