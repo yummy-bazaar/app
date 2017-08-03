@@ -10,56 +10,23 @@ import {
 	Apollo,
 	ApolloQueryObservable
 } 							from 'apollo-angular';
-import gql 					from 'graphql-tag';
+import {
+	ProductsQuery
+}  							from '../api/queries';
 import { Subject } 			from 'rxjs/Subject';
 import { Logger	}			from '../utils';
 let slugify 				= require('slugify')
 
 
-// We use the gql tag to parse our query string into a query document
-const ProductCatalog = gql`
-query ProductCatalog {
-	shop{
-		products(
-			first: 250
-			#after: "eyJsYXN0X2lkIjo5ODk1MzIxMjgzLCJsYXN0X3ZhbHVlIjoiOTg5NTMyMTI4MyJ9"
-		){
-			edges{
-				node{
-					id
-					title
-					vendor
-					handle
-				}
-				cursor
-			}
-			pageInfo{
-				hasPreviousPage
-				hasNextPage
-			}
-		}
-	}
-}
-`;
+
 
 
 
 @Component({
-	selector: 'products',
-	template: `
-		<ul 
-			*ngFor="let product of data 
-				| async 
-				| select: 'shop' 
-				| select: 'products' 
-				| select: 'edges'
-			"
-		>
-			Product: {{product.node.title}}
-		</ul>
-	`
+	selector: 'product-index',
+	template: require('./product-index.component.html')
 })
-export class ProductComponent implements OnInit {
+export class ProductIndexComponent implements OnInit {
 	
 
 	// TODO: work out the visibility for these properties
@@ -94,17 +61,21 @@ export class ProductComponent implements OnInit {
 	// - Use RxJS so I only have to query the backend once
 	// - will this give me the progressive SPA ux?
 	// - see: http://dev.apollodata.com/angular2/queries.html#rxjs
+	// - see: http://dev.apollodata.com/angular2/typescript.html
 	// TODO:
-	// - implement pagination | infinite scroll to reduce round-trip time
+	// - impl pagination | infinite scroll to reduce round-trip time
 	// - this is prolly not as useful in the index view cause I need entire brand catalog
 	// - this will be useful in the brand view
 	// - see: http://dev.apollodata.com/angular2/pagination.html
+	// TODO:
+	// - impl logic to update client side cache whenever catalog is updated on backend
+	// - see: http://dev.apollodata.com/angular2/receiving-updates.html
 	private init() {
 
 		this.data = this.client
 			.watchQuery(
 				{ 
-					query: ProductCatalog 
+					query: ProductsQuery 
 				}
 			)
 		;
@@ -113,7 +84,7 @@ export class ProductComponent implements OnInit {
 		this.client
 			.watchQuery<any>(
 				{
-					query: ProductCatalog
+					query: ProductsQuery
 				}
 			)
 			.subscribe(

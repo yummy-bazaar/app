@@ -1,0 +1,30 @@
+<!-- header -->
+	<h1 
+		*ngIf="vendors"
+	>
+		Vendor Index
+	</h1>
+<!-- end header -->
+
+
+<!-- selection widget -->
+	<ul>
+		<li
+			*ngFor="let key of vendorKeys"
+		>
+			{{ key }}
+		</li>
+	</ul>
+<!-- selection widget -->
+
+
+
+<!-- index for curVendorKey -->
+	<ul>
+		<li 
+			*ngFor="let vendor of selectedVendors"
+		>
+			Vendor: {{ vendor.node.handle }}
+		</li>
+	</ul>
+<!-- end index for curVendorKey -->

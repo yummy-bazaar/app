@@ -69,6 +69,7 @@
     "pug-plugin-ng": "0.0.2",
     "rimraf": "^2.6.1",
     "source": "0.0.3",
+    "stringify": "^5.1.0",
     "tsify": "^3.0.1",
     "tslint": "^5.5.0",
     "typescript": "^2.4.1",
@@ -106,7 +107,6 @@
     "rxjs": "^5.4.2",
     "shopify-buy": "^1.0.0-alpha.9",
     "slugify": "^1.1.0",
-    "stringify": "^5.1.0",
     "systemjs": "^0.19.40",
     "zone.js": "^0.8.12"
   }

@@ -14,10 +14,10 @@ import {
 	AppComponent 
 } 							from './app.component';
 import {
-	BrandIndexComponent
-}							from './brand'
+	VendorIndexComponent
+}							from './vendor'
 import {
-	ProductComponent
+	ProductIndexComponent
 } 							from './product';
 
 // Utilities
@@ -56,8 +56,8 @@ export function provideClient(): ApolloClient {
 	providers:    [ Logger ],
 	declarations: [ 
 		AppComponent,
-		BrandIndexComponent,
-		ProductComponent,
+		VendorIndexComponent,
+		ProductIndexComponent,
 	],
 	exports:      [ AppComponent ],
 	bootstrap:    [ AppComponent ]
