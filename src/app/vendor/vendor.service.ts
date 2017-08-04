@@ -13,12 +13,14 @@
 // - see: http://dev.apollodata.com/angular2/receiving-updates.html
 
 import { 
-	Injectable
+	Injectable,
+	OnInit, 
+	OnDestroy
 } 							from '@angular/core';
 import { 
-	Apollo,
+	Angular2Apollo,
 	ApolloQueryObservable
-} 							from 'apollo-angular';
+} 							from 'angular2-apollo';
 import {
 	CollectionsQuery
 }  							from '../api/queries';
@@ -66,7 +68,7 @@ export class VendorService {
 
 	
 	constructor(
-		private client: Apollo,
+		private client: Angular2Apollo,
 		private logger: LoggerService
 	) { 
 		this.loading = true;

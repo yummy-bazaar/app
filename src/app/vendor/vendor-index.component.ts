@@ -1,10 +1,21 @@
 import { 
 	Component,
-	OnInit
+	OnInit,
+	OnDestroy
 }					 		from '@angular/core';
-import { 
-	Subject 
+import {
+	Subject
 } 							from 'rxjs/Subject';
+import {
+	Subscription
+}							from 'rxjs/Subscription';
+import { 
+	Apollo,
+	ApolloQueryObservable
+} 							from 'apollo-angular';
+import {
+	CollectionsQuery
+}  							from '../api/queries';
 import { 
 	LoggerService,
 	startsWithAlpha	
@@ -12,9 +23,6 @@ import {
 import { 
 	Product 
 }							from '../product';
-import { 
-	VendorService 
-}							from './vendor.service';
 
 
 
@@ -26,9 +34,8 @@ import {
 @Component({
 	selector: 	'vendor-index',
 	template: 	require('./vendor-index.component.html'),
-	providers: 	[ VendorService ]
 })
-export class VendorIndexComponent implements OnInit {
+export class VendorIndexComponent implements OnInit, OnDestroy {
 	
 
 	loading: 	  	 boolean;
@@ -36,18 +43,36 @@ export class VendorIndexComponent implements OnInit {
 	numVendors:   	 number;
 	vendorKeys:	  	 string[];
 	selectedVendors: any[];
+
+	// public subscriptions
+	vendorSub: 		 Subscription;
+
+	// private pagination properties
+	private collectionStream: 	ApolloQueryObservable<any>;
+	private hasNextPage: 	 	boolean;
+	private cursor: 		 	string;
 	
 
 	
 	constructor(
-		private service: VendorService
-	) { };
+		private client: Apollo,
+		private logger: LoggerService
+	) { 
+		this.loading = true;
+		this.vendors = {};
+		this.hasNextPage = true;
+		this.cursor = null;
+	};
 
 
 
 	ngOnInit() {
-		this.service.init();
 		this.init();
+	}
+
+
+	ngOnDestroy() {
+		this.vendorSub.unsubscribe();
 	}
 
 
@@ -58,12 +83,121 @@ export class VendorIndexComponent implements OnInit {
 	// - can i use an async/await pattern here?
 	private init() {
 
-		this.vendors 	= this.service.fetchAllVendors();
-		this.numVendors = this.service.numVendors;
-		this.vendorKeys = this.service.vendorKeys;
+		// Debug
+		this.logger.log('Starting VendorIndex.init()');
+
+
+		this.collectionStream = this.client
+			.watchQuery<any>(
+				{
+					query: CollectionsQuery,
+					variables: {
+						after: this.cursor
+					}
+				}
+			)
+		;
+
+
+
+		this.vendorSub = this.collectionStream.subscribe(
+			({data, loading}) => {
+
+				// Debug
+				this.logger.log('Starting to consume payload from API in VendorIndex.init()');
+
+
+				// TODO:
+				// - how should I use this loading property?
+				this.loading = loading;
+
+
+				// populate vendor cache
+				this.vendors = this.processNewVendors(data.shop.collections.edges);
+
+
+				// generate vendor keys array
+				this.vendorKeys = Object.keys(this.vendors).sort();
+
+
+				// select vendors with first key
+				if (this.vendorKeys.length > 0) {
+					this.selectedVendors = this.fetchVendorsByKey(this.vendorKeys[0]);
+				}
+
+
+				// config pagination properties
+				this.hasNextPage = data.shop.collections.pageInfo.hasNextPage;
+				this.cursor = data.shop.collections.edges.slice(-1)[0].cursor;
+
+
+				// Debug
+				this.logger.log('Finished consuming payload from API in VendorIndex.init()');
+			},
+			(err) => { 
+				this.logger.error('Fetch error: ' + err.message); 
+			}
+		);	
+
+
+		// Debug
+		this.logger.log('Completed VendorIndex.init()');
 
 	}
 
+
+
+	// TODO:
+	// x test this manually
+	// - impl unit tests
+	private processNewVendors(newVendors: any[]): void {
+
+		// Debug
+		this.logger.log('Starting VendorIndex.processNewVendors()');
+
+		let res = null;
+		if (newVendors) {
+			res = newVendors
+						.reduce(
+							(C:any,v:any) => {
+								
+								let handle = v.node.handle[0];
+
+								// test if vendor key is alphabetic
+								let key;
+								startsWithAlpha(handle)
+								? key = handle[0]
+								: key = 123
+								
+								// add vendor to cache
+								!!C[key]
+								? C[key].push(v)
+								: C[key] = [v]	
+								
+								
+								return C;
+							},
+							this.vendors
+						)
+			;
+		}
+
+
+		// Debug
+		this.logger.log(`Processed ${newVendors.length} new vendors`);
+		this.logger.log('Completed VendorIndex.processNewVendors()');
+
+		return res;
+	}
+
+
+
+	// TODO:
+	// - test this manually
+	// - impl unit tests
+	public fetchVendorsByKey(key: string): any[] {
+		return this.vendors[key];
+	}
 
 
 
