@@ -14,14 +14,16 @@ import {
 	AppComponent 
 } 							from './app.component';
 import {
-	VendorIndexComponent
+	VendorIndexComponent,
 }							from './vendor'
 import {
 	ProductIndexComponent
 } 							from './product';
 
 // Utilities
-import { Logger }			from './utils/logger.service';
+import { 
+	LoggerService 
+}							from './utils';
 
 
 
@@ -53,7 +55,9 @@ export function provideClient(): ApolloClient {
 		BrowserModule,
 		ApolloModule.forRoot(provideClient),
 	],
-	providers:    [ Logger ],
+	providers:    [ 
+		LoggerService,
+	],
 	declarations: [ 
 		AppComponent,
 		VendorIndexComponent,
