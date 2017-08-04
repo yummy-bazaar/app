@@ -18,6 +18,11 @@ query Collections {
             altText
           }
         }
+        cursor
+      }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
       }
     }
   }

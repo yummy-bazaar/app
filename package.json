@@ -6,10 +6,13 @@
   "scripts": {
     "build": "./node_modules/.bin/gulp build",
     "build:watch": "./node_modules/.bin/gulp",
-    "serve": "./node_modules/.bin/lite-server -c=bs-config.json",
     "deploy:dev": "./node_modules/.bin/gulp deploy:dev",
     "deploy:prod": "./node_modules/.bin/gulp deploy:prod",
-    "fetch:schema": "./node_modules/.bin/get-graphql-schema"
+    "fetch:schema": "./node_modules/.bin/get-graphql-schema",
+    "serve": "./node_modules/.bin/lite-server -c=bs-config.json",
+    "test": "karma start ./karma.conf.js",
+    "test:headless": "karma start ./karma.conf.js --browsers PhantomJS --autoWatch=true --singleRun=false",
+    "test:single": "karma start ./karma.conf.js --browsers PhantomJS"
   },
   "repository": {
     "type": "git",

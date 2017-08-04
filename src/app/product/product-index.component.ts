@@ -5,7 +5,7 @@ import {
 import * as _				from 'lodash';
 import { 
 	Product
-}				 			from '../models';
+}				 			from './';
 import { 
 	Apollo,
 	ApolloQueryObservable
@@ -14,7 +14,7 @@ import {
 	ProductsQuery
 }  							from '../api/queries';
 import { Subject } 			from 'rxjs/Subject';
-import { Logger	}			from '../utils';
+import { LoggerService	}			from '../utils';
 let slugify 				= require('slugify')
 
 
