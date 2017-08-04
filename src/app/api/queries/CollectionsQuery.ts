@@ -12,7 +12,7 @@ query Collections {
           id
           handle
           descriptionHtml
-      		image {
+          image {
             id
             src
             altText
