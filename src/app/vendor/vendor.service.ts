@@ -38,14 +38,16 @@ import {
 
 @Injectable()
 export class VendorService {
+
+	// public properties
 	loading: 	  	 boolean;
 	vendors: 	  	 any;
 	numVendors:   	 number;
 	vendorKeys:	  	 string[];
 	selectedVendors: any[];
 
-	// pagination utils
-	private collecStream: 	 any;
+	// private pagination properties
+	private collectionStream: 	 any;
 	private hasNextPage: 	 boolean;
 	private cursor: 		 string;
 	
@@ -63,14 +65,15 @@ export class VendorService {
 
 
 	// TODO:
-	// - test this
+	// x test this manually
+	// - impl unit tests
 	public init() {
 
 		// Debug
 		this.logger.log('Starting VendorService.init()');
 
 
-		this.collecStream = this.client
+		this.collectionStream = this.client
 			.watchQuery<any>(
 				{
 					query: CollectionsQuery
@@ -125,7 +128,8 @@ export class VendorService {
 
 
 	// TODO:
-	// - test this
+	// x test this manually
+	// - impl unit tests
 	private processNewVendors(newVendors: any[]): void {
 
 		// Debug
@@ -169,13 +173,16 @@ export class VendorService {
 
 	// TODO:
 	// - implement this
+	//		+ can i use an async/await pattern here?
+	// - test this manually
+	// - impl unit tests
 	public fetchAllVendors(): any[]{
 
 		// Debug
 		this.logger.log('Starting VendorService.fetchAllVendors()');
 		
 		//while(this.hasNextPage){
-		//	this.collecStream.fetchMore
+		//	this.collectionStream.fetchMore
 		//}
 
 		// Debug
@@ -187,7 +194,8 @@ export class VendorService {
 
 
 	// TODO:
-	// - test this
+	// - test this manually
+	// - impl unit tests
 	public fetchVendorsByKey(key: string): any[] {
 		return this.vendors[key];
 	}

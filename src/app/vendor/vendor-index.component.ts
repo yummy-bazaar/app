@@ -52,6 +52,10 @@ export class VendorIndexComponent implements OnInit {
 
 
 
+	// ToDo:
+	// - use a Stream based design pattern to initialize these members
+	// - find a way to subscribe to the WatchQuery method from the Apllo client
+	// - can i use an async/await pattern here?
 	private init() {
 
 		this.vendors 	= this.service.fetchAllVendors();
