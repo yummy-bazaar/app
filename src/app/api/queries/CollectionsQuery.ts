@@ -12,12 +12,17 @@ query Collections {
           id
           handle
           descriptionHtml
-          image {
+      		image {
             id
             src
             altText
           }
         }
+        cursor
+      }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
       }
     }
   }
