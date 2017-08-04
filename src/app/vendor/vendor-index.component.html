@@ -1,5 +1,13 @@
 <div
-	*ngIf="vendors"
+	*ngIf="loading"
+>
+	<!-- header -->
+		<h1>
+			Loading
+		</h1>
+</div>
+<div
+	*ngIf="!loading"
 >
 	<!-- header -->
 		<h1>

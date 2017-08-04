@@ -32,6 +32,12 @@ import {
 import { 
 	Product 
 }							from '../product';
+import {
+	Subject
+} 							from 'rxjs/Subject';
+import {
+	Subscription
+}							from 'rxjs/Subscription';
 
 
 
@@ -46,10 +52,16 @@ export class VendorService {
 	vendorKeys:	  	 string[];
 	selectedVendors: any[];
 
+	// public streams
+	
+
+	// public subscriptions
+	vendorSub: 		 Subscription;
+
 	// private pagination properties
-	private collectionStream: 	 any;
-	private hasNextPage: 	 boolean;
-	private cursor: 		 string;
+	private collectionStream: 	ApolloQueryObservable<any>;
+	private hasNextPage: 	 	boolean;
+	private cursor: 		 	string;
 	
 
 	
@@ -57,8 +69,10 @@ export class VendorService {
 		private client: Apollo,
 		private logger: LoggerService
 	) { 
+		this.loading = true;
 		this.vendors = {};
 		this.hasNextPage = true;
+		this.cursor = null;
 	};
 
 
@@ -76,48 +90,54 @@ export class VendorService {
 		this.collectionStream = this.client
 			.watchQuery<any>(
 				{
-					query: CollectionsQuery
-				}
-			)
-			.subscribe(
-				({data}) => {
-
-					// Debug
-					this.logger.log('Starting to consume payload from API in VendorService.init()');
-
-
-					// TODO:
-					// - how should I use this loading property?
-					this.loading = data.loading;
-
-
-					// populate vendor cache
-					this.vendors = this.processNewVendors(data.shop.collections.edges);
-
-
-					// generate vendor keys array
-					this.vendorKeys = Object.keys(this.vendors).sort();
-
-
-					// select vendors with first key
-					if (this.vendorKeys.length > 0) {
-						this.selectedVendors = this.fetchVendorsByKey(this.vendorKeys[0]);
+					query: CollectionsQuery,
+					variables: {
+						after: this.cursor
 					}
-
-
-					// config pagination properties
-					this.hasNextPage = data.shop.collections.pageInfo.hasNextPage;
-					this.cursor = data.shop.collections.edges.slice(-1)[0].cursor;
-
-
-					// Debug
-					this.logger.log('Finished consuming payload from API in VendorService.init()');
-				},
-				(err) => { 
-					this.logger.error('Fetch error: ' + err.message); 
 				}
 			)
-		;	
+		;
+
+
+
+		this.vendorSub = this.collectionStream.subscribe(
+			({data, loading}) => {
+
+				// Debug
+				this.logger.log('Starting to consume payload from API in VendorService.init()');
+
+
+				// TODO:
+				// - how should I use this loading property?
+				this.loading = loading;
+
+
+				// populate vendor cache
+				this.vendors = this.processNewVendors(data.shop.collections.edges);
+
+
+				// generate vendor keys array
+				this.vendorKeys = Object.keys(this.vendors).sort();
+
+
+				// select vendors with first key
+				if (this.vendorKeys.length > 0) {
+					this.selectedVendors = this.fetchVendorsByKey(this.vendorKeys[0]);
+				}
+
+
+				// config pagination properties
+				this.hasNextPage = data.shop.collections.pageInfo.hasNextPage;
+				this.cursor = data.shop.collections.edges.slice(-1)[0].cursor;
+
+
+				// Debug
+				this.logger.log('Finished consuming payload from API in VendorService.init()');
+			},
+			(err) => { 
+				this.logger.error('Fetch error: ' + err.message); 
+			}
+		);	
 
 
 		// Debug

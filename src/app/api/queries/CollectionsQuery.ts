@@ -2,10 +2,11 @@ import gql   from 'graphql-tag';
 
 
 export const CollectionsQuery = gql`
-query Collections {
+query Collections($after: String) {
   shop {
     collections (
       first: 250
+      after: $after
     ) {
       edges {
         node {
