@@ -38,14 +38,14 @@ import {
 export class VendorIndexComponent implements OnInit, OnDestroy {
 	
 
-	loading: 	  	 boolean;
-	vendors: 	  	 any;
-	numVendors:   	 number;
-	vendorKeys:	  	 string[];
-	selectedVendors: any[];
+	loading: 	  				boolean;
+	vendors: 	  				any;
+	numVendors:   				number;
+	vendorKeys:	  				string[];
+	selectedVendors:			any[];
 
-	// public subscriptions
-	vendorSub: 		 Subscription;
+	// used to destroy subscriptions
+	private vendorSub:			Subscription;
 
 	// private pagination properties
 	private collectionStream: 	ApolloQueryObservable<any>;
@@ -143,6 +143,92 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		// Debug
 		this.logger.log('Completed VendorIndex.init()');
 
+	}
+
+
+
+	// TODO:
+	// - impl this
+	// - test this manually
+	// - impl unit tests
+	fetchMore() {
+
+		// Debug
+		this.logger.log('Starting VendorIndex.fetchMore()');
+
+
+		// test if there are more data to be fetched
+		if (!this.hasNextPage){
+			this.logger.warn('There is no more data to be fetched');
+			return;
+		}
+
+
+		// fetch more data
+		this.collectionStream.fetchMore(
+			{
+				variables: {
+					after: this.cursor
+				},
+				updateQuery: (prev: any, { fetchMoreResult } :any) => 
+				{
+
+					// Debug
+					this.logger.log('Starting to consume payload from API in VendorIndex.fetchMore()');
+
+
+					// verify that we got new data
+					if (!fetchMoreResult.shop)  {
+						this.logger.warn('did not receive new data in VendorIndex.fetchMore()');
+						this.logger.warn(`new result object is ${JSON.stringify(fetchMoreResult,null,4)}`);
+						return prev; 
+					}
+
+
+					// get new vendors collection
+					let newVendors = fetchMoreResult.shop.collections.edges;
+
+
+					// add new vendors to cache
+					let prevVendors = this.vendors;
+					this.vendors = Object.assign(
+						{},
+						prevVendors,
+						this.processNewVendors(newVendors)
+					);
+
+
+					// reset vendor keys
+					this.vendorKeys = Object.keys(this.vendors).sort();
+
+
+					// config pagination properties
+					this.hasNextPage = fetchMoreResult.shop.collections.pageInfo.hasNextPage;
+					this.cursor = fetchMoreResult.shop.collections.edges.slice(-1)[0].cursor;
+
+
+					// Debug
+					this.logger.log('Finished consuming payload from API in VendorIndex.fetchMore()');
+
+
+					// register new results with Apollo client
+					return  Object.assign(
+								{}, 
+								prev, 
+								{
+									feed: [
+										...prev.shop.collections.edges, 
+										...newVendors
+									],
+								}
+							)
+					;
+				},
+			}
+		);
+
+		// Debug
+		this.logger.log('Completed VendorIndex.fetchMore()');
 	}
 
 
