@@ -39,7 +39,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 	
 
 	loading: 	  				boolean;
-	vendors: 	  				any;
+	vendors: 	  				Object;
 	numVendors:   				number;
 	vendorKeys:	  				string[];
 	selectedVendors:			any[];
@@ -276,14 +276,14 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 	// TODO:
 	// x test this manually
 	// - impl unit tests
-	private processNewVendors(newVendors: any[]): void {
+	private processNewVendors(newVendors: any[]): any {
 
 		// Debug
 		this.logger.log('Starting VendorIndex.processNewVendors()');
 
-		let res = null;
+		let newVendorCache = null;
 		if (newVendors) {
-			res = newVendors
+			newVendorCache = newVendors
 						.reduce(
 							(C:any,v:any) => {
 								
@@ -297,8 +297,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 								
 								// add vendor to cache
 								!!C[key]
-								? C[key].push(v)
-								: C[key] = [v]	
+								? C[key].add(v)
+								: C[key] = (new Set).add(v)	
 								
 								
 								return C;
@@ -313,7 +313,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		this.logger.log(`Processed ${newVendors.length} new vendors`);
 		this.logger.log('Completed VendorIndex.processNewVendors()');
 
-		return res;
+		return newVendorCache;
 	}
 
 
