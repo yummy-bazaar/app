@@ -1,13 +1,19 @@
 // NG core modules
-import { BrowserModule } 	from '@angular/platform-browser';
-import { NgModule } 		from '@angular/core';
+import { 
+	BrowserModule 
+} 							from '@angular/platform-browser';
+import { 
+	NgModule 
+} 							from '@angular/core';
 
 // 3rd party modules
 import { 
 	ApolloClient,
 	createNetworkInterface
 } 							from 'apollo-client';
-import { ApolloModule } 	from 'apollo-angular';
+import { 
+	ApolloModule 
+} 							from 'apollo-angular';
 
 // Components
 import { 
@@ -55,20 +61,24 @@ export function provideClient(): ApolloClient {
 
 @NgModule({
 	imports:      [ 
-		BrowserModule,
 		ApolloModule.forRoot(provideClient),
+		BrowserModule,
 	],
 	providers:    [ 
 		LoggerService,
-		VendorService
+		VendorService,
 	],
 	declarations: [ 
 		AppComponent,
-		VendorIndexComponent,
 		ProductIndexComponent,
+		VendorIndexComponent,
 	],
-	exports:      [ AppComponent ],
-	bootstrap:    [ AppComponent ]
+	exports:      [ 
+		AppComponent,
+	],
+	bootstrap:    [ 
+		AppComponent,
+	]
 })
 export class AppModule { }
 
