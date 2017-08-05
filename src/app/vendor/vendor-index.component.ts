@@ -4,8 +4,8 @@ import {
 	OnDestroy
 }					 		from '@angular/core';
 import {
-	Subject
-} 							from 'rxjs/Subject';
+	Observable
+} 							from 'rxjs';
 import {
 	Subscription
 }							from 'rxjs/Subscription';
@@ -49,6 +49,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	// private pagination properties
 	private collectionStream: 	ApolloQueryObservable<any>;
+	private fetchMoreStream: 	Observable<boolean>;
+	private fetchMoreSub: 		Subscription;
 	private hasNextPage: 	 	boolean;
 	private cursor: 		 	string;
 	
@@ -60,7 +62,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 	) { 
 		this.loading = true;
 		this.vendors = {};
-		this.hasNextPage = true;
+		this.hasNextPage = false;
 		this.cursor = null;
 	};
 
@@ -73,6 +75,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.vendorSub.unsubscribe();
+		this.fetchMoreSub.unsubscribe();
 	}
 
 
@@ -87,6 +90,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		this.logger.log('Starting VendorIndex.init()');
 
 
+		// initialize collection stream
 		this.collectionStream = this.client
 			.watchQuery<any>(
 				{
@@ -99,7 +103,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		;
 
 
-
+		// parse vendors from collection stream
 		this.vendorSub = this.collectionStream.subscribe(
 			({data, loading}) => {
 
@@ -140,6 +144,22 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		);	
 
 
+		// init fetchMoreStream
+		this.fetchMoreStream = Observable
+			.interval(100)				// emmit every 100ms
+			.map(()=>this.hasNextPage)	// poll state hasNextPage
+			.distinctUntilChanged()		// only react when it is change
+			.filter(flag=>!!flag)		// only emit this.hasNextPage goes from false to true
+		;
+
+
+		// innitiate fetchmore once when this.hasNextPage goes from false to true
+		this.fetchMoreSub = this.fetchMoreStream.subscribe(
+			() => this.fetchMore()
+		);
+
+
+
 		// Debug
 		this.logger.log('Completed VendorIndex.init()');
 
@@ -149,6 +169,9 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	// TODO:
 	// - impl this
+	//		+ make sure that vendors are not added twice.
+	//		+ I think I need to use the cursor based approach instead
+	//		+ see: http://dev.apollodata.com/angular2/pagination.html#cursor-pages
 	// - test this manually
 	// - impl unit tests
 	fetchMore() {
@@ -157,7 +180,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		this.logger.log('Starting VendorIndex.fetchMore()');
 
 
-		// test if there are more data to be fetched
+		// halt if there is no more data to be fetched
 		if (!this.hasNextPage){
 			this.logger.warn('There is no more data to be fetched');
 			return;
@@ -175,6 +198,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 					// Debug
 					this.logger.log('Starting to consume payload from API in VendorIndex.fetchMore()');
+					//this.logger.log(`prev is: ${JSON.stringify(prev,null,4)}`);
+					//this.logger.log(`fetchMoreResult is: ${JSON.stringify(fetchMoreResult,null,4)}`);
 
 
 					// verify that we got new data
@@ -185,8 +210,13 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					}
 
 
-					// get new vendors collection
+					// temporarily assume there's no more data to fetch
+					this.hasNextPage = false;
+
+
+					// destructure new results
 					let newVendors = fetchMoreResult.shop.collections.edges;
+					let newPageInfo = fetchMoreResult.shop.collections.pageInfo;
 
 
 					// add new vendors to cache
@@ -212,17 +242,27 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 					// register new results with Apollo client
-					return  Object.assign(
+					let res = Object.assign(
 								{}, 
 								prev, 
 								{
-									feed: [
-										...prev.shop.collections.edges, 
-										...newVendors
-									],
+									shop: {
+										collections: {
+											edges: [
+												...prev.shop.collections.edges, 
+												...newVendors,
+											],
+											pageInfo: newPageInfo,
+											__typename: "CollectionConnection"
+										},
+									},
+									__typename: "Shop"
 								}
 							)
 					;
+					// Debug
+					//this.logger.log(`res is: ${JSON.stringify(res,null,4)}`);
+					return res;
 				},
 			}
 		);
