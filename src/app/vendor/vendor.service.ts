@@ -13,7 +13,6 @@
 // - see: http://dev.apollodata.com/angular2/receiving-updates.html
 
 import { 
-	Component,
 	Injectable,
 	OnInit,
 	OnDestroy
@@ -45,10 +44,16 @@ import {
 @Injectable()
 export class VendorService implements OnInit, OnDestroy {
 
-	loading: 	  				boolean;
-	vendors: 	  				Object;
-	vendorKeys:	  				string[];
-	selectedVendors:			Set<any>;
+	private loading: 	  		boolean;
+	private vendorsCache: 	  	Object;
+	vendorsCacheStream: 		Observable<any>;
+	vendorsCacheSub: 			Subscription;
+	private vendorKeys:	  		string[];
+	vendorKeysStream: 			Observable<any>;
+	vendorKeysSub: 				Subscription;
+	private selectedVendors:	Set<any>;
+	selectedVendorsStream: 		Observable<any>;
+	selectedVendorsSub: 		Subscription;
 	private collectionStream: 	ApolloQueryObservable<any>;
 	private collectionSub:		Subscription;
 	private fetchMoreStream: 	Observable<boolean>;
@@ -62,10 +67,10 @@ export class VendorService implements OnInit, OnDestroy {
 		private client: Apollo,
 		private logger: LoggerService
 	) { 
-		this.loading 	 = true;
-		this.vendors 	 = {};
-		this.hasNextPage = false;
-		this.cursor 	 = null;
+		this.loading 	 	= true;
+		this.vendorsCache 	= {};
+		this.hasNextPage 	= false;
+		this.cursor 	 	= null;
 	};
 
 
@@ -76,8 +81,7 @@ export class VendorService implements OnInit, OnDestroy {
 
 
 	ngOnDestroy() {
-		this.collectionSub.unsubscribe();
-		this.fetchMoreSub.unsubscribe();
+		this.destroy();
 	}
 
 
@@ -86,10 +90,10 @@ export class VendorService implements OnInit, OnDestroy {
 	// x impl this
 	// x test this manually
 	// - impl unit tests
-	private init() {
+	init() {
 
 		// Debug
-		this.logger.log('Starting VendorIndex.init()');
+		this.logger.log('Starting VendorService.init()');
 
 
 		// initialize collection stream
@@ -110,7 +114,7 @@ export class VendorService implements OnInit, OnDestroy {
 			({data, loading}) => {
 
 				// Debug
-				this.logger.log('Starting to consume payload from API in VendorIndex.init()');
+				this.logger.log('Starting to consume payload from API in VendorService.init()');
 
 
 				// TODO:
@@ -119,11 +123,11 @@ export class VendorService implements OnInit, OnDestroy {
 
 
 				// populate vendor cache
-				this.vendors = this.processNewVendors(data.shop.collections.edges);
+				this.vendorsCache = this.processNewVendors(data.shop.collections.edges);
 
 
 				// generate vendor keys array
-				this.vendorKeys = Object.keys(this.vendors).sort();
+				this.vendorKeys = Object.keys(this.vendorsCache).sort();
 
 
 				// select vendors with first key
@@ -138,7 +142,7 @@ export class VendorService implements OnInit, OnDestroy {
 
 
 				// Debug
-				this.logger.log('Finished consuming payload from API in VendorIndex.init()');
+				this.logger.log('Finished consuming payload from API in VendorService.init()');
 			},
 			(err) => { 
 				this.logger.error('Fetch error: ' + err.message); 
@@ -146,15 +150,53 @@ export class VendorService implements OnInit, OnDestroy {
 		);	
 
 
+
+		// init vendorsCacheStream
+		this.vendorsCacheStream = Observable
+			.interval(100)				// run every 100ms
+			.map(()=>this.vendorsCache)	// poll vendorsCache
+			.distinctUntilChanged()		// only react when it is change
+		;
+		// trigger this.vendorsCache() once when this.vendorsCache goes from false to true
+		this.vendorsCacheSub = this.vendorsCacheStream.subscribe(
+			() => this.logger.log(`Updated vendorsCache`)
+		);
+
+
+
+		// init vendorKeysStream
+		this.vendorKeysStream = Observable
+			.interval(100)					// run every 100ms
+			.map(()=>this.vendorKeys)		// poll vendorKeys
+			.distinctUntilChanged()			// only react when it is change
+		;
+		// trigger this.vendorKeys() once when this.vendorKeys goes from false to true
+		this.vendorKeysSub = this.vendorKeysStream.subscribe(
+			() => this.logger.log(`Updated vendorKeys`)
+		);
+
+
+
+		// init selectedVendorsStream
+		this.selectedVendorsStream = Observable
+			.interval(100)					// run every 100ms
+			.map(()=>this.selectedVendors)	// poll selectedVendors
+			.distinctUntilChanged()			// only react when it is change
+		;
+		// trigger this.selectedVendors() once when this.selectedVendors goes from false to true
+		this.selectedVendorsSub = this.selectedVendorsStream.subscribe(
+			() => this.logger.log(`Updated selectedVendors`)
+		);
+
+
+
 		// init fetchMoreStream
 		this.fetchMoreStream = Observable
-			.interval(100)				// emmit every 100ms
-			.map(()=>this.hasNextPage)	// poll state hasNextPage
-			.distinctUntilChanged()		// only react when it is change
-			.filter(flag=>!!flag)		// only emit this.hasNextPage goes from false to true
+			.interval(100)					// run every 100ms
+			.map(()=>this.hasNextPage)		// poll hasNextPage
+			.distinctUntilChanged()			// only react when it is change
+			.filter(flag=>!!flag)			// only emit this.hasNextPage goes from false to true
 		;
-
-
 		// trigger this.fetchMore() once when this.hasNextPage goes from false to true
 		this.fetchMoreSub = this.fetchMoreStream.subscribe(
 			() => this.fetchMore()
@@ -163,8 +205,17 @@ export class VendorService implements OnInit, OnDestroy {
 
 
 		// Debug
-		this.logger.log('Completed VendorIndex.init()');
+		this.logger.log('Completed VendorService.init()');
 
+	}
+
+
+	destroy() {
+		this.vendorsCacheSub.unsubscribe();
+		this.vendorKeysSub.unsubscribe();
+		this.selectedVendorsSub.unsubscribe();
+		this.collectionSub.unsubscribe();
+		this.fetchMoreSub.unsubscribe();
 	}
 
 
@@ -173,10 +224,10 @@ export class VendorService implements OnInit, OnDestroy {
 	// x impl this
 	// x test this manually
 	// - impl unit tests
-	fetchMore() {
+	private fetchMore() {
 
 		// Debug
-		this.logger.log('Starting VendorIndex.fetchMore()');
+		this.logger.log('Starting VendorService.fetchMore()');
 
 
 		// halt if there is no more data to be fetched
@@ -221,7 +272,7 @@ export class VendorService implements OnInit, OnDestroy {
 		);
 
 		// Debug
-		this.logger.log('Completed VendorIndex.fetchMore()');
+		this.logger.log('Completed VendorService.fetchMore()');
 	}
 
 
@@ -233,7 +284,7 @@ export class VendorService implements OnInit, OnDestroy {
 	private processNewVendors(newVendors: any[]): Object {
 
 		// Debug
-		this.logger.log('Starting VendorIndex.processNewVendors()');
+		this.logger.log('Starting VendorService.processNewVendors()');
 
 		let newVendorCache = null;
 		if (newVendors) {
@@ -257,7 +308,7 @@ export class VendorService implements OnInit, OnDestroy {
 								
 								return C;
 							},
-							this.vendors
+							this.vendorsCache
 						)
 			;
 		}
@@ -265,7 +316,7 @@ export class VendorService implements OnInit, OnDestroy {
 
 		// Debug
 		this.logger.log(`Processed ${newVendors.length} vendors`);
-		this.logger.log('Completed VendorIndex.processNewVendors()');
+		this.logger.log('Completed VendorService.processNewVendors()');
 
 		return newVendorCache;
 	}
@@ -276,11 +327,11 @@ export class VendorService implements OnInit, OnDestroy {
 	// x impl this
 	// x test this manually
 	// - impl unit tests
-	public fetchVendorsByKey(key: string): Set<any> {
-		return this.vendors[key];
+	fetchVendorsByKey(key: string): Set<any> {
+		return this.vendorsCache[key];
 	}
 
-	
+
 
 }
 
