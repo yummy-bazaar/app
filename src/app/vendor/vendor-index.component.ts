@@ -40,9 +40,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	loading: 	  				boolean;
 	vendors: 	  				Object;
-	numVendors:   				number;
 	vendorKeys:	  				string[];
-	selectedVendors:			any[];
+	selectedVendors:			Set<any>;
 	private collectionStream: 	ApolloQueryObservable<any>;
 	private collectionSub:		Subscription;
 	private fetchMoreStream: 	Observable<boolean>;
@@ -149,7 +148,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		;
 
 
-		// innitiate fetchmore once when this.hasNextPage goes from false to true
+		// trigger this.fetchMore() once when this.hasNextPage goes from false to true
 		this.fetchMoreSub = this.fetchMoreStream.subscribe(
 			() => this.fetchMore()
 		);
@@ -224,7 +223,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 	// x impl this
 	// x test this manually
 	// - impl unit tests
-	private processNewVendors(newVendors: any[]): any {
+	private processNewVendors(newVendors: any[]): Object {
 
 		// Debug
 		this.logger.log('Starting VendorIndex.processNewVendors()');
@@ -270,7 +269,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 	// x impl this
 	// x test this manually
 	// - impl unit tests
-	public fetchVendorsByKey(key: string): any[] {
+	public fetchVendorsByKey(key: string): Set<any> {
 		return this.vendors[key];
 	}
 
