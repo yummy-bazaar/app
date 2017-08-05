@@ -43,14 +43,10 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 	numVendors:   				number;
 	vendorKeys:	  				string[];
 	selectedVendors:			any[];
-
-	// used to destroy subscriptions
-	private vendorSub:			Subscription;
-
-	// private pagination properties
 	private collectionStream: 	ApolloQueryObservable<any>;
 	private fetchMoreStream: 	Observable<boolean>;
 	private fetchMoreSub: 		Subscription;
+	private vendorSub:			Subscription;
 	private hasNextPage: 	 	boolean;
 	private cursor: 		 	string;
 	
@@ -60,10 +56,10 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		private client: Apollo,
 		private logger: LoggerService
 	) { 
-		this.loading = true;
-		this.vendors = {};
+		this.loading 	 = true;
+		this.vendors 	 = {};
 		this.hasNextPage = false;
-		this.cursor = null;
+		this.cursor 	 = null;
 	};
 
 
@@ -168,10 +164,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 	// TODO:
-	// - impl this
-	//		+ make sure that vendors are not added twice.
-	//		+ I think I need to use the cursor based approach instead
-	//		+ see: http://dev.apollodata.com/angular2/pagination.html#cursor-pages
+	// x impl this
 	// - test this manually
 	// - impl unit tests
 	fetchMore() {

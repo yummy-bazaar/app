@@ -13,14 +13,21 @@
 // - see: http://dev.apollodata.com/angular2/receiving-updates.html
 
 import { 
+	Component,
 	Injectable,
-	OnInit, 
+	OnInit,
 	OnDestroy
-} 							from '@angular/core';
+}					 		from '@angular/core';
+import {
+	Observable
+} 							from 'rxjs';
+import {
+	Subscription
+}							from 'rxjs/Subscription';
 import { 
-	Angular2Apollo,
+	Apollo,
 	ApolloQueryObservable
-} 							from 'angular2-apollo';
+} 							from 'apollo-angular';
 import {
 	CollectionsQuery
 }  							from '../api/queries';
@@ -29,66 +36,65 @@ import {
 	startsWithAlpha	
 }							from '../utils';
 import { 
-	Vendor 
-}							from '.';
-import { 
 	Product 
 }							from '../product';
-import {
-	Subject
-} 							from 'rxjs/Subject';
-import {
-	Subscription
-}							from 'rxjs/Subscription';
 
 
 
 
 @Injectable()
-export class VendorService {
+export class VendorService implements OnInit, OnDestroy {
 
-	// public properties
-	loading: 	  	 boolean;
-	vendors: 	  	 any;
-	numVendors:   	 number;
-	vendorKeys:	  	 string[];
-	selectedVendors: any[];
-
-	// public streams
-	
-
-	// public subscriptions
-	vendorSub: 		 Subscription;
-
-	// private pagination properties
+	loading: 	  				boolean;
+	vendors: 	  				Object;
+	numVendors:   				number;
+	vendorKeys:	  				string[];
+	selectedVendors:			any[];
 	private collectionStream: 	ApolloQueryObservable<any>;
+	private fetchMoreStream: 	Observable<boolean>;
+	private fetchMoreSub: 		Subscription;
+	private vendorSub:			Subscription;
 	private hasNextPage: 	 	boolean;
 	private cursor: 		 	string;
 	
 
 	
 	constructor(
-		private client: Angular2Apollo,
+		private client: Apollo,
 		private logger: LoggerService
 	) { 
-		this.loading = true;
-		this.vendors = {};
-		this.hasNextPage = true;
-		this.cursor = null;
+		this.loading 	 = true;
+		this.vendors 	 = {};
+		this.hasNextPage = false;
+		this.cursor 	 = null;
 	};
 
 
 
 
-	// TODO:
-	// x test this manually
-	// - impl unit tests
-	public init() {
+	ngOnInit() {
+		this.init();
+	}
+
+
+	ngOnDestroy() {
+		this.vendorSub.unsubscribe();
+		this.fetchMoreSub.unsubscribe();
+	}
+
+
+
+	// ToDo:
+	// - use a Stream based design pattern to initialize these members
+	// - find a way to subscribe to the WatchQuery method from the Apllo client
+	// - can i use an async/await pattern here?
+	private init() {
 
 		// Debug
-		this.logger.log('Starting VendorService.init()');
+		this.logger.log('Starting VendorIndex.init()');
 
 
+		// initialize collection stream
 		this.collectionStream = this.client
 			.watchQuery<any>(
 				{
@@ -101,12 +107,12 @@ export class VendorService {
 		;
 
 
-
+		// parse vendors from collection stream
 		this.vendorSub = this.collectionStream.subscribe(
 			({data, loading}) => {
 
 				// Debug
-				this.logger.log('Starting to consume payload from API in VendorService.init()');
+				this.logger.log('Starting to consume payload from API in VendorIndex.init()');
 
 
 				// TODO:
@@ -134,7 +140,7 @@ export class VendorService {
 
 
 				// Debug
-				this.logger.log('Finished consuming payload from API in VendorService.init()');
+				this.logger.log('Finished consuming payload from API in VendorIndex.init()');
 			},
 			(err) => { 
 				this.logger.error('Fetch error: ' + err.message); 
@@ -142,9 +148,128 @@ export class VendorService {
 		);	
 
 
-		// Debug
-		this.logger.log('Completed VendorService.init()');
+		// init fetchMoreStream
+		this.fetchMoreStream = Observable
+			.interval(100)				// emmit every 100ms
+			.map(()=>this.hasNextPage)	// poll state hasNextPage
+			.distinctUntilChanged()		// only react when it is change
+			.filter(flag=>!!flag)		// only emit this.hasNextPage goes from false to true
+		;
 
+
+		// innitiate fetchmore once when this.hasNextPage goes from false to true
+		this.fetchMoreSub = this.fetchMoreStream.subscribe(
+			() => this.fetchMore()
+		);
+
+
+
+		// Debug
+		this.logger.log('Completed VendorIndex.init()');
+
+	}
+
+
+
+	// TODO:
+	// x impl this
+	// - test this manually
+	// - impl unit tests
+	fetchMore() {
+
+		// Debug
+		this.logger.log('Starting VendorIndex.fetchMore()');
+
+
+		// halt if there is no more data to be fetched
+		if (!this.hasNextPage){
+			this.logger.warn('There is no more data to be fetched');
+			return;
+		}
+
+
+		// fetch more data
+		this.collectionStream.fetchMore(
+			{
+				variables: {
+					after: this.cursor
+				},
+				updateQuery: (prev: any, { fetchMoreResult } :any) => 
+				{
+
+					// Debug
+					this.logger.log('Starting to consume payload from API in VendorIndex.fetchMore()');
+					//this.logger.log(`prev is: ${JSON.stringify(prev,null,4)}`);
+					//this.logger.log(`fetchMoreResult is: ${JSON.stringify(fetchMoreResult,null,4)}`);
+
+
+					// verify that we got new data
+					if (!fetchMoreResult.shop)  {
+						this.logger.warn('did not receive new data in VendorIndex.fetchMore()');
+						this.logger.warn(`new result object is ${JSON.stringify(fetchMoreResult,null,4)}`);
+						return prev; 
+					}
+
+
+					// temporarily assume there's no more data to fetch
+					this.hasNextPage = false;
+
+
+					// destructure new results
+					let newVendors = fetchMoreResult.shop.collections.edges;
+					let newPageInfo = fetchMoreResult.shop.collections.pageInfo;
+
+
+					// add new vendors to cache
+					let prevVendors = this.vendors;
+					this.vendors = Object.assign(
+						{},
+						prevVendors,
+						this.processNewVendors(newVendors)
+					);
+
+
+					// reset vendor keys
+					this.vendorKeys = Object.keys(this.vendors).sort();
+
+
+					// config pagination properties
+					this.hasNextPage = fetchMoreResult.shop.collections.pageInfo.hasNextPage;
+					this.cursor = fetchMoreResult.shop.collections.edges.slice(-1)[0].cursor;
+
+
+					// Debug
+					this.logger.log('Finished consuming payload from API in VendorIndex.fetchMore()');
+
+
+					// register new results with Apollo client
+					let res = Object.assign(
+								{}, 
+								prev, 
+								{
+									shop: {
+										collections: {
+											edges: [
+												...prev.shop.collections.edges, 
+												...newVendors,
+											],
+											pageInfo: newPageInfo,
+											__typename: "CollectionConnection"
+										},
+									},
+									__typename: "Shop"
+								}
+							)
+					;
+					// Debug
+					//this.logger.log(`res is: ${JSON.stringify(res,null,4)}`);
+					return res;
+				},
+			}
+		);
+
+		// Debug
+		this.logger.log('Completed VendorIndex.fetchMore()');
 	}
 
 
@@ -152,14 +277,14 @@ export class VendorService {
 	// TODO:
 	// x test this manually
 	// - impl unit tests
-	private processNewVendors(newVendors: any[]): void {
+	private processNewVendors(newVendors: any[]): any {
 
 		// Debug
-		this.logger.log('Starting VendorService.processNewVendors()');
+		this.logger.log('Starting VendorIndex.processNewVendors()');
 
-		let res = null;
+		let newVendorCache = null;
 		if (newVendors) {
-			res = newVendors
+			newVendorCache = newVendors
 						.reduce(
 							(C:any,v:any) => {
 								
@@ -173,8 +298,8 @@ export class VendorService {
 								
 								// add vendor to cache
 								!!C[key]
-								? C[key].push(v)
-								: C[key] = [v]	
+								? C[key].add(v)
+								: C[key] = (new Set).add(v)	
 								
 								
 								return C;
@@ -186,31 +311,10 @@ export class VendorService {
 
 
 		// Debug
-		this.logger.log('Completed VendorService.processNewVendors()');
+		this.logger.log(`Processed ${newVendors.length} new vendors`);
+		this.logger.log('Completed VendorIndex.processNewVendors()');
 
-		return res;
-	}
-
-
-
-	// TODO:
-	// - implement this
-	//		+ can i use an async/await pattern here?
-	// - test this manually
-	// - impl unit tests
-	public fetchAllVendors(): any[]{
-
-		// Debug
-		this.logger.log('Starting VendorService.fetchAllVendors()');
-		
-		//while(this.hasNextPage){
-		//	this.collectionStream.fetchMore
-		//}
-
-		// Debug
-		this.logger.log('Completed VendorService.fetchAllVendors()');
-
-		return this.vendors;
+		return newVendorCache;
 	}
 
 
@@ -221,6 +325,7 @@ export class VendorService {
 	public fetchVendorsByKey(key: string): any[] {
 		return this.vendors[key];
 	}
+
 }
 
 
