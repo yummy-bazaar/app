@@ -44,9 +44,9 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 	vendorKeys:	  				string[];
 	selectedVendors:			any[];
 	private collectionStream: 	ApolloQueryObservable<any>;
+	private collectionSub:		Subscription;
 	private fetchMoreStream: 	Observable<boolean>;
 	private fetchMoreSub: 		Subscription;
-	private vendorSub:			Subscription;
 	private hasNextPage: 	 	boolean;
 	private cursor: 		 	string;
 	
@@ -70,16 +70,16 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 	ngOnDestroy() {
-		this.vendorSub.unsubscribe();
+		this.collectionSub.unsubscribe();
 		this.fetchMoreSub.unsubscribe();
 	}
 
 
 
 	// ToDo:
-	// - use a Stream based design pattern to initialize these members
-	// - find a way to subscribe to the WatchQuery method from the Apllo client
-	// - can i use an async/await pattern here?
+	// x impl this
+	// x test this manually
+	// - impl unit tests
 	private init() {
 
 		// Debug
@@ -100,7 +100,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 		// parse vendors from collection stream
-		this.vendorSub = this.collectionStream.subscribe(
+		this.collectionSub = this.collectionStream.subscribe(
 			({data, loading}) => {
 
 				// Debug
@@ -165,7 +165,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	// TODO:
 	// x impl this
-	// - test this manually
+	// x test this manually
 	// - impl unit tests
 	fetchMore() {
 
@@ -188,54 +188,11 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 				},
 				updateQuery: (prev: any, { fetchMoreResult } :any) => 
 				{
-
 					// Debug
-					this.logger.log('Starting to consume payload from API in VendorIndex.fetchMore()');
-					//this.logger.log(`prev is: ${JSON.stringify(prev,null,4)}`);
-					//this.logger.log(`fetchMoreResult is: ${JSON.stringify(fetchMoreResult,null,4)}`);
-
-
-					// verify that we got new data
-					if (!fetchMoreResult.shop)  {
-						this.logger.warn('did not receive new data in VendorIndex.fetchMore()');
-						this.logger.warn(`new result object is ${JSON.stringify(fetchMoreResult,null,4)}`);
-						return prev; 
-					}
-
-
-					// temporarily assume there's no more data to fetch
-					this.hasNextPage = false;
-
-
-					// destructure new results
-					let newVendors = fetchMoreResult.shop.collections.edges;
-					let newPageInfo = fetchMoreResult.shop.collections.pageInfo;
-
-
-					// add new vendors to cache
-					let prevVendors = this.vendors;
-					this.vendors = Object.assign(
-						{},
-						prevVendors,
-						this.processNewVendors(newVendors)
-					);
-
-
-					// reset vendor keys
-					this.vendorKeys = Object.keys(this.vendors).sort();
-
-
-					// config pagination properties
-					this.hasNextPage = fetchMoreResult.shop.collections.pageInfo.hasNextPage;
-					this.cursor = fetchMoreResult.shop.collections.edges.slice(-1)[0].cursor;
-
-
-					// Debug
-					this.logger.log('Finished consuming payload from API in VendorIndex.fetchMore()');
-
+					//this.logger.log(`res is: ${JSON.stringify(res,null,4)}`);
 
 					// register new results with Apollo client
-					let res = Object.assign(
+					return Object.assign(
 								{}, 
 								prev, 
 								{
@@ -243,9 +200,9 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 										collections: {
 											edges: [
 												...prev.shop.collections.edges, 
-												...newVendors,
+												...fetchMoreResult.shop.collections.edges,
 											],
-											pageInfo: newPageInfo,
+											pageInfo: fetchMoreResult.shop.collections.pageInfo,
 											__typename: "CollectionConnection"
 										},
 									},
@@ -253,9 +210,6 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 								}
 							)
 					;
-					// Debug
-					//this.logger.log(`res is: ${JSON.stringify(res,null,4)}`);
-					return res;
 				},
 			}
 		);
@@ -267,6 +221,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 	// TODO:
+	// x impl this
 	// x test this manually
 	// - impl unit tests
 	private processNewVendors(newVendors: any[]): any {
@@ -303,7 +258,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 		// Debug
-		this.logger.log(`Processed ${newVendors.length} new vendors`);
+		this.logger.log(`Processed ${newVendors.length} vendors`);
 		this.logger.log('Completed VendorIndex.processNewVendors()');
 
 		return newVendorCache;
@@ -312,7 +267,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 	// TODO:
-	// - test this manually
+	// x impl this
+	// x test this manually
 	// - impl unit tests
 	public fetchVendorsByKey(key: string): any[] {
 		return this.vendors[key];
