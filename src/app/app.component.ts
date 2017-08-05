@@ -1,10 +1,7 @@
-import { Component } from '@angular/core';
+import { Component } 	from '@angular/core';
 
 @Component({
-	selector: 'angular-test',
-	template: `<h1>Hello {{backend}} from {{frontend}}</h1>`,
+	selector: 'app-root',
+	template: require('./app.component.html')
 })
-export class AppComponent  { 
-	backend = 'Shopify'; 
-	frontend = 'Angular';
-}
+export class AppComponent  {}

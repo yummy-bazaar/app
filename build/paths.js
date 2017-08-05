@@ -1,4 +1,4 @@
-let paths = 
+const paths = 
 {
 	src:
 	{
@@ -36,3 +36,4 @@ let paths =
 };
 
 export default paths;
+

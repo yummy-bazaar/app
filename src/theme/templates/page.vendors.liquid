@@ -1,0 +1,75 @@
+{% include 'sidebar' %}
+
+
+
+{% if page.content != blank %}
+	<div class="twelve columns ">
+		<div class="section featured-vendor">
+          	<h2>Featured Brands</h2>
+			{{ page.content }}
+		</div>
+	</div>
+{% endif %}
+
+
+
+<div class="ten columns vendors">
+	<div class="section">
+		<h2>Shop by Brands</h2>
+		{% comment %}
+
+			{{ vendor | url_for_vendor }}
+			that's the basic patter for fetching vendor data
+
+			TODO
+			- add logic to only display vendors for which there is a collection
+			- add logic to create category for vendors that start with a numeric char
+			- add conditional styling that will split the vendors in 2 columns?
+
+		{% endcomment %}
+
+
+		<dl
+			class="accordion offset-by-one"     
+		>
+			{% assign alphabet = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z' | split: ',' %}
+			{% for letter in alphabet %}
+				<a href="#">
+					<dt>
+						<small class="right">&#43;</small>
+						{{ letter | upcase }}
+					</dt>
+				</a>
+				<dd>
+					{% for vendor in shop.vendors %}
+						{%- assign prefix = vendor | slice: 0 | downcase %}
+						{% if prefix contains letter%}
+							<a
+								alt="{{ vendor }}"
+								href="{{ vendor | url_for_vendor }}"
+							>
+								<p>
+									{{ vendor }}
+								</p>
+							</a>
+						{% endif %}
+					{% endfor %}
+				</dd>
+			{% endfor %}
+		</dl>
+	</div>
+
+	<br class="clear" />
+</div>
+
+
+
+
+
+
+	
+
+
+
+
+

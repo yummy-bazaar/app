@@ -12,12 +12,18 @@
 			content="width=device-width, initial-scale=1"
 		>
 
-		<!-- Master styles -->
+		<!-- begin styles -->
 			<link 
 				rel="stylesheet" 
 				type="text/css"
 				href="dist/assets/styles.css.liquid"
 			>
+		<!-- end styles -->
+		
+
+		<!-- begin Shopify buy button ->
+			<script src="http://sdks.shopifycdn.com/js-buy-sdk/v0/latest/shopify-buy.umd.polyfilled.min.js"></script>
+		<!-- end Shopify buy button -->
 
 
 
@@ -73,16 +79,17 @@
 					});
 				*/
 			</script>
-
 		<!-- begin Angular dependencies -->
+
 	</head>
 
 
 	<body>
 
-		<angular-test>
+		<app-root>
 			Loading AppComponent content here ...
-		</angular-test>
+		</app-root>
+
 
 	</body>
 </html>

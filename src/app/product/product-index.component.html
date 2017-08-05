@@ -1,0 +1,10 @@
+<ul 
+	*ngFor="let product of data 
+		| async 
+		| select: 'shop' 
+		| select: 'products' 
+		| select: 'edges'
+	"
+>
+	Product: {{product.node.title}}
+</ul>
