@@ -20,10 +20,13 @@ import {
 	ProductIndexComponent
 } 							from './product';
 
-// Utilities
+// Services
 import { 
 	LoggerService 
 }							from './utils';
+import {
+	VendorService
+}							from './vendor/vendor.service';
 
 
 
@@ -57,6 +60,7 @@ export function provideClient(): ApolloClient {
 	],
 	providers:    [ 
 		LoggerService,
+		VendorService
 	],
 	declarations: [ 
 		AppComponent,

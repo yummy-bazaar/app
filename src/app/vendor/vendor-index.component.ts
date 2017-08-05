@@ -33,7 +33,6 @@ import {
 @Component({
 	selector: 	'vendor-index',
 	template: 	require('./vendor-index.component.html'),
-	providers:	[VendorService]
 })
 export class VendorIndexComponent implements OnInit, OnDestroy {
 	
@@ -53,16 +52,16 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 
-	ngOnInit() {
-		// init this.service
-		this.service.init();
+	ngOnInit(): void {
 
+		// init VendorService provider
+		if (!this.service.completedInit)
+			this.service.init();
 
 		// subscribe to vendorKeysStream
 		this.vendorKeysSub = this.service.vendorKeysStream.subscribe(
 			(data) => this.vendorKeys = data
 		);
-
 
 		// subscribe to selectedVendorsStream
 		this.selectedVendorsSub = this.service.selectedVendorsStream.subscribe(
@@ -72,14 +71,21 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
+
+		// cancel subscriptions
 		this.vendorKeysSub.unsubscribe();
 		this.selectedVendorsSub.unsubscribe();
-		this.service.destroy();
+
+		// destroy service if necessary
+		if(!this.service.completedDestroy)
+			this.service.destroy();
 	}
 
 
-
+	fetchVendorsByKey(key: string): Set<any> {
+		return this.service.fetchVendorsByKey(key);
+	}
 
 
 

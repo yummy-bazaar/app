@@ -44,6 +44,8 @@ import {
 @Injectable()
 export class VendorService implements OnInit, OnDestroy {
 
+	completedInit:				boolean;
+	completedDestroy:			boolean;
 	private loading: 	  		boolean;
 	private vendorsCache: 	  	Object;
 	vendorsCacheStream: 		Observable<any>;
@@ -67,20 +69,22 @@ export class VendorService implements OnInit, OnDestroy {
 		private client: Apollo,
 		private logger: LoggerService
 	) { 
-		this.loading 	 	= true;
-		this.vendorsCache 	= {};
-		this.hasNextPage 	= false;
-		this.cursor 	 	= null;
+		this.completedInit 		= false;
+		this.completedDestroy 	= false;
+		this.loading 	 		= true;
+		this.vendorsCache 		= {};
+		this.hasNextPage 		= false;
+		this.cursor 	 		= null;
 	};
 
 
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.init();
 	}
 
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.destroy();
 	}
 
@@ -90,7 +94,12 @@ export class VendorService implements OnInit, OnDestroy {
 	// x impl this
 	// x test this manually
 	// - impl unit tests
-	init() {
+	init(): void {
+
+		// only initialized VendorService once
+		if(this.completedInit)
+			return;
+
 
 		// Debug
 		this.logger.log('Starting VendorService.init()');
@@ -204,18 +213,27 @@ export class VendorService implements OnInit, OnDestroy {
 
 
 
+		// mark VendorService as initialized
+		this.completedInit = true;
+
+
 		// Debug
 		this.logger.log('Completed VendorService.init()');
 
 	}
 
 
-	destroy() {
+	destroy(): void {
+
+		// cancel subscriptions
 		this.vendorsCacheSub.unsubscribe();
 		this.vendorKeysSub.unsubscribe();
 		this.selectedVendorsSub.unsubscribe();
 		this.collectionSub.unsubscribe();
 		this.fetchMoreSub.unsubscribe();
+
+		// mark VendorService as destroyed
+		this.completedDestroy = true;
 	}
 
 
@@ -224,7 +242,7 @@ export class VendorService implements OnInit, OnDestroy {
 	// x impl this
 	// x test this manually
 	// - impl unit tests
-	private fetchMore() {
+	private fetchMore(): void {
 
 		// Debug
 		this.logger.log('Starting VendorService.fetchMore()');
