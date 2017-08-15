@@ -59,10 +59,10 @@ import {
 export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	loading: 	  				boolean;
-	vendors: 	  				Object;
-	//vendors: 	  				Map<string,Set<any>>;
+	//vendors: 	  				Object;
+	vendors: 	  				Map<string,Set<any>>;
 	vendorKeys:			  		Set<string>;
-	selectedVendors:			any[];			// update type to Vendor interface from vendor.model.ts
+	selectedVendors:			Set<any>;			// update type to Vendor interface from vendor.model.ts
 	private dataStream: 		ApolloQueryObservable<any>;
 	private dataSub:			Subscription;
 	private query:				any;
@@ -96,25 +96,35 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 		// fetch vendors cache from local storage if exists
-		if (this.storage.saved('vendors'))
+		if (this.storage.saved('vendors')){
 			this.vendors = this.storage.get('vendors');
-		else 
-			this.vendors = {};
-			//this.vendors = new Map<string,any>();
+		}
+		else {
+			//this.vendors = new Object();
+			this.vendors = new Map<string,Set<any>>();
+
+			// Debug
+			this.logger.log(`Init this.vendors`);
+			this.logger.log(this.vendors.get);
+		}
 
 
 		// fetch vendorKeys cache from local storage if exists
-		if (this.storage.saved('vendorsKeys'))
+		if (this.storage.saved('vendorsKeys')){
 			this.vendorKeys = this.storage.get('vendorKeys');
-		else
+		}
+		else{
 			this.vendorKeys = new Set<string>();
+		}
 
 
 		// fetch selectedVendors cache from local storage if exists
-		if (this.storage.saved('selectedVendors'))
+		if (this.storage.saved('selectedVendors')){
 			this.selectedVendors = this.storage.get('selectedVendors');
-		else
+		}
+		else{
 			this.selectedVendors = null;
+		}
 
 
 		// schedule fetchMoreTrigger
@@ -354,7 +364,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 		// Debug
 		this.logger.log('Starting VendorIndexComponent.processNewVendors()');
-		this.logger.log(`typeof vendors cache is: ${typeof this.vendors}`);
+		//this.logger.log(`typeof vendors cache is: ${typeof this.vendors}`);
 		
 
 		if (newVendors) {
@@ -370,10 +380,10 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 					
 					// Debug
-					this.logger.log(`key is: ${key}`);
-					this.logger.log(`vendor handle is: ${vendor.node.handle}`);
-					this.logger.log(`vendor is: ${JSON.stringify(vendor,null,4)}`);
-					this.logger.log(`vendor cache is: ${JSON.stringify(this.vendors,null,4)}`);
+					//this.logger.log(`key is: ${key}`);
+					//this.logger.log(`vendor handle is: ${vendor.node.handle}`);
+					//this.logger.log(`vendor is: ${JSON.stringify(vendor,null,4)}`);
+					//this.logger.log(`vendor cache is: ${JSON.stringify(this.vendors,null,4)}`);
 					
 
 
@@ -390,26 +400,29 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 					// Note
 					// - this impl uses a Map of Sets
-					//let vendorSet: Set<any> = this.vendors.get(key)
-					//
-					//!!vendorSet
-					//? vendorSet.add(vendor)
-					//: vendorSet = new Set<any>()
-					//
-					//vendorSet.add(vendor);
-					//this.vendors.set(key,vendorSet);
+					// TODO
+					// - why is this.vendors losing all it's properties?
+					let vendorSet: Set<any> = this.vendors.get(key)
+					
+					!!vendorSet
+					? vendorSet.add(vendor)
+					: vendorSet = new Set<any>()
+					
+					vendorSet.add(vendor);
+					this.vendors.set(key,vendorSet);
 
 
 
 					// Note
 					// - this impl uses an Object with Sets as properties
-					if(!!this.vendors[key]){
-						this.vendors[key].add(vendor);
-					}
-					else {
-						this.vendors[key] = new Set<any>();
-						this.vendors[key].add(vendor);
-					}
+					//if(!!this.vendors[key]){
+					//	this.vendors[key].add(vendor);
+					//}
+					//else {
+					//	this.vendors[key] = new Set<any>();
+					//	this.logger.log(`init new set for key: ${key}`);
+					//	this.vendors[key].add(vendor);
+					//}
 
 
 
@@ -462,24 +475,27 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		if (key){
 
 			// update selectedVendors
-			this.selectedVendors = this.vendors[key];
+			this.selectedVendors = this.vendors.get(key);
 		}
-		else{
+		else if (!this.selectedVendors) {
 
 			// select first vendor if exists
-			let firstVendorKey = this.vendorKeys[0];
+			let it = this.vendorKeys.values()
+			let firstVendorKey = it.next().value;
 			if (firstVendorKey)
-				this.selectedVendors = this.vendors[firstVendorKey];
+				this.selectedVendors = this.vendors.get(firstVendorKey);
 			else
 				this.selectedVendors = null;
 		}
 
 
 		// Debug
-		if (this.selectedVendors)
+		if (this.selectedVendors){
 			this.logger.log(`selected vendors with key: ${JSON.stringify(key,null,4)}`);
-		else
+		}
+		else{
 			this.logger.warn('cache has no vendors to select from');
+		}
 
 
 		// Debug
