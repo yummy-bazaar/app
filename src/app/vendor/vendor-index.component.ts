@@ -400,15 +400,20 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 					// Note
 					// - this impl uses a Map of Sets
-					// TODO
-					// - why is this.vendors losing all it's properties?
+					
+					// init set if necessary
 					let vendorSet: Set<any> = this.vendors.get(key)
+					if (!vendorSet)
+						vendorSet = new Set<any>()
 					
-					!!vendorSet
-					? vendorSet.add(vendor)
-					: vendorSet = new Set<any>()
-					
+					// add new vendor to set
 					vendorSet.add(vendor);
+
+					//sort the set
+					let arr = Array.from(vendorSet).sort()
+					vendorSet = new Set<any>(arr);
+
+					// push set in vendors cache
 					this.vendors.set(key,vendorSet);
 
 
@@ -434,14 +439,14 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 			// saved updated caches in local storage
-			this.storage.save(
-				'vendors',
-				this.vendors
-			);
-			this.storage.save(
-				'vendorKeys',
-				this.vendorKeys
-			);
+			//this.storage.save(
+			//	'vendors',
+			//	this.vendors
+			//);
+			//this.storage.save(
+			//	'vendorKeys',
+			//	this.vendorKeys
+			//);
 
 
 			// Debug
