@@ -1,0 +1,19 @@
+<dumb-component
+	[vendorKeys] 		 = vendorKeys
+	[selectedVendors] 	 = selectedVendors
+	(selectedKeyUpdated) = selectVendor($event)
+>
+	<div
+		*ngIf="loading"
+	>
+		Lodaing more data...
+	</div>
+</dumb-component>
+
+
+
+
+
+
+
+
