@@ -32,13 +32,17 @@ export class StorageService {
 	}
 	
 
+	// TODO
+	// - There is a bug that strips objects form all it's methods.
 	save(key: string, data: any): void {
 
+/*
 		// add new item to cache
-		this.localCache[key] = data;
+		this.localCache[key] = JSON.stringify(data);
 
 		// store cache
 		localStorage.setItem('yummybazaar.com',JSON.stringify(this.localCache))
+*/
 	}
 
 
@@ -51,7 +55,7 @@ export class StorageService {
 		if(savedCache){
 			// retrieve item if exists
 			if(savedCache[key]){
-				return savedCache[key];
+				return JSON.parse(savedCache[key]);
 			}else{
 				return {};
 			}

@@ -59,7 +59,6 @@ import {
 export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	loading: 	  				boolean;
-	//vendors: 	  				Object;
 	vendors: 	  				Map<string,Set<any>>;
 	vendorKeys:			  		Set<string>;
 	selectedVendors:			Set<any>;			// update type to Vendor interface from vendor.model.ts
@@ -100,7 +99,6 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 			this.vendors = this.storage.get('vendors');
 		}
 		else {
-			//this.vendors = new Object();
 			this.vendors = new Map<string,Set<any>>();
 
 			// Debug
@@ -384,22 +382,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					//this.logger.log(`vendor handle is: ${vendor.node.handle}`);
 					//this.logger.log(`vendor is: ${JSON.stringify(vendor,null,4)}`);
 					//this.logger.log(`vendor cache is: ${JSON.stringify(this.vendors,null,4)}`);
-					
 
-
-
-					// add vendor to cache
-
-					// Note
-					// - this is the original impl
-					//!!vendors[key]
-					//? vendors[key].add(vendor)
-					//: vendors[key] = (new Set<any>()).add(vendor)	
-
-
-
-					// Note
-					// - this impl uses a Map of Sets
 					
 					// init set if necessary
 					let vendorSet: Set<any> = this.vendors.get(key)
@@ -418,20 +401,6 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 
-					// Note
-					// - this impl uses an Object with Sets as properties
-					//if(!!this.vendors[key]){
-					//	this.vendors[key].add(vendor);
-					//}
-					//else {
-					//	this.vendors[key] = new Set<any>();
-					//	this.logger.log(`init new set for key: ${key}`);
-					//	this.vendors[key].add(vendor);
-					//}
-
-
-
-
 					// update vendorKeys cache
 					this.vendorKeys.add(key)
 				}
@@ -439,14 +408,14 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 			// saved updated caches in local storage
-			//this.storage.save(
-			//	'vendors',
-			//	this.vendors
-			//);
-			//this.storage.save(
-			//	'vendorKeys',
-			//	this.vendorKeys
-			//);
+			this.storage.save(
+				'vendors',
+				this.vendors
+			);
+			this.storage.save(
+				'vendorKeys',
+				this.vendorKeys
+			);
 
 
 			// Debug
