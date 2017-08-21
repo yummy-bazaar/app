@@ -15,7 +15,7 @@
 
 
 
-<!-- section: vendor index -->
+<!-- section: vendor index wrapper -->
 	<div
 		class="row"
 	>
@@ -30,7 +30,7 @@
 			</div>
 		<!-- end filter component -->
 
-		<!-- index column -->
+		<!-- index -->
 			<div
 				class="col-xs-10"
 			>
@@ -45,6 +45,11 @@
 							<h1>
 								selector component
 							</h1>
+							<selector
+								[vendorKeys] 		 = vendorKeys
+								[selectedVendors] 	 = selectedVendors
+								(selectedKeyUpdated) = selectVendor($event)
+							></selector>
 							
 						</div>
 					</div>
@@ -66,9 +71,9 @@
 					</div>
 				<!-- end vendor list component -->	
 			</div>
-		<!-- end index column -->
+		<!-- end index -->
 	</div>
-<!-- end section: vendor index -->
+<!-- end section: vendor index wrapper -->
 
 
 

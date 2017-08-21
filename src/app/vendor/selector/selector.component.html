@@ -1,0 +1,13 @@
+<!-- selector component -->
+	<ul>
+		<button
+			*ngFor="let vendorKey of vendorKeys"
+			(click)="selectVendor(vendorKey)"
+			[attr.data-key]=vendorKey
+		>
+			<li>
+				{{ vendorKey }}
+			</li>
+		</button>
+	</ul>
+<!-- selector component -->

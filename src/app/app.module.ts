@@ -36,6 +36,9 @@ import {
 	LoggerService,
 	StorageService 
 }							from './utils';
+import { 
+	SelectorComponent 
+} 							from './vendor/selector/selector.component';
 
 
 
@@ -57,6 +60,7 @@ import {
 		//GraphQLComponent,
 		ProductIndexComponent,
 		VendorIndexComponent,
+		SelectorComponent,
 	],
 	exports:      [ 
 		AppComponent,
