@@ -39,6 +39,7 @@ import {
 import { 
 	SelectorComponent 
 } 							from './vendor/selector/selector.component';
+import { ListComponent } from './vendor/list/list.component';
 
 
 
@@ -61,6 +62,7 @@ import {
 		ProductIndexComponent,
 		VendorIndexComponent,
 		SelectorComponent,
+		ListComponent,
 	],
 	exports:      [ 
 		AppComponent,

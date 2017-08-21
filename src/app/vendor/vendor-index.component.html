@@ -44,7 +44,6 @@
 						>
 							<selector
 								[vendorKeys] 		 = vendorKeys
-								[selectedVendors] 	 = selectedVendors
 								(selectedKeyUpdated) = selectVendor($event)
 							></selector>
 							
@@ -60,10 +59,10 @@
 						<div 
 							class="col-xs-12"
 						>
-							<h1>
-								vendor list component
-							</h1>
-							
+							<list
+								[selectedVendors] 	 = selectedVendors
+							></list>
+
 						</div>
 					</div>
 				<!-- end vendor list component -->	

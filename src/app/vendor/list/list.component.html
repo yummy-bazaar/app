@@ -1,0 +1,20 @@
+<!-- selector component -->
+	<div
+		id="vendor-container"
+	>
+		<div 
+			*ngFor="let vendor of selectedVendors"
+			class="row" 
+		>
+			<div
+				class="col-xs-12"
+			>
+				<div
+					class="vendor"
+				>
+					Vendor: {{ vendor.node.handle }}
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- end selector component -->
