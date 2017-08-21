@@ -55,6 +55,7 @@ import {
 @Component({
 	selector: 		'vendor-index',
 	templateUrl: 	'./vendor-index.component.html',
+	styleUrls:		['./vendor-index.component.styl']
 })
 export class VendorIndexComponent implements OnInit, OnDestroy {
 

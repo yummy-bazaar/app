@@ -1,4 +1,84 @@
+<!-- section: featured vendors component -->
+	<div
+		id="feat-vendor-container"
+		class="row"
+	>
+		<div
+			class="col-xs-12"
+		>
+			<h1>
+				featured vendors component
+			</h1>
+		</div>
+	</div>
+<!-- end section: featured vendors component -->
+
+
+
+<!-- section: vendor index -->
+	<div
+		class="row"
+	>
+		<!-- filter component -->
+			<div
+				id="filter-container"
+				class="col-xs-2"
+			>
+				<h1>
+					filter component
+				</h1>
+			</div>
+		<!-- end filter component -->
+
+		<!-- index column -->
+			<div
+				class="col-xs-10"
+			>
+				<!-- selector component -->
+					<div
+						id="selector-container"
+						class="row"
+					>
+						<div 
+							class="col-xs-12"
+						>
+							<h1>
+								selector component
+							</h1>
+							
+						</div>
+					</div>
+				<!-- end selector component -->
+
+				<!-- vendor list component -->
+					<div
+						id="list-container"
+						class="row"
+					>
+						<div 
+							class="col-xs-12"
+						>
+							<h1>
+								vendor list component
+							</h1>
+							
+						</div>
+					</div>
+				<!-- end vendor list component -->	
+			</div>
+		<!-- end index column -->
+	</div>
+<!-- end section: vendor index -->
+
+
+
+
+
+
+
+
 <dumb-component
+	class="hidden"
 	[vendorKeys] 		 = vendorKeys
 	[selectedVendors] 	 = selectedVendors
 	(selectedKeyUpdated) = selectVendor($event)
