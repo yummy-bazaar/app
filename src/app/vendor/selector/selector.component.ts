@@ -15,7 +15,7 @@ import {
 @Component({
 	selector: 	 'selector',
 	templateUrl: './selector.component.html',
-	styleUrls: 	 ['./selector.component.css']
+	styleUrls: 	 ['./selector.component.styl']
 })
 export class SelectorComponent implements OnInit {
 
