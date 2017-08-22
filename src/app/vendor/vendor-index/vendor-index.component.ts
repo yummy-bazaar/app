@@ -25,13 +25,13 @@ import {
 	CollectionsQuery,
 	InitializationQuery,
 	GraphQLComponent
-}  							from '../graphql';
+}  							from '../../graphql';
 import { 
 	deepFindObjectProp,
 	LoggerService,
 	startsWithAlpha,
 	StorageService
-}							from '../utils';
+}							from '../../utils';
 
 
 
