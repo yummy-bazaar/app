@@ -20,8 +20,9 @@ import {
 	AppComponent 
 } 							from './app.component';
 import {
+	ListComponent,
 	VendorIndexComponent,
-	DumbComponent
+	SelectorComponent
 }							from './vendor'
 import {
 	ProductIndexComponent
@@ -29,17 +30,12 @@ import {
 
 // Project Services
 import {
-	//GraphQLComponent,
 	getApolloClient
 }							from './graphql';
 import { 
 	LoggerService,
 	StorageService 
 }							from './utils';
-import { 
-	SelectorComponent 
-} 							from './vendor/selector/selector.component';
-import { ListComponent } from './vendor/list/list.component';
 
 
 
@@ -57,8 +53,6 @@ import { ListComponent } from './vendor/list/list.component';
 	],
 	declarations: [ 
 		AppComponent,
-		DumbComponent,
-		//GraphQLComponent,
 		ProductIndexComponent,
 		VendorIndexComponent,
 		SelectorComponent,
