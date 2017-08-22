@@ -1,0 +1,24 @@
+<!-- selector component -->
+	<div
+		id="selector"
+	>
+		<div  
+			class="row" 
+		>	
+			<a
+				class="col-xs-1"
+				*ngFor="let vendorKey of vendorKeys"
+				(click)="selectVendor(vendorKey)"
+				[attr.data-key]=vendorKey
+			>
+				
+					{{ vendorKey }}
+				
+			</a>
+		</div>
+	</div>
+<!-- selector component -->
+
+
+
+

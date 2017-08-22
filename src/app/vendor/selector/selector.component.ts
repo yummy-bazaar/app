@@ -8,21 +8,16 @@ import {
 }					 		from '@angular/core';
 import { 
 	LoggerService
-}							from '../utils';
-
-
-
-
-
+}							from '../../utils';
 
 
 
 @Component({
-	selector: 		'dumb-component',
-	templateUrl: 	'./dumb.component.html',
+	selector: 	 'selector',
+	templateUrl: './selector.component.html',
+	styleUrls: 	 ['./selector.component.styl']
 })
-export class DumbComponent implements OnInit, OnDestroy {
-	
+export class SelectorComponent implements OnInit {
 
 	//private newKey:				string;
 	@Input() vendorKeys:		Set<string>;
@@ -70,13 +65,4 @@ export class DumbComponent implements OnInit, OnDestroy {
 		this.selectedKeyUpdated.emit(key);
 	}
 
-
 }
-
-
-
-
-
-
-
-
