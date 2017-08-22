@@ -25,6 +25,7 @@ import {
 	SelectorComponent
 }							from './vendor'
 import {
+	ProductComponent,
 	ProductIndexComponent
 } 							from './product';
 
@@ -53,10 +54,11 @@ import {
 	],
 	declarations: [ 
 		AppComponent,
-		ProductIndexComponent,
-		VendorIndexComponent,
-		SelectorComponent,
 		ListComponent,
+		ProductComponent,
+		ProductIndexComponent,
+		SelectorComponent,
+		VendorIndexComponent,
 	],
 	exports:      [ 
 		AppComponent,
