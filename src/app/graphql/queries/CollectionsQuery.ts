@@ -16,6 +16,7 @@ query Collections(
         node {
           id
           handle
+          title
           descriptionHtml
           image {
             id

@@ -12,9 +12,66 @@
 				<div
 					class="vendor"
 				>
-					Vendor: {{ vendor.node.handle }}
+					<div
+						class="row"
+					>
+						<!-- cover image -->
+							<div
+								class="col-xs-3"
+							>
+								<div
+									class="cover"
+								>
+									<img 
+										*ngIf="vendor.node.image"
+										src="{{ vendor.node.image.src}}"
+										alt="{{ vendor.node.title }}" 
+									>
+									<h2
+										*ngIf="!vendor.node.image"
+									>
+										{{ vendor.node.title }}
+									</h2>
+								</div>
+							</div>
+						<!-- vendor details -->
+							<div
+								class="col-xs-9"
+							>
+								<!-- description -->
+									<div
+										class="row"
+									>
+										<div
+											class="col-xs-12"
+										>
+											<p
+												class="description"
+												*ngIf="vendor.node.descriptionHtml"
+												[innerHTML]="vendor.node.descriptionHtml"
+											></p>
+										</div>
+									</div>
+								<!-- products -->
+									<div
+										class="row"
+									>
+										<div
+											class="col-xs-12"
+										>
+											<p>
+												... products list ...
+											</p>
+										</div>
+									</div>
+							</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 <!-- end selector component -->
+
+
+
+
