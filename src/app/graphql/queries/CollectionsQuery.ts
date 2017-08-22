@@ -10,6 +10,7 @@ query Collections(
     collections (
       first: $limit
       after: $offset
+      sortKey: TITLE
     ) {
       edges {
         node {

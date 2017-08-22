@@ -356,8 +356,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 
 	// TODO:
-	// x impl this
-	// x test this manually
+	// - impl this
+	// - test this manually
 	// - impl unit tests
 	private processNewVendors(newVendors: any[]): void {
 
@@ -367,6 +367,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		
 
 		if (newVendors) {
+
+			// parse new vendors
 			newVendors.map(
 				(vendor:any) => {
 					
@@ -397,6 +399,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					let arr = Array.from(vendorSet).sort()
 					vendorSet = new Set<any>(arr);
 
+
+
 					// push set in vendors cache
 					this.vendors.set(key,vendorSet);
 
@@ -408,11 +412,14 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 			);
 
 
-			// saved updated caches in local storage
+			// saved updated vendors cache in local storage
 			this.storage.save(
 				'vendors',
 				this.vendors
 			);
+
+
+			// saved updated vendor keys cache in local storage
 			this.storage.save(
 				'vendorKeys',
 				this.vendorKeys
