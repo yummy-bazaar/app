@@ -31,7 +31,8 @@ import {
 
 // Project Services
 import {
-	getApolloClient
+	getApolloClient,
+	GraphQLComponent
 }							from './graphql';
 import { 
 	LoggerService,
@@ -54,6 +55,7 @@ import {
 	],
 	declarations: [ 
 		AppComponent,
+		GraphQLComponent,
 		ListComponent,
 		ProductComponent,
 		ProductIndexComponent,
