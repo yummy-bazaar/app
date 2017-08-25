@@ -222,7 +222,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 				variables: {
 					offset: offset,
 					limit: limit
-				}
+				},
+				fetchPolicy: 'cache-first'
 			}
 		);
 
