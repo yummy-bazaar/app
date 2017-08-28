@@ -23,8 +23,7 @@ import {
 // project modules
 import {
 	CollectionsQuery,
-	InitializationQuery,
-	GraphQLComponent
+	InitializationQuery
 }  							from '../../graphql';
 import { 
 	deepFindObjectProp,
