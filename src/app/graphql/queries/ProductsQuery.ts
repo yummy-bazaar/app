@@ -2,28 +2,57 @@ import gql 		from 'graphql-tag';
 
 
 export const ProductsQuery = gql`
-query ProductsQuery {
-	shop{
-		products(
-			first: 250
-		){
-			edges{
-				node{
-					id
-					title
-					vendor
-					handle
-				}
-				cursor
-			}
-			pageInfo{
-				hasPreviousPage
-				hasNextPage
-			}
-		}
-	}
+query ProductsQuery(
+    $filters: String
+    $limit: Int = 250
+    $offset: String
+  ) {
+  shop{
+    products(
+      first: $limit
+      after: $offset
+      query: $filters
+    ){
+      edges{
+        node{
+          id
+          title
+          vendor
+          handle
+        }
+        cursor
+      }
+      pageInfo{
+        hasPreviousPage
+        hasNextPage
+      }
+    }
+  }
 }
 `;
+
+
+export const ProductsUpdateQuery = 
+	(prev,fetchMoreResult) => {
+		return Object.assign(
+			{}, 
+			prev, 
+			{
+				shop: {
+					products: {
+						edges: [
+							...prev.shop.products.edges, 
+							...fetchMoreResult.shop.products.edges,
+						],
+						pageInfo: fetchMoreResult.shop.products.pageInfo,
+						__typename: "ProductConnection"
+					},
+				},
+				__typename: "Shop"
+			}
+		);
+	}
+;
 
 
 export const ProductsByVendorQuery = gql`

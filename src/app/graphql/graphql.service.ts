@@ -51,6 +51,7 @@ export class GraphQLService implements OnInit, OnDestroy {
 	private fetchMoreSub: 			Subscription;
 	private fetchMoreFlag: 	 		boolean;
 	private cursor: 		 		string;
+	private updateQuery:			any;
 	
 
 	
@@ -136,8 +137,10 @@ export class GraphQLService implements OnInit, OnDestroy {
 			query: any, 
 			offset: string				= null,
 			limit: number				= 250,
+			filters: any,
 			path2FetchMoreFlag: string 	= null,
-			path2Object: string			= null
+			path2Object: string			= null,
+			updateQuery: any 
 	): ApolloQueryObservable<any> {
 
 
@@ -153,7 +156,8 @@ export class GraphQLService implements OnInit, OnDestroy {
 					query: query,
 					variables: {
 						offset: offset,
-						limit: limit
+						limit: limit,
+						filters: filters
 					}
 				}
 			)
@@ -167,6 +171,10 @@ export class GraphQLService implements OnInit, OnDestroy {
 
 				// Debug
 				this.logger.log('Starting to consume API payload in GraphQLService.fetch()');
+
+
+				// Set updateQuery
+				this.updateQuery = updateQuery;
 
 
 				// update fetchMoreFlag 
@@ -246,23 +254,7 @@ export class GraphQLService implements OnInit, OnDestroy {
 					//this.logger.log(`res is: ${JSON.stringify(res,null,4)}`);
 
 					// register new results with Apollo client
-					return Object.assign(
-						{}, 
-						prev, 
-						{
-							shop: {
-								collections: {
-									edges: [
-										...prev.shop.collections.edges, 
-										...fetchMoreResult.shop.collections.edges,
-									],
-									pageInfo: fetchMoreResult.shop.collections.pageInfo,
-									__typename: "CollectionConnection"
-								},
-							},
-							__typename: "Shop"
-						}
-					);
+					return this.updateQuery(prev,fetchMoreResult);
 				},
 			}
 		);

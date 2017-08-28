@@ -1,6 +1,7 @@
 // NG core modules
 import { 
-	Component, 
+	Component,
+	Input, 
 	OnInit 
 } 							from '@angular/core';
 
@@ -12,7 +13,8 @@ import {
 // Project Services
 import {
 	GraphQLService,
-	ProductsByVendorQuery
+	ProductsQuery,
+	ProductsUpdateQuery
 }							from '../../graphql';
 import{
 	LoggerService
@@ -23,18 +25,35 @@ import{
 
 
 @Component({
-	selector: 	 'app-product',
+	selector: 	 'product',
 	templateUrl: './product.component.html',
 	styleUrls: 	 ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
 
-	dataStream: ApolloQueryObservable<any>;
+
+
+	dataStream: 				ApolloQueryObservable<any>;
+	@Input() productId:			string;
+	private query:				any;
+	private offset:				string;
+	private limit:				number;
+	private path2FetchMoreFlag: string;
+	private path2Object:		string;
+
+
 
 	constructor(
 		private service: 	GraphQLService,
 		private logger:		LoggerService
-	) { }
+	) { 
+
+		this.query 				= ProductsQuery;
+		this.offset				= null;
+		this.limit				= 1;
+		this.path2FetchMoreFlag = 'data.shop.products.pageInfo.hasNextPage';
+		this.path2Object 		= 'data.shop.products.edges';
+	}
 
 
 
@@ -60,13 +79,31 @@ export class ProductComponent implements OnInit {
 
 
 
-	private fetch() {
+	 fetch() {
 
+		// config query variables
+		let vars: any = {
+			"query": "title=Les Anis de Flavigny Licorice Mints Tin 1.7 oz. (50g)"
+		}
+/*
+	fetch(
+			query: any, 
+			offset: string				= null,
+			limit: number				= 250,
+			filters: any				= null,
+			path2FetchMoreFlag: string 	= null,
+			path2Object: string			= null
+	): ApolloQueryObservable<any> {
+*/
 		// run query
 		this.dataStream = this.service.fetch(
-			'1880',
-			'250',
-			null
+			this.query,
+			this.offset,
+			this.limit,
+			"title=Les Anis de Flavigny Licorice Mints Tin 1.7 oz. (50g)",
+			this.path2FetchMoreFlag,
+			this.path2Object,
+			ProductsUpdateQuery
 		);
 
 
