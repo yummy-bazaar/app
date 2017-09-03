@@ -19,6 +19,15 @@ query ProductsQuery(
           title
           vendor
           handle
+          images(first: 1) {
+            edges {
+              node {
+                id
+                src
+                altText
+              }
+            }
+          }
         }
         cursor
       }
