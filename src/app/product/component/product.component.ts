@@ -2,7 +2,7 @@
 import { 
 	Component,
 	Input, 
-	OnInit 
+	OnInit
 } 							from '@angular/core';
 
 // 3rd party modules
@@ -33,8 +33,16 @@ export class ProductComponent implements OnInit {
 
 
 
-	dataStream: 				ApolloQueryObservable<any>;
-	@Input() productId:			string;
+	private dataStream: 		ApolloQueryObservable<any>;
+	_productId:			string;
+
+	@Input() 
+	public set productId(id: string) {
+		this._productId = id;
+		this.fetch();
+	}
+
+	product:					any;
 	private query:				any;
 	private offset:				string;
 	private limit:				number;
@@ -53,6 +61,7 @@ export class ProductComponent implements OnInit {
 		this.limit				= 1;
 		this.path2FetchMoreFlag = 'data.shop.products.pageInfo.hasNextPage';
 		this.path2Object 		= 'data.shop.products.edges';
+		//this.product 			= {id:null,img:{src:null}};
 	}
 
 
@@ -79,7 +88,7 @@ export class ProductComponent implements OnInit {
 
 
 
-	 fetch() {
+	fetch() {
 
 		// config query variables
 		let vars: any = {
@@ -113,10 +122,22 @@ export class ProductComponent implements OnInit {
 
 				// Debug
 				this.logger.log('Starting to consume API payload in ProductComponent.fetch()');
-
-
-				// Debug
 				this.logger.warn(JSON.stringify(data,null,4));
+
+
+				// parse product data
+				try {
+					this.product = {
+						id: data.shop.products.edges[0].node.title,
+						img: {
+							src: data.shop.products.edges[0].node.images.edges[0].node.src,
+						}
+					}
+				}
+				catch(e) {
+					this.logger.warn(`error parsing product data`);
+					this.logger.warn(JSON.stringify(e,null,4));
+				}
 
 
 				// Debug
