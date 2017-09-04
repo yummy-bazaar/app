@@ -7,7 +7,7 @@
 			class="row" 
 		>
 			<div
-				class="col-xs-12"
+				class="col-sm-12"
 			>
 				<div
 					class="vendor"
@@ -17,7 +17,7 @@
 					>
 						<!-- cover image -->
 							<div
-								class="col-xs-3"
+								class="col-sm-3"
 							>
 								<div
 									class="cover"
@@ -36,32 +36,44 @@
 							</div>
 						<!-- vendor details -->
 							<div
-								class="col-xs-9"
+								class="col-sm-9"
 							>
 								<!-- description -->
 									<div
 										class="row"
 									>
 										<div
-											class="col-xs-12"
+											class="
+												col-sm-12
+												description
+											"
 										>
 											<p
-												class="description"
+												class=""
 												*ngIf="vendor.node.descriptionHtml"
 												[innerHTML]="vendor.node.descriptionHtml"
 											></p>
 										</div>
 									</div>
-								<!-- products -->
+								<!-- products preview -->
 									<div
 										class="row"
 									>
 										<div
-											class="col-xs-12"
+											class="col-sm-12"
 										>
-											<product
-												[productId]="vendor.node.title"
-											></product>
+											<!-- product -->
+												<product
+													[productId]="vendor.node.title"
+												></product>
+											<!-- product -->
+												<product
+													[productId]="vendor.node.title"
+												></product>
+											<!-- product -->
+												<product
+													[productId]="vendor.node.title"
+												></product>
 										</div>
 									</div>
 							</div>
