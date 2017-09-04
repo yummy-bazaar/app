@@ -5,16 +5,23 @@
 		<div  
 			class="row" 
 		>	
-			<a
-				class="col-xs-1"
-				*ngFor="let vendorKey of vendorKeys"
-				(click)="selectVendor(vendorKey)"
-				[attr.data-key]=vendorKey
+			<div
+				class="
+					col-sm-12
+					text-center
+				"
 			>
-				
-					{{ vendorKey }}
-				
-			</a>
+				<a
+					class="key"
+					*ngFor="let vendorKey of vendorKeys"
+					(click)="selectVendor(vendorKey)"
+					[attr.data-key]=vendorKey
+				>
+					
+						{{ vendorKey }}
+					
+				</a>
+			</div>
 		</div>
 	</div>
 <!-- selector component -->
