@@ -27,7 +27,7 @@ import{
 @Component({
 	selector: 	 'product',
 	templateUrl: './product.component.html',
-	styleUrls: 	 ['./product.component.css']
+	styleUrls: 	 ['./product.component.styl']
 })
 export class ProductComponent implements OnInit {
 
@@ -61,7 +61,7 @@ export class ProductComponent implements OnInit {
 		this.limit				= 1;
 		this.path2FetchMoreFlag = 'data.shop.products.pageInfo.hasNextPage';
 		this.path2Object 		= 'data.shop.products.edges';
-		//this.product 			= {id:null,img:{src:null}};
+		this.product 			= null;
 	}
 
 
@@ -109,7 +109,7 @@ export class ProductComponent implements OnInit {
 			this.query,
 			this.offset,
 			this.limit,
-			"title=Les Anis de Flavigny Licorice Mints Tin 1.7 oz. (50g)",
+			`title=Les Anis de Flavigny Licorice Mints Tin 1.7 oz. (50g)`,
 			this.path2FetchMoreFlag,
 			this.path2Object,
 			ProductsUpdateQuery

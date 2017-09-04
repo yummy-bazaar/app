@@ -1,14 +1,28 @@
-<!-- cover image -->
+<!-- product -->
 	<div
-		class="row"
-		*ngIf="product"
+		class="
+			row
+			product
+		"
 	>
 		<div
-			*ngIf="product.img.src"
 			class="col-xs-12"
 		>
-			<img src="{{ product.img.src }}">
-			{{ product.img.src }}
+			<!-- cover image -->
+				<div
+					class="row"
+					*ngIf="product"
+				>
+					<div
+						*ngIf="product.img.src"
+						class="col-xs-12"
+					>
+						<!--img 
+							src="{{ product.img.src }}"
+						-->
+						{{ product.img.src }}
+					</div>
+				</div>
 		</div>
 	</div>
-<!-- cover image -->
+<!-- end product -->
