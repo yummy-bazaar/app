@@ -272,7 +272,6 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					try {
 						//this.cursor = deepFindObjectProp(data, this.path2Object).slice(-1)[0].cursor;
 						this.cursor = data.shop.collections.edges.slice(-1)[0].cursor;
-						this.logger.log(`*** cursor is: ${this.cursor}`);
 					}
 					catch (e){
 						this.logger.error('failed to update cursor: ' + e.message);
