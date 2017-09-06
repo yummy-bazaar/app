@@ -145,7 +145,7 @@ export class GraphQLService implements OnInit, OnDestroy {
 
 
 		// Debug
-		this.logger.log('Starting GraphQLService.fetch()');
+		//this.logger.log('Starting GraphQLService.fetch()');
 
 
 
@@ -211,7 +211,7 @@ export class GraphQLService implements OnInit, OnDestroy {
 
 
 		// Debug
-		this.logger.log('Completed GraphQLService.fetch()');
+		//this.logger.log('Completed GraphQLService.fetch()');
 
 
 		// return stream

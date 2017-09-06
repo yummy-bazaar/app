@@ -89,7 +89,7 @@ export class PreviewComponent implements OnInit {
 			({data, loading}) => {
 
 				// Debug
-				this.logger.log('Starting to consume API payload in ProductComponent.fetch()');
+				this.logger.log('Starting to consume API payload in PreviewComponent.fetch()');
 				//this.logger.warn(JSON.stringify(data,null,4));
 
 
@@ -120,13 +120,11 @@ export class PreviewComponent implements OnInit {
 
 
 				// Debug
-				this.logger.log('Finished consuming API payload in ProductComponent.fetch()');
+				this.logger.log('Finished consuming API payload in PreviewComponent.fetch()');
 			},
 			(err) => { 
 				this.logger.error('Fetch error: ' + err.message); 
 			}
 		)
-
 	}
-
 }
