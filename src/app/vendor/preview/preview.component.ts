@@ -48,7 +48,7 @@ export class PreviewComponent implements OnInit {
 	private offset:				string;
 	private limit:				number;
 	private path2FetchMoreFlag: string;
-	private path2Object:		string;
+	private path2Collection:	string;
 
 
 
@@ -61,8 +61,8 @@ export class PreviewComponent implements OnInit {
 		this.updateQuery		= ProductsUpdateQuery;
 		this.offset				= null;
 		this.limit				= 3;
-		this.path2FetchMoreFlag = 'data.shop.products.pageInfo.hasNextPage';
-		this.path2Object 		= 'data.shop.products.edges';
+		this.path2FetchMoreFlag = 'shop.products.pageInfo.hasNextPage';
+		this.path2Collection 	= 'shop.products.edges';
 		this.products 			= [];
 	}
 
@@ -81,7 +81,7 @@ export class PreviewComponent implements OnInit {
 			this.limit,
 			`title=${vendorHandle}`,
 			this.path2FetchMoreFlag,
-			this.path2Object,
+			this.path2Collection,
 			this.updateQuery
 		);
 

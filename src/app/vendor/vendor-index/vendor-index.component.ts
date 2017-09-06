@@ -397,8 +397,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					vendorSet.add(vendor);
 
 					//sort the set
-					let arr = Array.from(vendorSet).sort()
-					vendorSet = new Set<any>(arr);
+					//let arr = Array.from(vendorSet).sort()
+					//vendorSet = new Set<any>(arr);
 
 
 

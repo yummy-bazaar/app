@@ -139,7 +139,7 @@ export class GraphQLService implements OnInit, OnDestroy {
 			limit: number				= 250,
 			filters: any,
 			path2FetchMoreFlag: string 	= null,
-			path2Object: string			= null,
+			path2Collection: string			= null,
 			updateQuery: any 
 	): ApolloQueryObservable<any> {
 
@@ -190,9 +190,10 @@ export class GraphQLService implements OnInit, OnDestroy {
 
 
 				// update cursor
-				if (path2Object){
+				if (path2Collection){
 					try {
-						this.cursor = deepFindObjectProp(data, path2Object).slice(-1)[0].cursor;
+						let collection = deepFindObjectProp(data, path2Collection);
+						this.cursor = collection.slice(-1)[0].cursor;
 					}
 					catch (e){
 						this.logger.warn('failed to update cursor');
