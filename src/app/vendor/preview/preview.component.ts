@@ -2,7 +2,8 @@
 import { 
 	Component,
 	Input, 
-	OnInit
+	OnInit,
+	ViewEncapsulation
 } 							from '@angular/core';
 
 // 3rd party modules
@@ -24,9 +25,10 @@ import{
 
 
 @Component({
-  selector: 	'vendor-preview',
-  templateUrl: 	'./preview.component.html',
-  styleUrls: 	['./preview.component.styl']
+	selector: 		'vendor-preview',
+	templateUrl: 	'./preview.component.html',
+	styleUrls: 		['./preview.component.styl'],
+	encapsulation: 	ViewEncapsulation.None
 })
 export class PreviewComponent implements OnInit {
 
