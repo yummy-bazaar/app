@@ -12,6 +12,7 @@ query ProductsQuery(
       first: $limit
       after: $offset
       query: $filters
+      sortKey: TITLE
     ){
       edges{
         node{

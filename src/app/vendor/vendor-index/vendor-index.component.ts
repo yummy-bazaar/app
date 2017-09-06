@@ -373,10 +373,11 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 				(vendor:any) => {
 					
 					// test if vendor key is alphabetic
-					let handle = vendor.node.handle;
+					//let handle: string = vendor.node.handle;
+					let title: string = vendor.node.title.trim();
 					let key: string;
-					startsWithAlpha(handle)
-					? key = handle[0]
+					startsWithAlpha(title)
+					? key = title[0].toLowerCase()
 					: key = '123'
 
 					
