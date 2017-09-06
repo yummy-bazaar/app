@@ -1,0 +1,14 @@
+<!-- products preview -->
+<div
+	class="row"
+>
+	<div
+		class="col-sm-12"
+	>
+		<!-- product -->
+			<product
+				*ngFor="let product of products"
+				[productData]="product"
+			></product>
+	</div>
+</div>
