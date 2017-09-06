@@ -272,6 +272,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					try {
 						//this.cursor = deepFindObjectProp(data, this.path2Object).slice(-1)[0].cursor;
 						this.cursor = data.shop.collections.edges.slice(-1)[0].cursor;
+						this.logger.log(`*** cursor is: ${this.cursor}`);
 					}
 					catch (e){
 						this.logger.error('failed to update cursor: ' + e.message);
@@ -320,7 +321,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		this.dataStream.fetchMore(
 			{
 				variables: {
-					after: this.cursor
+					offset: this.cursor
 				},
 				updateQuery: (prev: any, { fetchMoreResult } :any) => 
 				{
@@ -393,18 +394,18 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					if (!vendorSet)
 						vendorSet = new Set<any>()
 					
+
 					// add new vendor to set
 					vendorSet.add(vendor);
+
 
 					//sort the set
 					//let arr = Array.from(vendorSet).sort()
 					//vendorSet = new Set<any>(arr);
 
 
-
 					// push set in vendors cache
 					this.vendors.set(key,vendorSet);
-
 
 
 					// update vendorKeys cache
