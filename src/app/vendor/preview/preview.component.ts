@@ -32,12 +32,12 @@ export class PreviewComponent implements OnInit {
 
 	
 	private dataStream: 	ApolloQueryObservable<any>;
-	_vendorId:			string;
 
+	_vendorData:			any;
 	@Input() 
-	public set vendorId(id: string) {
-		this._vendorId = id;
-		this.fetch(id);
+	public set vendorData(data: any) {
+		this._vendorData = data;
+		this.fetch(this._vendorData.node.handle);
 	}
 
 	products:					any;
@@ -71,13 +71,13 @@ export class PreviewComponent implements OnInit {
 
 
 
-	fetch(vendorId: string) {
+	fetch(vendorHandle: string) {
 		// run query
 		this.dataStream = this.service.fetch(
 			this.query,
 			this.offset,
 			this.limit,
-			`title=${vendorId}`,
+			`title=${vendorHandle}`,
 			this.path2FetchMoreFlag,
 			this.path2Object,
 			this.updateQuery

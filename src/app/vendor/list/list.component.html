@@ -9,68 +9,9 @@
 			<div
 				class="col-sm-12"
 			>
-				<div
-					class="vendor"
-				>
-					<div
-						class="row"
-					>
-						<!-- cover image -->
-							<div
-								class="col-sm-3"
-							>
-								<div
-									class="cover"
-								>
-									<img 
-										*ngIf="vendor.node.image"
-										src="{{ vendor.node.image.src}}"
-										alt="{{ vendor.node.title }}" 
-									>
-									<p
-										*ngIf="!vendor.node.image"
-									>
-										{{ vendor.node.title }}
-									</p>
-								</div>
-							</div>
-						<!-- vendor details -->
-							<div
-								class="col-sm-9"
-							>
-								<!-- description -->
-									<div
-										class="row"
-									>
-										<div
-											class="
-												col-sm-12
-												description
-											"
-										>
-											<p
-												class=""
-												*ngIf="vendor.node.descriptionHtml"
-												[innerHTML]="vendor.node.descriptionHtml"
-											></p>
-										</div>
-									</div>
-								<!-- products preview -->
-									<div
-										class="row"
-									>
-										<div
-											class="col-sm-12"
-										>
-											<!-- vendor preview component -->
-												<vendor-preview
-													[vendorId]="vendor.node.title"
-												></vendor-preview>
-										</div>
-									</div>
-							</div>
-					</div>
-				</div>
+				<vendor-preview
+					[vendorData]= vendor
+				></vendor-preview>
 			</div>
 		</div>
 	</div>

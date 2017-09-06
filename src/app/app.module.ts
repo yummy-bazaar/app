@@ -21,6 +21,7 @@ import {
 } 							from './app.component';
 import {
 	ListComponent,
+	PreviewComponent,
 	VendorIndexComponent,
 	SelectorComponent
 }							from './vendor'
@@ -57,6 +58,7 @@ import {
 	declarations: [ 
 		AppComponent,
 		ListComponent,
+		PreviewComponent,
 		ProductComponent,
 		ProductIndexComponent,
 		SelectorComponent,
