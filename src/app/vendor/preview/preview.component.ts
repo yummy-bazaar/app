@@ -98,21 +98,9 @@ export class PreviewComponent implements OnInit {
 				// parse product data
 				try {
 
-					// take first 3 products
-					for (let i=0; i<3; i++){
+					this.products = data.shop.products.edges
 
-						// parse single product
-						let product = {
-							id: data.shop.products.edges[i].node.title,
-							img: {
-								src: data.shop.products.edges[i].node.images.edges[0].node.src,
-							}
-						}
-
-						// push product in collection
-						this.products.push(product);
-					}
-
+					//this.logger.log(`** products are: ${JSON.stringify(this.products,null,4)}`);
 					
 				}
 				catch(e) {
