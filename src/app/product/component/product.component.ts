@@ -29,8 +29,17 @@ export class ProductComponent {
 	_productData:		any;
 	@Input() 
 	public set productData(data: any){
+		// cache product data
 		this._productData = data;
-		this.title 		  = data.node.title;
+
+		// store product title
+		let title = data.node.title;
+		(title.length > 25) ?
+			this.title = `${title.slice(0,22)}...` :
+			this.title = title
+		;
+
+		// store product image src
 		try {
 			this.imageSrc 	  = data.node.variants.edges[0].node.image.src;
 		}
@@ -38,6 +47,8 @@ export class ProductComponent {
 			this.logger.warn(`no variant image for ${this.title}! using main image instead`);
 			this.imageSrc 	  = data.node.images.edges[0].node.src;
 		}
+
+		// store product image altText
 		try {
 			this.imageAltText = data.node.variants.edges[0].node.image.altText;
 		}
