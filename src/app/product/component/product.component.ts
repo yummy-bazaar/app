@@ -31,8 +31,20 @@ export class ProductComponent {
 	public set productData(data: any){
 		this._productData = data;
 		this.title 		  = data.node.title;
-		this.imageSrc 	  = data.node.images.edges[0].node.src;
-		this.imageAltText = data.node.images.edges[0].node.altText;
+		try {
+			this.imageSrc 	  = data.node.variants.edges[0].node.image.src;
+		}
+		catch(e){
+			this.logger.warn(`no variant image for ${this.title}! using main image instead`);
+			this.imageSrc 	  = data.node.images.edges[0].node.src;
+		}
+		try {
+			this.imageAltText = data.node.variants.edges[0].node.image.altText;
+		}
+		catch(e){
+			this.logger.warn(`no variant image for ${this.title}! using main image instead`);
+			this.imageAltText = data.node.images.edges[0].node.altText;
+		}
 	}
 
 

@@ -18,8 +18,21 @@ query ProductsQuery(
         node{
           id
           title
-          vendor
+          productType
           handle
+          variants(first: 1){
+            edges{
+              node{
+                price
+                weight
+                weightUnit
+                image{
+                  src
+                  altText
+                }
+              }
+            }
+          }
           images(first: 1) {
             edges {
               node {
