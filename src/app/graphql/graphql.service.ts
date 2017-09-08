@@ -1,9 +1,7 @@
 import { 
-	Component,
+	Injectable,
 	OnInit,
-	OnDestroy,
-	Input,
-	Output
+	OnDestroy
 }					 		from '@angular/core';
 import {
 	Observable
@@ -44,36 +42,30 @@ import {
 // TODO:
 // - impl logic to update client side cache whenever catalog is updated on backend
 // - see: http://dev.apollodata.com/angular2/receiving-updates.html
-@Component({
-	selector: 		'graphql',
-	templateUrl: 	'./graphql.component.html',
-})
-export class GraphQLComponent implements OnInit, OnDestroy {
+@Injectable()
+export class GraphQLService implements OnInit, OnDestroy {
 
-	@Output() dataStream: 			ApolloQueryObservable<any>;
+	dataStream: 					ApolloQueryObservable<any>;
 	private dataSub:				Subscription;
 	private fetchMoreTrigger: 		Observable<boolean>;
 	private fetchMoreSub: 			Subscription;
 	private fetchMoreFlag: 	 		boolean;
 	private cursor: 		 		string;
+	private updateQuery:			any;
 	
 
 	
 	constructor(
 		private client: Apollo,
 		private logger: LoggerService
-	) { 
-
-		// run initialization logic
-		this.init();
-	};
+	) {};
 
 
 
 	ngOnInit(): void {
 
 		// Debug
-		this.logger.log('Starting GraphQLComponent.ngOnInit()');
+		this.logger.log('Starting GraphQLService.ngOnInit()');
 		
 
 		// run initialization logic
@@ -81,25 +73,25 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 
 
 		// Debug
-		this.logger.log('Completed GraphQLComponent.ngOnInit()');
+		this.logger.log('Completed GraphQLService.ngOnInit()');
 	}
 
 
 	ngOnDestroy(): void {
 
 		// Debug
-		this.logger.log('Starting GraphQLComponent.ngOnDestroy()');
+		this.logger.log('Starting GraphQLService.ngOnDestroy()');
 		
 		// run destruction logic
 		this.destroy();
 
 		// Debug
-		this.logger.log('Completed GraphQLComponent.ngOnDestroy()');
+		this.logger.log('Completed GraphQLService.ngOnDestroy()');
 	}
 
 
 
-	// init GraphQLComponent
+	// init GraphQLService
 	// ToDo:
 	// x impl this
 	// - test this manually
@@ -107,7 +99,7 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 	init(): void {
 
 		// Debug
-		this.logger.log('Starting GraphQLComponent.init()');
+		this.logger.log('Starting GraphQLService.init()');
 
 
 		// set initial states for fetchMore listener
@@ -131,29 +123,7 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 
 
 		// Debug
-		this.logger.log('Completed GraphQLComponent.init()');
-	}
-
-
-
-	// run new query against GraphQL API
-	// ToDo:
-	// - impl this
-	// - test this manually
-	// - impl unit tests
-	fetch(eventData: string): void {
-
-		// parse config string
-		let config = JSON.parse(eventData);
-
-		// run fetch
-		this.doFetch(
-			config.query,
-			config.offset,
-			config.limit,
-			config.path2FetchMoreFlag,
-			config.path2Object
-		);
+		this.logger.log('Completed GraphQLService.init()');
 	}
 
 
@@ -163,17 +133,19 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 	// x impl this
 	// - test this manually
 	// - impl unit tests
-	private doFetch(
+	fetch(
 			query: any, 
 			offset: string				= null,
 			limit: number				= 250,
+			filters: any,
 			path2FetchMoreFlag: string 	= null,
-			path2Object: string			= null
-	): void {
+			path2Collection: string			= null,
+			updateQuery: any 
+	): ApolloQueryObservable<any> {
 
 
 		// Debug
-		this.logger.log('Starting GraphQLComponent.fetch()');
+		//this.logger.log('Starting GraphQLService.fetch()');
 
 
 
@@ -184,7 +156,8 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 					query: query,
 					variables: {
 						offset: offset,
-						limit: limit
+						limit: limit,
+						filters: filters
 					}
 				}
 			)
@@ -197,7 +170,11 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 			({data, loading}) => {
 
 				// Debug
-				this.logger.log('Starting to consume API payload in GraphQLComponent.fetch()');
+				this.logger.log('Starting to consume API payload in GraphQLService.fetch()');
+
+
+				// Set updateQuery
+				this.updateQuery = updateQuery;
 
 
 				// update fetchMoreFlag 
@@ -213,9 +190,10 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 
 
 				// update cursor
-				if (path2Object){
+				if (path2Collection){
 					try {
-						this.cursor = deepFindObjectProp(data, path2Object).slice(-1)[0].cursor;
+						let collection = deepFindObjectProp(data, path2Collection);
+						this.cursor = collection.slice(-1)[0].cursor;
 					}
 					catch (e){
 						this.logger.warn('failed to update cursor');
@@ -225,7 +203,7 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 
 
 				// Debug
-				this.logger.log('Finished consuming API payload in GraphQLComponent.fetch()');
+				this.logger.log('Finished consuming API payload in GraphQLService.fetch()');
 			},
 			(err) => { 
 				this.logger.error('Fetch error: ' + err.message); 
@@ -234,7 +212,11 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 
 
 		// Debug
-		this.logger.log('Completed GraphQLComponent.fetch()');
+		//this.logger.log('Completed GraphQLService.fetch()');
+
+
+		// return stream
+		return this.dataStream;
 
 	}
 
@@ -251,7 +233,7 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 	private fetchMore(): void {
 
 		// Debug
-		this.logger.log('Starting GraphQLComponent.fetchMore()');
+		this.logger.log('Starting GraphQLService.fetchMore()');
 
 
 		// halt if there is no more data to be fetched
@@ -273,34 +255,18 @@ export class GraphQLComponent implements OnInit, OnDestroy {
 					//this.logger.log(`res is: ${JSON.stringify(res,null,4)}`);
 
 					// register new results with Apollo client
-					return Object.assign(
-						{}, 
-						prev, 
-						{
-							shop: {
-								collections: {
-									edges: [
-										...prev.shop.collections.edges, 
-										...fetchMoreResult.shop.collections.edges,
-									],
-									pageInfo: fetchMoreResult.shop.collections.pageInfo,
-									__typename: "CollectionConnection"
-								},
-							},
-							__typename: "Shop"
-						}
-					);
+					return this.updateQuery(prev,fetchMoreResult);
 				},
 			}
 		);
 
 		// Debug
-		this.logger.log('Completed GraphQLComponent.fetchMore()');
+		this.logger.log('Completed GraphQLService.fetchMore()');
 	}
 
 
 
-	// destroy GraphQLComponent
+	// destroy GraphQLService
 	// ToDo:
 	// x impl this
 	// x test this manually

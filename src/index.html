@@ -59,6 +59,22 @@
 				type="text/javascript"
 				src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 			></script>
+
+		<!-- service worker config -->
+			<script>
+			if ('serviceWorker' in navigator) {
+				navigator
+					.serviceWorker
+					.register('/service-worker.js')
+					.then(function(registration) {
+						console.log('Service Worker registered');
+					})
+					.catch(function(err) {
+						console.log('Service Worker registration failed: ', err);
+					})
+				;
+			}
+			</script>
 	</body>
 </html>
 

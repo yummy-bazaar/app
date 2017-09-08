@@ -1,0 +1,129 @@
+<div
+	class="
+		row
+		product-container
+	"
+>
+	<div
+		class="col-xs-12"
+	>
+		<!-- image -->
+			<div
+				class="row"
+			>
+				<div
+					class="
+						col-xs-12
+						text-center
+						image-container
+					"
+				>
+					<a 
+						href="{{ productUrl }}"
+					>
+						<img 
+							src="{{ imageSrc }}"
+							alt="{{ imageAltText }}" 
+						>
+					</a>
+				</div>
+			</div>
+		<!-- title -->
+			<div
+				class="row"
+			>
+				<div
+					class="
+						col-xs-12
+						title-container
+					"
+				>
+					<a 
+						href="{{ productUrl }}"
+					>
+						<span>{{ title }}</span>
+					</a>
+				</div>
+			</div>
+		<!-- weight -->
+			<a 
+				href="{{ productUrl }}"
+			>
+				<div
+					class="row"
+				>
+					<div
+						class="
+							col-xs-12
+							weight-container
+						"
+					>
+						<span *ngIf="impWeight">
+							{{ impWeight }}oz
+						</span>
+						&nbsp;&nbsp;
+						<span *ngIf="metWeight">
+							( {{ metWeight }}{{ metUnit }} )
+						</span>
+
+					</div>
+				</div>
+			</a>
+		<!-- type -->
+			<a 
+				href="{{ productUrl }}"
+			>
+				<div
+					class="row"
+				>
+					<div
+						class="
+							col-xs-12
+							type-container
+						"
+					>
+						<span>{{ type }}</span>
+					</div>
+				</div>
+			</a>
+		<!-- action -->
+			<div
+				class="row"
+			>
+				<!-- price -->
+					<a 
+						href="{{ productUrl }}"
+					>
+						<div
+							class="
+								col-xs-6
+								price-container
+							"
+						>
+							<span
+								class="price"
+							>
+								${{ price }}
+							</span>
+						</div>
+					</a>
+				<!-- button -->
+					<div
+						class="
+							col-xs-6
+							text-right
+							button-container
+						"
+					>
+						<a
+							href="{{ toCartUrl }}"
+							class="
+								button
+							"
+						>
+							ADD
+						</a>
+					</div>
+			</div>
+	</div>
+</div>

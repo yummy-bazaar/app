@@ -5,16 +5,16 @@ import {
 import * as _				from 'lodash';
 import { 
 	Product
-}				 			from './';
+}				 			from '../';
 import { 
 	Apollo,
 	ApolloQueryObservable
 } 							from 'apollo-angular';
 import {
 	ProductsQuery
-}  							from '../graphql';
+}  							from '../../graphql';
 import { Subject } 			from 'rxjs/Subject';
-import { LoggerService	}	from '../utils';
+import { LoggerService	}	from '../../utils';
 import * as slugify 		from 'slugify';
 
 

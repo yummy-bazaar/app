@@ -42,10 +42,10 @@ export class SelectorComponent implements OnInit {
 	ngOnInit(): void {
 
 		// Debug
-		this.logger.log('Starting DumbComponent.ngOnInit()');
+		this.logger.log('Starting SelectorComponent.ngOnInit()');
 
 		// Debug
-		this.logger.log('Completed DumbComponent.ngOnInit()');
+		this.logger.log('Completed SelectorComponent.ngOnInit()');
 	};
 
 
@@ -53,10 +53,10 @@ export class SelectorComponent implements OnInit {
 	ngOnDestroy(): void {
 
 		// Debug
-		this.logger.log('Starting DumbComponent.ngOnDestroy()');
+		this.logger.log('Starting SelectorComponent.ngOnDestroy()');
 
 		// Debug
-		this.logger.log('Completed DumbComponent.ngOnDestroy()');
+		this.logger.log('Completed SelectorComponent.ngOnDestroy()');
 	}
 
 

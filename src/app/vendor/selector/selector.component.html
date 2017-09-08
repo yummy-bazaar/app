@@ -1,12 +1,17 @@
-<!-- selector component -->
-	<div
-		id="selector"
-	>
-		<div  
-			class="row" 
-		>	
+<div
+	id="selector"
+>
+	<div  
+		class="row" 
+	>	
+		<div
+			class="
+				col-sm-12
+				text-center
+			"
+		>
 			<a
-				class="col-xs-1"
+				class="key"
 				*ngFor="let vendorKey of vendorKeys"
 				(click)="selectVendor(vendorKey)"
 				[attr.data-key]=vendorKey
@@ -17,7 +22,7 @@
 			</a>
 		</div>
 	</div>
-<!-- selector component -->
+</div>
 
 
 

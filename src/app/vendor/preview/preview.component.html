@@ -1,0 +1,64 @@
+<div
+	id="preview"
+>
+	<div
+		class="row"
+	>
+		<!-- cover image -->
+			<div
+				class="col-sm-3"
+			>
+				<div
+					id="image-container"
+				>
+					<img 
+						*ngIf="image"
+						id="image" 
+						src="{{ image.src}}"
+						alt="{{ image.altText }}" 
+					>
+					<div
+						*ngIf="!image"
+						id="title-container"
+					>
+						<span
+							id="title"
+						>
+							{{ title }}
+						</span>
+					</div>
+				</div>
+			</div>
+		<!-- vendor details -->
+			<div
+				class="col-sm-9"
+			>
+				<!-- description -->
+					<div
+						class="row"
+					>
+						<div
+							id="description"
+							class="col-sm-12"
+							[innerHTML]="_vendorData.node.descriptionHtml"
+						></div>
+					</div>
+
+				<!-- products preview -->
+					<div
+						class="row"
+					>
+						<div
+							class="col-sm-12"
+						>
+							<!-- product -->
+								<product
+									*ngFor="let product of products"
+									[productData]="product"
+									[shopUrl]="shopUrl"
+								></product>
+						</div>
+					</div>
+			</div>
+	</div>
+</div>

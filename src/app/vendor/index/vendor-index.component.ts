@@ -23,8 +23,7 @@ import {
 // project modules
 import {
 	CollectionsQuery,
-	InitializationQuery,
-	GraphQLComponent
+	InitializationQuery
 }  							from '../../graphql';
 import { 
 	deepFindObjectProp,
@@ -222,7 +221,8 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 				variables: {
 					offset: offset,
 					limit: limit
-				}
+				},
+				fetchPolicy: 'cache-first'
 			}
 		);
 
@@ -320,7 +320,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		this.dataStream.fetchMore(
 			{
 				variables: {
-					after: this.cursor
+					offset: this.cursor
 				},
 				updateQuery: (prev: any, { fetchMoreResult } :any) => 
 				{
@@ -373,10 +373,11 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 				(vendor:any) => {
 					
 					// test if vendor key is alphabetic
-					let handle = vendor.node.handle;
+					//let handle: string = vendor.node.handle;
+					let title: string = vendor.node.title.trim();
 					let key: string;
-					startsWithAlpha(handle)
-					? key = handle[0]
+					startsWithAlpha(title)
+					? key = title[0].toLowerCase()
 					: key = '123'
 
 					
@@ -392,18 +393,18 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					if (!vendorSet)
 						vendorSet = new Set<any>()
 					
+
 					// add new vendor to set
 					vendorSet.add(vendor);
 
-					//sort the set
-					let arr = Array.from(vendorSet).sort()
-					vendorSet = new Set<any>(arr);
 
+					//sort the set
+					//let arr = Array.from(vendorSet).sort()
+					//vendorSet = new Set<any>(arr);
 
 
 					// push set in vendors cache
 					this.vendors.set(key,vendorSet);
-
 
 
 					// update vendorKeys cache

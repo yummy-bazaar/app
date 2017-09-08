@@ -20,17 +20,19 @@ import {
 	AppComponent 
 } 							from './app.component';
 import {
-	ListComponent,
+	PreviewComponent,
 	VendorIndexComponent,
 	SelectorComponent
 }							from './vendor'
 import {
+	ProductComponent,
 	ProductIndexComponent
 } 							from './product';
 
 // Project Services
 import {
-	getApolloClient
+	getApolloClient,
+	GraphQLService
 }							from './graphql';
 import { 
 	LoggerService,
@@ -48,15 +50,17 @@ import {
 		BrowserModule,
 	],
 	providers:    [ 
+		GraphQLService,
 		LoggerService,
 		StorageService,
 	],
 	declarations: [ 
 		AppComponent,
+		PreviewComponent,
+		ProductComponent,
 		ProductIndexComponent,
-		VendorIndexComponent,
 		SelectorComponent,
-		ListComponent,
+		VendorIndexComponent,
 	],
 	exports:      [ 
 		AppComponent,

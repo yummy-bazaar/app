@@ -1,2 +1,3 @@
-export * from './product-index.component';
-export * from './product.model';
+export * from './component/product.component';
+export * from './models/product.model';
+export * from './product-index/product-index.component';

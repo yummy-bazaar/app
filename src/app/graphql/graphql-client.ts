@@ -27,6 +27,15 @@ import{
 	ApolloClient,
 	createNetworkInterface
 } 							from 'apollo-client';
+import offline 				from 'apollo-offline';
+import { 
+	applyMiddleware, 
+	combineReducers, 
+	compose, 
+	createStore,
+	StoreEnhancer
+} 							from 'redux';
+import config 				from 'redux-offline/lib/defaults';
 
 // import project utils
 import {
@@ -71,6 +80,10 @@ let newHeaders = headers.reduce(
 
 
 
+/**
+*
+*	non-offline impl
+*
 // initialize Apollo client
 const client = new ApolloClient({
 	networkInterface: createNetworkInterface({
@@ -80,6 +93,53 @@ const client = new ApolloClient({
 		}
 	})
 });
+*/
+
+
+
+// 1. Wrap your network interface
+const { enhancer, networkInterface } = offline(
+	createNetworkInterface({
+		uri: uri,
+		opts: {
+			headers: newHeaders
+		}
+	}),
+);
+
+
+
+// 2. Create your Apollo client
+const client = new ApolloClient({
+	/* Your Apollo configuration here... */
+	networkInterface,
+});
+
+
+
+// 3. Pass the client to the offline network interface
+// (Optional, but needed for the optimistic fetch feature)
+networkInterface.setClient(client);
+
+
+
+// 4. Create your redux store
+export const store = createStore(
+	combineReducers({
+		apollo: client.reducer(),
+	}),
+	undefined,
+	compose(
+		<StoreEnhancer<{}>> applyMiddleware(
+			client.middleware()
+		),
+
+		// Apply offline store enhancer
+		// (You can pass your own redux-offline config, but the default one is a good starting point)
+		enhancer(config),
+	),
+);
+
 
 
 
