@@ -43,6 +43,7 @@ export class PreviewComponent implements OnInit {
 	}
 
 	products:					any;
+	shopUrl:					string;
 	private query:				any;
 	private updateQuery:		any;
 	private offset:				string;
@@ -64,6 +65,7 @@ export class PreviewComponent implements OnInit {
 		this.path2FetchMoreFlag = 'shop.products.pageInfo.hasNextPage';
 		this.path2Collection 	= 'shop.products.edges';
 		this.products 			= [];
+		this.shopUrl			= null;
 	}
 
 
@@ -99,14 +101,16 @@ export class PreviewComponent implements OnInit {
 				try {
 
 					this.products = data.shop.products.edges
-
-					//this.logger.log(`** products are: ${JSON.stringify(this.products,null,4)}`);
 					
 				}
 				catch(e) {
 					this.logger.warn(`error parsing product data`);
 					this.logger.warn(JSON.stringify(e,null,4));
 				}
+
+
+				// set shop url
+				this.shopUrl = data.shop.primaryDomain.url;
 
 
 				// Debug
