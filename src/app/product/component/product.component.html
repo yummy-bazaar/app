@@ -18,10 +18,14 @@
 						image-container
 					"
 				>
-					<img 
-						src="{{ imageSrc }}"
-						alt="{{ imageAltText }}" 
+					<a 
+						href="{{ productUrl }}"
 					>
+						<img 
+							src="{{ imageSrc }}"
+							alt="{{ imageAltText }}" 
+						>
+					</a>
 				</div>
 			</div>
 		<!-- title -->
@@ -34,58 +38,75 @@
 						title-container
 					"
 				>
-					<span>{{ title }}</span>
+					<a 
+						href="{{ productUrl }}"
+					>
+						<span>{{ title }}</span>
+					</a>
 				</div>
 			</div>
 		<!-- weight -->
-			<div
-				class="row"
+			<a 
+				href="{{ productUrl }}"
 			>
 				<div
-					class="
-						col-xs-12
-						weight-container
-					"
+					class="row"
 				>
-					<span *ngIf="impWeight">
-						{{ impWeight }}oz
-					</span>
-					&nbsp;&nbsp;
-					<span *ngIf="metWeight">
-						( {{ metWeight }}{{ metUnit }} )
-					</span>
+					<div
+						class="
+							col-xs-12
+							weight-container
+						"
+					>
+						<span *ngIf="impWeight">
+							{{ impWeight }}oz
+						</span>
+						&nbsp;&nbsp;
+						<span *ngIf="metWeight">
+							( {{ metWeight }}{{ metUnit }} )
+						</span>
+
+					</div>
 				</div>
-			</div>
+			</a>
 		<!-- type -->
-			<div
-				class="row"
+			<a 
+				href="{{ productUrl }}"
 			>
 				<div
-					class="
-						col-xs-12
-						type-container
-					"
+					class="row"
 				>
-					<span>{{ type }}</span>
+					<div
+						class="
+							col-xs-12
+							type-container
+						"
+					>
+						<span>{{ type }}</span>
+					</div>
 				</div>
-			</div>
+			</a>
 		<!-- action -->
 			<div
 				class="row"
 			>
 				<!-- price -->
-					<div
-						class="
-							col-xs-6
-							price-container
-						"
+					<a 
+						href="{{ productUrl }}"
 					>
-						<span
-							class="price"
+						<div
+							class="
+								col-xs-6
+								price-container
+							"
 						>
-							${{ price }}
-						</span>
-					</div>
+							<span
+								class="price"
+							>
+								${{ price }}
+							</span>
+						</div>
+					</a>
 				<!-- button -->
 					<div
 						class="
@@ -95,7 +116,7 @@
 						"
 					>
 						<a
-							href="{{ baseUrl }}{{ handle }}"
+							href="{{ toCartUrl }}"
 							class="
 								button
 							"

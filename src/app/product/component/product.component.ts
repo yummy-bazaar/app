@@ -21,21 +21,24 @@ import{
 export class ProductComponent {
 
 
-	title:					string;
-	handle:					string;
-	imageSrc:				string;
-	imageAltText:			string;
-	impWeight:				number;
-	metWeight:				number;
-	metUnit:				string;
-	type:					string;
-	price:					number;
-	baseUrl:				string;
+	id:				string;
+	title:			string;
+	handle:			string;
+	imageSrc:		string;
+	imageAltText:	string;
+	impWeight:		number;
+	metWeight:		number;
+	metUnit:		string;
+	type:			string;
+	price:			number;
+	productUrl:		string;
+	toCartUrl: 		string;
 
 	_productData: any;
 	@Input() 
 	public set productData(data: any){
 		this._productData = data;
+		this.parseId(data);
 		this.parseTitle(data);
 		this.parseHandle(data);
 		this.parseImage(data);
@@ -47,7 +50,8 @@ export class ProductComponent {
 	_shopUrl: string;
 	@Input()
 	public set shopUrl(url: string){
-		this.parseBaseUrl(url);
+		this._shopUrl = url;
+		this.parseUrl(url);
 	}
 
 
@@ -55,6 +59,13 @@ export class ProductComponent {
 	constructor(
 		private logger:		LoggerService
 	) {}
+
+
+
+	private parseId(data: any): void {
+
+		this.id = data.node.id;
+	}
 
 
 
@@ -167,9 +178,15 @@ export class ProductComponent {
 
 
 
-	private parseBaseUrl(url: string): void {
+	private parseUrl(shopUrl: string): void {
 
-		this.baseUrl = `${url}/products/`;
+		// set product base url
+		this.productUrl = `${this._shopUrl}/products/${this.handle}`;
+
+		// set add to cart url
+		// TODO:
+		// - figure out how to do this in the context of the Retina theme
+		this.toCartUrl	= `${this._shopUrl}/cart/add?id=${this.id}`;
 	}
 
 }
