@@ -1,96 +1,108 @@
-<!-- product -->
+<div
+	class="
+		row
+		product-container
+	"
+>
 	<div
-		class="
-			row
-			product
-		"
+		class="col-xs-12"
 	>
-		<div
-			class="col-xs-12"
-		>
-			<!-- image -->
+		<!-- image -->
+			<div
+				class="row"
+			>
 				<div
-					class="row"
+					class="
+						col-xs-12
+						text-center
+						image-container
+					"
 				>
+					<img 
+						src="{{ imageSrc }}"
+						alt="{{ imageAltText }}" 
+					>
+				</div>
+			</div>
+		<!-- title -->
+			<div
+				class="row"
+			>
+				<div
+					class="
+						col-xs-12
+						title-container
+					"
+				>
+					<span>{{ title }}</span>
+				</div>
+			</div>
+		<!-- weight -->
+			<div
+				class="row"
+			>
+				<div
+					class="
+						col-xs-12
+						weight-container
+					"
+				>
+					<span *ngIf="impWeight">
+						{{ impWeight }}oz
+					</span>
+					&nbsp;&nbsp;
+					<span *ngIf="metWeight">
+						( {{ metWeight }}{{ metUnit }} )
+					</span>
+				</div>
+			</div>
+		<!-- type -->
+			<div
+				class="row"
+			>
+				<div
+					class="
+						col-xs-12
+						type-container
+					"
+				>
+					<span>{{ type }}</span>
+				</div>
+			</div>
+		<!-- action -->
+			<div
+				class="row"
+			>
+				<!-- price -->
 					<div
 						class="
-							col-xs-12
-							text-center
-							image
+							col-xs-6
+							price-container
 						"
 					>
-						<img 
-							src="{{ imageSrc }}"
-							alt="{{ imageAltText }}" 
+						<span
+							class="price"
 						>
+							${{ price }}
+						</span>
 					</div>
-				</div>
-			<!-- title -->
-				<div
-					class="row"
-				>
+				<!-- button -->
 					<div
 						class="
-							col-xs-12
-							title
+							col-xs-6
+							text-right
+							button-container
 						"
 					>
-						<span>{{ title }}</span>
-					</div>
-				</div>
-			<!-- weight -->
-				<div
-					class="row"
-				>
-					<div
-						class="
-							col-xs-12
-							weight
-						"
-					>
-						<span *ngIf="impWeight">{{ impWeight }}oz</span>&nbsp;&nbsp;
-						<span *ngIf="metWeight">( {{ metWeight }}{{ metUnit }} )</span>
-					</div>
-				</div>
-			<!-- type -->
-				<div
-					class="row"
-				>
-					<div
-						class="
-							col-xs-12
-							type
-						"
-					>
-						<span>{{ type }}</span>
-					</div>
-				</div>
-			<!-- action -->
-				<div
-					class="row"
-				>
-					<!-- price -->
-						<div
+						<a
+							href="{{ baseUrl }}{{ handle }}"
 							class="
-								col-xs-6
-								price
+								button
 							"
 						>
-							<span>${{ price }}</span>
-						</div>
-					<!-- action -->
-						<div
-							class="
-								col-xs-6
-								action
-							"
-						>
-							<a
-								href="{{ baseUrl }}{{ handle }}"
-							>
-								ADD
-							</a>
-						</div>
-				</div>
-		</div>
+							ADD
+						</a>
+					</div>
+			</div>
 	</div>
+</div>
