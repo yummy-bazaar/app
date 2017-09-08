@@ -1,6 +1,6 @@
 <!-- section: featured vendors component -->
 	<div
-		id="feat-vendor-container"
+		id="featured-container"
 		class="row"
 	>
 		<div
@@ -14,7 +14,7 @@
 				<!-- featured vendor -->
 					<div
 						class="
-							feat-vendor
+							featured
 							col-sm-4
 							text-center
 						"
@@ -26,7 +26,7 @@
 				<!-- featured vendor -->
 					<div
 						class="
-							feat-vendor
+							featured
 							col-sm-4
 							text-center
 						"
@@ -38,7 +38,7 @@
 				<!-- featured vendor -->
 					<div
 						class="
-							feat-vendor
+							featured
 							col-sm-4
 							text-center
 						"
@@ -91,18 +91,20 @@
 						</div>
 					</div>
 
-				<!-- vendor list component -->
-					<div
-						id="list-container"
-						class="row"
+				<!-- vendor previews -->
+					<div 
+						*ngFor="let vendor of selectedVendors"
+						class="
+							row
+							preview-container
+						" 
 					>
-						<div 
+						<div
 							class="col-sm-12"
 						>
-							<list
-								[selectedVendors] 	 = selectedVendors
-							></list>
-
+							<vendor-preview
+								[vendorData]= vendor
+							></vendor-preview>
 						</div>
 					</div>
 			</div>

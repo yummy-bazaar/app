@@ -20,7 +20,6 @@ import {
 	AppComponent 
 } 							from './app.component';
 import {
-	ListComponent,
 	PreviewComponent,
 	VendorIndexComponent,
 	SelectorComponent
@@ -57,7 +56,6 @@ import {
 	],
 	declarations: [ 
 		AppComponent,
-		ListComponent,
 		PreviewComponent,
 		ProductComponent,
 		ProductIndexComponent,
