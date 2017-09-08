@@ -8,6 +8,9 @@ query ProductsQuery(
     $offset: String
   ) {
   shop{
+    primaryDomain{
+      url
+    }
     products(
       first: $limit
       after: $offset

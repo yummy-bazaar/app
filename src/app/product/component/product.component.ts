@@ -29,15 +29,25 @@ export class ProductComponent {
 	metWeight:				number;
 	metUnit:				string;
 	type:					string;
+	price:					number;
+	baseUrl:				string;
 
-	_productData:		any;
+	_productData: any;
 	@Input() 
 	public set productData(data: any){
 		this._productData = data;
 		this.parseTitle(data);
+		this.parseHandle(data);
 		this.parseImage(data);
 		this.parseWeight(data);
 		this.parseType(data);
+		this.parsePrice(data);
+	}
+
+	_shopUrl: string;
+	@Input()
+	public set shopUrl(url: string){
+		this.parseBaseUrl(url);
 	}
 
 
@@ -56,6 +66,13 @@ export class ProductComponent {
 			this.title = `${title.slice(0,22)}...` :
 			this.title = title
 		;
+	}
+
+
+
+	private parseHandle(data: any): void {
+
+		this.handle = data.node.handle;
 	}
 
 
@@ -139,6 +156,20 @@ export class ProductComponent {
 	private parseType(data: any): void {
 
 		this.type = data.node.productType;
+	}
+
+
+
+	private parsePrice(data: any): void {
+
+		this.price = +data.node.variants.edges[0].node.price;
+	}
+
+
+
+	private parseBaseUrl(url: string): void {
+
+		this.baseUrl = `${url}/products/`;
 	}
 
 }
