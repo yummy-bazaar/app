@@ -34,12 +34,34 @@ export class PreviewComponent implements OnInit {
 
 	
 	private dataStream: 	ApolloQueryObservable<any>;
+	title:					string;
+	image:					any;
+	description:			string;
 
 	_vendorData:			any;
 	@Input() 
 	public set vendorData(data: any) {
+		
+		// cache vendor data
 		this._vendorData = data;
-		this.fetch(this._vendorData.node.handle);
+
+		// set title
+		this.title = data.node.title;
+
+		// set vendor image
+		if (data.node.image) {
+			this.image = {
+				src: data.node.image.src,
+				altText: data.node.image.altText
+			};
+		}
+
+		// set vendor description
+		this.description = data.node.descriptionHtml;
+
+
+		// fetch product data
+		this.fetch(data.node.handle);
 	}
 
 	products:					any;
@@ -110,6 +132,8 @@ export class PreviewComponent implements OnInit {
 
 
 				// set shop url
+				// TODO:
+				// - move this out of the call back so it doesn't get set over & over
 				this.shopUrl = data.shop.primaryDomain.url;
 
 

@@ -1,5 +1,5 @@
 <div
-	class="vendor"
+	id="preview"
 >
 	<div
 		class="row"
@@ -9,18 +9,24 @@
 				class="col-sm-3"
 			>
 				<div
-					class="cover"
+					id="image-container"
 				>
 					<img 
-						*ngIf="_vendorData.node.image"
-						src="{{ _vendorData.node.image.src}}"
-						alt="{{ _vendorData.node.title }}" 
+						*ngIf="image"
+						id="image" 
+						src="{{ image.src}}"
+						alt="{{ image.altText }}" 
 					>
-					<p
-						*ngIf="!_vendorData.node.image"
+					<div
+						*ngIf="!image"
+						id="title-container"
 					>
-						{{ _vendorData.node.title }}
-					</p>
+						<span
+							id="title"
+						>
+							{{ title }}
+						</span>
+					</div>
 				</div>
 			</div>
 		<!-- vendor details -->
@@ -32,10 +38,8 @@
 						class="row"
 					>
 						<div
-							class="
-								col-sm-12
-								description
-							"
+							id="description"
+							class="col-sm-12"
 							[innerHTML]="_vendorData.node.descriptionHtml"
 						></div>
 					</div>
