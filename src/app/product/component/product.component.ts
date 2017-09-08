@@ -25,21 +25,40 @@ export class ProductComponent {
 	handle:					string;
 	imageSrc:				string;
 	imageAltText:			string;
+	weightOz:				number;
+	weightG:				number;
 
 	_productData:		any;
 	@Input() 
 	public set productData(data: any){
-		// cache product data
 		this._productData = data;
+		this.parseTitle(data);
+		this.parseImage(data);
+		this.parseWeight(data);
+	}
 
-		// store product title
-		let title = data.node.title;
+
+
+	constructor(
+		private logger:		LoggerService
+	) {}
+
+
+
+	private parseTitle(data: any): void {
+
+		let title: string = data.node.title;
+
 		(title.length > 25) ?
 			this.title = `${title.slice(0,22)}...` :
 			this.title = title
 		;
+	}
 
-		// store product image src
+
+
+	private parseImage(data: any): void {
+
 		try {
 			this.imageSrc 	  = data.node.variants.edges[0].node.image.src;
 		}
@@ -48,7 +67,7 @@ export class ProductComponent {
 			this.imageSrc 	  = data.node.images.edges[0].node.src;
 		}
 
-		// store product image altText
+		// parse product image altText
 		try {
 			this.imageAltText = data.node.variants.edges[0].node.image.altText;
 		}
@@ -59,9 +78,33 @@ export class ProductComponent {
 	}
 
 
-	constructor(
-		private logger:		LoggerService
-	) {}
+	private parseWeight(data: any): void {
+/*
+		let unit = data.node.weightUnit;
+		if (unit.trim() === "OUNCES") {
+			this.weightOz = data.node.weight
+
+		}
+*/
+/*
+GRAMS
+
+Metric system unit of mass
+
+KILOGRAMS
+
+1 equals 1000 grams
+
+OUNCES
+
+Imperial system unit of mass
+
+POUNDS
+
+1 equals 16 ounces
+*/
+
+	}
 
 }
 
