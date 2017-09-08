@@ -25,8 +25,9 @@ export class ProductComponent {
 	handle:					string;
 	imageSrc:				string;
 	imageAltText:			string;
-	weightOz:				number;
-	weightG:				number;
+	impWeight:				number;
+	metWeight:				number;
+	metUnit:				string;
 
 	_productData:		any;
 	@Input() 
@@ -59,6 +60,7 @@ export class ProductComponent {
 
 	private parseImage(data: any): void {
 
+		// parse product image src
 		try {
 			this.imageSrc 	  = data.node.variants.edges[0].node.image.src;
 		}
@@ -72,37 +74,61 @@ export class ProductComponent {
 			this.imageAltText = data.node.variants.edges[0].node.image.altText;
 		}
 		catch(e){
-			this.logger.warn(`no variant image for ${this.title}! using main image instead`);
+			this.logger.warn(`no variant altText for ${this.title}! using main altText instead`);
 			this.imageAltText = data.node.images.edges[0].node.altText;
 		}
 	}
 
 
 	private parseWeight(data: any): void {
-/*
-		let unit = data.node.weightUnit;
-		if (unit.trim() === "OUNCES") {
-			this.weightOz = data.node.weight
 
+		// fetch unit
+		let unit = data.node.variants.edges[0].node.weightUnit;
+
+		// handle unit conversions
+		switch (unit) {
+			case "OUNCES":
+				this.impWeight	= +data.node.variants.edges[0].node.weight;
+				this.metWeight 	= +(this.impWeight / 0.035274).toFixed(2);
+				this.metUnit   	= 'g';
+				break;
+			
+			
+			case "GRAMS":
+				this.metWeight 	= +data.node.variants.edges[0].node.weight;
+				this.impWeight	= +(this.metWeight / 28.3495).toFixed(2);
+				this.metUnit   	= 'g';
+				break;
+			
+			
+			case "KILOGRAMS":
+				this.metWeight 	= +data.node.variants.edges[0].node.weight;
+				this.impWeight	= null
+				this.metUnit	= 'kg'
+				break;
+			
+			
+			case "POUNDS":
+				this.impWeight	= (+data.node.variants.edges[0].node.weight / 16);
+				this.metWeight 	= +(this.impWeight / 0.035274).toFixed(2);
+				this.metUnit 	= 'g';
+				break;
+			
+			default:
+				this.impWeight	= null;
+				this.metWeight	= null;
+				break;
 		}
-*/
-/*
-GRAMS
 
-Metric system unit of mass
-
-KILOGRAMS
-
-1 equals 1000 grams
-
-OUNCES
-
-Imperial system unit of mass
-
-POUNDS
-
-1 equals 16 ounces
-*/
+		// switch to KG if necessary
+		let magnitude = this.metWeight / 1000;
+		if (
+			this.metUnit === 'g' && 
+			magnitude >= 1
+		) {
+			this.metWeight = +(this.metWeight / 1000).toFixed(2);
+			this.metUnit   = 'kg';
+		}
 
 	}
 

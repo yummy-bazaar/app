@@ -32,11 +32,24 @@
 					<div
 						class="
 							col-xs-12
-							text-center
 							title
 						"
 					>
 						<span>{{ title }}</span>
+					</div>
+				</div>
+			<!-- weight -->
+				<div
+					class="row"
+				>
+					<div
+						class="
+							col-xs-12
+							weight
+						"
+					>
+						<span *ngIf="impWeight">{{ impWeight }}oz</span>&nbsp;&nbsp;
+						<span *ngIf="metWeight">( {{ metWeight }}{{ metUnit }} )</span>
 					</div>
 				</div>
 		</div>
