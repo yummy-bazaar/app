@@ -28,6 +28,7 @@ export class ProductComponent {
 	impWeight:				number;
 	metWeight:				number;
 	metUnit:				string;
+	type:					string;
 
 	_productData:		any;
 	@Input() 
@@ -36,6 +37,7 @@ export class ProductComponent {
 		this.parseTitle(data);
 		this.parseImage(data);
 		this.parseWeight(data);
+		this.parseType(data);
 	}
 
 
@@ -132,7 +134,16 @@ export class ProductComponent {
 
 	}
 
+
+
+	private parseType(data: any): void {
+
+		this.type = data.node.productType;
+	}
+
 }
+
+
 
 
 
