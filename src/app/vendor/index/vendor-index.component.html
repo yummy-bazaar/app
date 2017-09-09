@@ -1,5 +1,6 @@
 <!-- featured vendors -->
 	<div
+		
 		id="featured-container"
 		class="row"
 	>
@@ -9,10 +10,12 @@
 			"
 		>
 			<div
+				*ngIf="featuredVendors"
 				class="row"
 			>
 				<!-- featured vendor -->
 					<div
+						*ngFor="let vendor of featuredVendors"
 						class="
 							featured
 							col-sm-4
@@ -20,31 +23,7 @@
 						"
 					>
 						<h1>
-							Feat Vendor 1
-						</h1>
-					</div>
-				<!-- featured vendor -->
-					<div
-						class="
-							featured
-							col-sm-4
-							text-center
-						"
-					>
-						<h1>
-							Feat Vendor 2
-						</h1>
-					</div>
-				<!-- featured vendor -->
-					<div
-						class="
-							featured
-							col-sm-4
-							text-center
-						"
-					>
-						<h1>
-							Feat Vendor 3
+							{{ vendor.title }}
 						</h1>
 					</div>
 			</div>
