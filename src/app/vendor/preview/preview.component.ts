@@ -57,7 +57,11 @@ export class PreviewComponent implements OnInit {
 		}
 
 		// set vendor description
-		this.description = data.node.descriptionHtml;
+		let html: string = data.node.descriptionHtml;
+		(html.length >= 410) ?
+			this.description = `${html.slice(0,435)}...`:
+			this.description = html
+		;
 
 
 		// fetch product data
