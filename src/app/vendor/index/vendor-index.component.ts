@@ -388,12 +388,21 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 							if (!this.featuredVendors)
 								this.featuredVendors = [];
 
-							// add vendor to featured vendor collection
-							let featured = {
-								title: title.replace(/\*+/,''),
-								data: vendor
+							
+							// limit featured vendors to 3
+							if (this.featuredVendors.length < 3) {
+
+								// add vendor to featured vendors collection
+								let featured = {
+									title: title.replace(/\*+/,''),
+									data: vendor
+								}
+								this.featuredVendors.push(featured);
+
+
+								// dedupe featured vendors collection
+								this.featuredVendors = uniqBy<any>(this.featuredVendors,'title');
 							}
-							this.featuredVendors.push(featured);
 						}
 
 
@@ -436,12 +445,6 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 					//}
 				}
 			);
-
-
-			// dedupe featured vendors collection if necessary
-			if(this.featuredVendors){
-				this.featuredVendors = uniqBy<any>(this.featuredVendors,'title');
-			}
 
 
 			// saved updated vendors cache in local storage
