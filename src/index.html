@@ -25,13 +25,6 @@
 			type="image/x-icon" 
 			href="favicon.ico"
 		>
-
-		<!-- Twitter Bootstrap CSS -->
-			<link 
-				rel="stylesheet" 
-				type="text/css" 
-				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-			>
 	</head>
 	<body>
 		<div
@@ -47,34 +40,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- jQuery JS -->
-			<script
-				src="https://code.jquery.com/jquery-3.2.1.min.js"
-				integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-				crossorigin="anonymous"
-			></script>
-		<!-- Twitter Bootstrap JS -->
-			<script 
-				type="text/javascript"
-				src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-			></script>
-
-		<!-- service worker config -->
-			<script>
-			if ('serviceWorker' in navigator) {
-				navigator
-					.serviceWorker
-					.register('/service-worker.js')
-					.then(function(registration) {
-						console.log('Service Worker registered');
-					})
-					.catch(function(err) {
-						console.log('Service Worker registration failed: ', err);
-					})
-				;
-			}
-			</script>
 	</body>
 </html>
 
