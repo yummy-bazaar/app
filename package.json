@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build:ng": "ng build",
     "build:shop": "./node_modules/.bin/gulp build",
-    "deploy": "npm run build:ng && npm run build:shop",
+    "deploy": "npm run build:ng; npm run build:shop",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
