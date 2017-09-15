@@ -5,10 +5,11 @@ const paths =
 		root: 'src',
 		libs: 	
 		[
-			'node_modules/core-js/client/shim.min.js',
-			'node_modules/zone.js/dist/zone.js',
-			'node_modules/systemjs/dist/system.src.js',
-			'src/**/systemjs*.js',
+			'dist/inline.bundle.js',
+			'dist/polyfills.bundle.js',
+			'dist/styles.bundle.js',
+			'dist/vendor.bundle.js',
+			'dist/main.bundle.js',
 		],
 		scripts: 
 		[

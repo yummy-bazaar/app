@@ -85,7 +85,7 @@ gulp.task(
 	[
 		'copy:theme',
 		'copy:libs', 
-		'build:scripts',
+		//'build:scripts',
 	]
 );
 
