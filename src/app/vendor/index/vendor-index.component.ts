@@ -12,7 +12,10 @@ import {
 import {
 	Apollo,
 	ApolloQueryObservable
-}							from 'apollo-angular'
+}							from 'apollo-angular';
+import {
+	uniqBy
+}							from 'lodash';
 import {
 	Observable
 } 							from 'rxjs';
@@ -60,6 +63,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 
 	loading: 	  				boolean;
 	vendors: 	  				Map<string,Set<any>>;
+	featuredVendors:			any[];
 	vendorKeys:			  		Set<string>;
 	selectedVendors:			Set<any>;			// update type to Vendor interface from vendor.model.ts
 	private dataStream: 		ApolloQueryObservable<any>;
@@ -92,6 +96,7 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 		this.path2Object 		= 'data.shop.collections.edges';
 		this.fetchMoreFlag 		= false;
 		this.cursor 			= null;
+		this.featuredVendors	= null;
 
 
 		// fetch vendors cache from local storage if exists
@@ -371,60 +376,89 @@ export class VendorIndexComponent implements OnInit, OnDestroy {
 			// parse new vendors
 			newVendors.map(
 				(vendor:any) => {
-					
-					// test if vendor key is alphabetic
-					//let handle: string = vendor.node.handle;
+
+					// test if collection is vendor
 					let title: string = vendor.node.title.trim();
-					let key: string;
-					startsWithAlpha(title)
-					? key = title[0].toLowerCase()
-					: key = '123'
+					//if (/\*/.test(title)) {
 
-					
-					// Debug
-					//this.logger.log(`key is: ${key}`);
-					//this.logger.log(`vendor handle is: ${vendor.node.handle}`);
-					//this.logger.log(`vendor is: ${JSON.stringify(vendor,null,4)}`);
-					//this.logger.log(`vendor cache is: ${JSON.stringify(this.vendors,null,4)}`);
+						// test if this is a featured vendor
+						if (/\*\*/.test(title)) {
 
-					
-					// init set if necessary
-					let vendorSet: Set<any> = this.vendors.get(key)
-					if (!vendorSet)
-						vendorSet = new Set<any>()
-					
+							// init collection if necessary
+							if (!this.featuredVendors)
+								this.featuredVendors = [];
 
-					// add new vendor to set
-					vendorSet.add(vendor);
+							
+							// limit featured vendors to 3
+							if (this.featuredVendors.length < 3) {
+
+								// add vendor to featured vendors collection
+								let featured = {
+									title: title.replace(/\*+/,''),
+									data: vendor
+								}
+								this.featuredVendors.push(featured);
 
 
-					//sort the set
-					//let arr = Array.from(vendorSet).sort()
-					//vendorSet = new Set<any>(arr);
+								// dedupe featured vendors collection
+								this.featuredVendors = uniqBy<any>(this.featuredVendors,'title');
+							}
+						}
 
 
-					// push set in vendors cache
-					this.vendors.set(key,vendorSet);
+						// test if vendor key is alphabetic
+						title = title.replace(/\*+/,'').trim()
+						let key: string;
+						startsWithAlpha(title)
+						? key = title[0].toLowerCase()
+						: key = '123'
+
+						
+						// Debug
+						//this.logger.log(`key is: ${key}`);
+						//this.logger.log(`vendor handle is: ${vendor.node.handle}`);
+						//this.logger.log(`vendor is: ${JSON.stringify(vendor,null,4)}`);
+						//this.logger.log(`vendor cache is: ${JSON.stringify(this.vendors,null,4)}`);
+
+						
+						// init set if necessary
+						let vendorSet: Set<any> = this.vendors.get(key)
+						if (!vendorSet)
+							vendorSet = new Set<any>()
+						
+
+						// add new vendor to set
+						vendorSet.add(vendor);
 
 
-					// update vendorKeys cache
-					this.vendorKeys.add(key)
+						//sort the set
+						//let arr = Array.from(vendorSet).sort()
+						//vendorSet = new Set<any>(arr);
+
+
+						// push set in vendors cache
+						this.vendors.set(key,vendorSet);
+
+
+						// update vendorKeys cache
+						this.vendorKeys.add(key)
+					//}
 				}
 			);
 
 
 			// saved updated vendors cache in local storage
-			this.storage.save(
-				'vendors',
-				this.vendors
-			);
+			//this.storage.save(
+			//	'vendors',
+			//	this.vendors
+			//);
 
 
 			// saved updated vendor keys cache in local storage
-			this.storage.save(
-				'vendorKeys',
-				this.vendorKeys
-			);
+			//this.storage.save(
+			//	'vendorKeys',
+			//	this.vendorKeys
+			//);
 
 
 			// Debug

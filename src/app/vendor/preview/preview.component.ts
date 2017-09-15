@@ -42,26 +42,11 @@ export class PreviewComponent implements OnInit {
 	@Input() 
 	public set vendorData(data: any) {
 		
-		// cache vendor data
 		this._vendorData = data;
-
-		// set title
-		this.title = data.node.title;
-
-		// set vendor image
-		if (data.node.image) {
-			this.image = {
-				src: data.node.image.src,
-				altText: data.node.image.altText
-			};
-		}
-
-		// set vendor description
-		this.description = data.node.descriptionHtml;
-
-
-		// fetch product data
-		this.fetch(data.node.handle);
+		this.parseTitle(data);
+		this.parseImage(data);
+		this.parseDescription(data);
+		this.fetchProductsByHandle(data.node.handle);
 	}
 
 	products:					any;
@@ -97,7 +82,7 @@ export class PreviewComponent implements OnInit {
 
 
 
-	fetch(vendorHandle: string) {
+	fetchProductsByHandle(vendorHandle: string) {
 		// run query
 		this.dataStream = this.service.fetch(
 			this.query,
@@ -145,4 +130,45 @@ export class PreviewComponent implements OnInit {
 			}
 		)
 	}
+
+
+
+	private parseTitle(data: any): void {
+
+		let title = data.node.title;
+		this.title = title.replace(/\*+/,'').trim()
+	}
+
+
+
+	private parseImage(data: any): void {
+
+		if (data.node.image) {
+			this.image = {
+				src: data.node.image.src,
+				altText: data.node.image.altText
+			};
+		}
+	}
+
+
+
+	private parseDescription(data: any): void {
+
+		let html: string = data.node.descriptionHtml;
+		(html.length >= 410) ?
+			this.description = `${html.slice(0,435)}...`:
+			this.description = html
+		;
+	}
 }
+
+
+
+
+
+
+
+
+
+

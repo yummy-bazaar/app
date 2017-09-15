@@ -1,5 +1,6 @@
 <!-- featured vendors -->
 	<div
+		
 		id="featured-container"
 		class="row"
 	>
@@ -9,43 +10,84 @@
 			"
 		>
 			<div
+				*ngIf="featuredVendors"
 				class="row"
 			>
 				<!-- featured vendor -->
 					<div
+						*ngFor="let vendor of featuredVendors"
 						class="
-							featured
 							col-sm-4
 							text-center
 						"
 					>
-						<h1>
-							Feat Vendor 1
-						</h1>
-					</div>
-				<!-- featured vendor -->
-					<div
-						class="
-							featured
-							col-sm-4
-							text-center
-						"
-					>
-						<h1>
-							Feat Vendor 2
-						</h1>
-					</div>
-				<!-- featured vendor -->
-					<div
-						class="
-							featured
-							col-sm-4
-							text-center
-						"
-					>
-						<h1>
-							Feat Vendor 3
-						</h1>
+						<div
+							class="featured"
+						>
+							<!-- image -->
+								<div
+									class="row"
+								>
+									<div
+										class="col-sm-12"
+									>
+										<div
+											class="image-container"
+										>
+											<img 
+												*ngIf="vendor.data.node.image"
+												class="image" 
+												src="{{ vendor.data.node.image.src }}"
+												alt="{{ vendor.data.node.image.altText }}" 
+											>
+											<div
+												*ngIf="!vendor.data.node.image"
+												class="cover-title-container"
+											>
+												<span
+													class="cover-title"
+												>
+													{{ vendor.title }}
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							<!-- title -->
+								<div
+									class="
+										row
+										title-container
+									"
+								>
+									<div
+										class="col-sm-12"
+									>
+										<span
+											class="title"
+										>
+											{{ vendor.title }}
+										</span>
+									</div>
+								</div>
+
+							<!-- type -->
+								<!--div
+									class="row"
+								>
+									<div
+										class="col-sm-12"
+									>
+										<span
+											class="type"
+										>
+											{{ vendor.data.node.productType }}
+										</span>
+									</div>
+								</div-->
+
+						</div>
 					</div>
 			</div>
 		</div>
